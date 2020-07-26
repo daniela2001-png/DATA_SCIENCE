@@ -1,0 +1,17 @@
+'''
+Contar parcelas
+En este ejercicio, volveremos a explorar nuestro conjunto de datos que contiene las respuestas a una encuesta enviada a los jóvenes. Podemos sospechar que los jóvenes pasan mucho tiempo en Internet, pero ¿cuánto informan que usan Internet cada día? Usemos un diagrama de conteo para desglosar el número de respuestas de la encuesta en cada categoría y luego exploremos si cambia según la edad.
+
+Como recordatorio, para crear un diagrama de conteo, usaremos la catplot()función y especificaremos el nombre de la variable categórica para contar ( x=____), el Marco de datos de Pandas para usar ( data=____) y el tipo de diagrama ( kind="count").
+
+Seaborn ha sido importado como snsy matplotlib.pyplotha sido importado como plt
+
+'''
+
+# Create column subplots based on age category
+sns.catplot(y="Internet usage", data=survey_data,
+            kind="count", col='Age Category')
+
+# Show plot
+plt.show()
+
