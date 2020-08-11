@@ -1,0 +1,267 @@
+								SEABORN AVANZADO
+								
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Comparar un histograma y una gráfica de distribución:
+
+La pandasbiblioteca admite el trazado simple de datos, lo cual es muy conveniente cuando es probable que los datos ya estén en un pandasDataFrame.
+
+Seaborn generalmente realiza más análisis estadísticos de los datos y puede proporcionar una visión más sofisticada de los datos. En este ejercicio, compararemos un pandashistograma con la seaborn gráfica de distribución.
+
+Instrucciones
+
+Utilice la distplot() función de Seaborn para trazar una gráfica de distribución de la misma columna.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+# Display a Seaborn distplot
+sns.distplot(df['Award_Amount'])
+plt.show()
+
+# Clear the distplot
+plt.clf()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+Trazar un histograma
+
+La distplot()función devolverá una estimación de densidad del núcleo (KDE) por defecto. KDE ayuda a suavizar la distribución y es una forma útil de ver los datos. Sin embargo, Seaborn también puede admitir el enfoque de histograma más estándar si eso es más significativo para su análisis.
+
+Instrucciones
+Cree un distplotpara los datos y desactive KDE.
+Pase explícitamente el número 20 para el número de contenedores en el histograma.
+Muestre la trama usando plt.show().
+
+La distplot() función se puede configurar con múltiples argumentos diferentes.
+Al deshabilitar la salida de KDE, ha creado un histograma.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Create a distplot
+sns.distplot(df['Award_Amount'],
+             kde=False,
+             bins=20)
+
+# Display the plot
+plt.show()
+-------------------------------------------------------------------------------------------------------------------------------------------
+Parcela de alfombra y sombreado kde
+Ahora que comprende algunos argumentos de función distplot(), podemos continuar refinando aún más la salida. Este proceso de crear una visualización y actualizarla de forma incremental es un enfoque útil y común para ver los datos desde múltiples perspectivas.
+
+Seaborn se destaca por simplificar este proceso.
+
+Instrucciones
+
+Crear una distplotde la Award_Amountcolumna en el df.
+Configúrelo para mostrar un kde sombreado (usando el kde_kwsdiccionario).
+Agregue un diagrama de alfombra sobre el eje x.
+Muestra la trama.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Create a distplot of the Award Amount
+sns.distplot(df['Award_Amount'],
+             hist=False,
+             rug=True,
+             kde_kws={'shade':True}, vertical=True)
+
+# Plot the results
+plt.show()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Crea una gráfica de regresión
+
+Para este conjunto de ejercicios, analizaremos los datos de FiveThirtyEight sobre qué estado de EE. UU. Tiene los peores impulsores. El conjunto de datos incluye información resumida sobre accidentes mortales, así como primas de seguro para cada estado a partir de 2010.
+
+En este ejercicio, veremos la diferencia entre las funciones gráficas de regresión.
+
+Instrucciones
+
+Cree una gráfica de regresión de "premiums"versus "insurance_losses"usando lmplot().
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Create an lmplot of premiums vs. insurance_losses
+sns.lmplot(x='insurance_losses', y='premiums', data=df)
+
+
+# Display the second plot
+plt.show()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+Graficar múltiples variables
+Dado que estamos usando lmplot()ahora, podemos mirar las interacciones más complejas de datos. Este conjunto de datos incluye información geográfica por estado y área. Puede ser interesante ver si hay una diferencia en las relaciones según Regionel país.
+
+Instrucciones
+
+Use lmplot()para ver la relación entre insurance_lossesy premiums.
+Trace una línea de regresión para cada Regionpaís.
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+# Create a regression plot using hue
+sns.lmplot(data=df,
+           x="insurance_losses",
+           y="premiums",
+           hue="Region") #para mostrar en un mismo plot todas las regresiones de cada region columna del data=df
+
+# Show the results
+plt.show()
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+Facetas de regresiones múltiples
+
+lmplot()nos permite facetar los datos en varias filas y columnas. En la trama anterior, las múltiples líneas eran difíciles de leer en una trama. Podemos intentar crear múltiples gráficos Regionpara ver si esa es una visualización más útil.
+
+Instrucciones
+
+Use lmplot()para ver la relación entre insurance_lossesy premiums.
+Crea una parcela para cada Regionpaís.
+Muestre las gráficas en varias filas.
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Create a regression plot with multiple rows
+sns.lmplot(data=df,
+           x="insurance_losses",
+           y="premiums",
+           row="Region")
+
+# Show the plot
+plt.show()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+Establecer el estilo predeterminado
+
+Para estos ejercicios, analizaremos los valores de renta de mercado justos calculados por el Departamento de Vivienda y Desarrollo Urbano de EE. UU. Estos datos se utilizan para calcular las pautas para varios programas federales. Los valores reales de los alquileres varían mucho en los EE. UU. Podemos utilizar estos datos para adquirir experiencia en la configuración de gráficos de Seaborn.
+
+Todas las importaciones necesarias para seaborn, pandasy matplotlibse han completado. Los datos se almacenan en el pandasDataFrame df.
+
+Por cierto, si aún no lo ha descargado, consulte la Hoja de trucos de Seaborn . Incluye una descripción general de los conceptos, funciones y métodos más importantes y puede resultar útil si alguna vez necesita un repaso rápido.
+
+Instrucciones
+Trace un pandashistograma sin ajustar el estilo.
+Establece el estilo predeterminado de Seaborn.
+Cree otro pandashistograma de la fmr_2columna que represente el alquiler de mercado justo para un apartamento de 2 dormitorios.
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Plot the pandas histogram
+df['fmr_2'].plot.hist()
+plt.show()
+plt.clf()
+
+# Set the default seaborn style
+sns.set()
+
+# Plot the pandas histogram again
+df['fmr_2'].plot.hist()
+plt.show()
+plt.clf()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+Comparación de estilos
+
+Seaborn admite el establecimiento de diferentes estilos que pueden controlar la estética de la trama final. En este ejercicio, trazará los mismos datos en dos estilos diferentes para ver cómo los estilos cambian la salida.
+-------------------------------------------------------------------------------------------------------------------------------------------
+import seaborn as sns
+import matplotlib.pyplot as plt
+sns.distplot(df['fmr_2'])
+sns.set_style('whitegrid')
+
+plt.show()
+plt.clf()
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Quitar espinas:
+
+En general, las visualizaciones deben minimizar las marcas extrañas para que los datos hablen por sí mismos. Seaborn le permite eliminar las líneas en los ejes superior, inferior, izquierdo y derecho, que a menudo se denominan espinas.
+
+Instrucciones
+Usa un whiteestilo para la trama.
+Cree una lmplot()comparación de pop2010las fmr_2columnas y las .
+Retire las espinas superior y derecha usando despine()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Set the style to white
+sns.set_style('white')
+# Create a regression plot
+sns.lmplot(data=df,
+           x='pop2010',
+           y='fmr_2')
+
+# Remove the spines
+sns.despine()
+
+# Show the plot and clear the figure
+plt.show()
+plt.clf()
+-------------------------------------------------------------------------------------------------------------------------------------------
+Códigos de color de Matplotlib:
+
+Seaborn ofrece varias opciones para modificar los colores de sus visualizaciones. El enfoque más simple es indicar explícitamente el color de la trama. Una forma rápida de cambiar los colores es utilizar los matplotlibcódigos de color estándar .
+
+Instrucciones
+
+Establezca el estilo Seaborn predeterminado y habilite los matplotlibcódigos de color.
+Cree un distplotpara la fmr_3columna usando matplotlibel mcódigo de color magenta ( ).
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+# Set style, enable color code, and create a magenta distplot
+sns.set(color_codes=True)
+sns.distplot(df['fmr_3'], color='m')
+
+# Show the plot
+plt.show()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+Usar paletas predeterminadas
+Seaborn incluye varias paletas predeterminadas que se pueden aplicar fácilmente a sus gráficos. En este ejemplo, veremos el impacto de dos paletas diferentes en la misma distplot.
+
+Instrucciones
+
+Cree un forbucle para mostrar la diferencia entre la paleta brighty colorblind.
+Configure la paleta usando la set_palette()función.
+Utilice una distplotde la fmr_3columna.
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+# Loop through differences between bright and colorblind palettes
+for p in ['bright', 'colorblind']:
+    sns.set_palette(p)
+    sns.distplot(df['fmr_3'])
+    plt.show()
+    
+    # Clear the plots    
+    plt.clf()
+-------------------------------------------------------------------------------------------------------------------------------------------
+Creación de paletas personalizadas
+
+La elección de una paleta coherente que funcione con sus datos puede llevar mucho tiempo. Afortunadamente, Seaborn ofrece la color_palette()función de crear sus propias paletas personalizadas secuenciales, categóricas o divergentes. Seaborn también facilita la visualización de sus paletas mediante el uso de la palplot()función.
+
+En este ejercicio, puede experimentar con la creación de diferentes paletas.
+
+Instrucciones
+
+Cree y muestre una Purplespaleta secuencial que contenga 8 colores.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+# Create the Purples palette
+sns.palplot(sns.color_palette("Purples", 8))
+plt.show()
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------

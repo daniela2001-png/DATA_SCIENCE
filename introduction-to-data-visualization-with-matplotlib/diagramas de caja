@@ -1,0 +1,36 @@
+						Crear diagramas de caja (IMPORTANTE ESTE TEMA SE LE OLVIDA FACIL DANIELA!)
+
+Los diagramas de caja proporcionan información adicional sobre la distribución de los datos que representan. Nos dicen cuál es la mediana de la distribución, cuál es el rango intercuartil y también cuál debería ser el rango esperado de aproximadamente el 99% de los datos. Los valores atípicos más allá de este rango se destacan especialmente.
+
+En este ejercicio, utilizará los datos sobre las alturas de medallista que visualizó previamente como histogramas y como gráficos de barras con barras de error, y los visualizará como diagramas de caja.
+
+Nuevamente, tendrá los marcos de datos mens_rowingy mens_gymnasticsdisponibles para usted, y ambos marcos de datos tienen columnas llamadas "Height"que comparará
+
+								SOLUCION:
+								
+-------------------------------------------------------------------------------------------------------------------------------
+Create a boxplot that contains the "Height" column for mens_rowing on the left and mens_gymnastics on the right.
+Add x-axis tick labels: "Rowing" and "Gymnastics".
+Add a y-axis label: "Height (cm)".
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+fig, ax = plt.subplots()
+
+# Add a boxplot for the "Height" column in the DataFrames
+ax.boxplot([mens_rowing['Height'], mens_gymnastics['Height']])
+
+# Add x-axis tick labels:
+ax.set_xticklabels(['Rowing', 'Gymnastics'])
+
+# Add a y-axis label
+ax.set_ylabel('Height (cm)')
+
+plt.show()
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------

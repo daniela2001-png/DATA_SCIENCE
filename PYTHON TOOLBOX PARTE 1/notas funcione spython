@@ -1,0 +1,763 @@
+# Define shout_all with parameters word1 and word2
+def shout_all(word1, word2):
+    
+    # Concatenate word1 with '!!!': shout1
+    shout1 = word1 + '!!!'
+    
+    # Concatenate word2 with '!!!': shout2
+    shout2 = word2 + '!!!'
+    
+    # Construct a tuple with shout1 and shout2: shout_words
+    shout_words = (shout1, shout2)
+
+    # Return shout_words
+    return shout_words
+
+# Pass 'congratulations' and 'you' to shout_all(): yell1, yell2
+yell1, yell2 = shout_all('congratulations', 'you')
+
+
+# Print yell1 and yell2
+print(yell1)
+print(yell2)
+
+------------------------------------------------------------------------------------------------------------------
+
+Reuniéndolo todo (1)
+-------------------------------------
+Has probado por primera vez escribir tus propias funciones en los ejercicios anteriores. Ha aprendido cómo agregar parámetros a sus propias definiciones de funciones, devolver un valor o varios valores con tuplas y cómo llamar a las funciones que ha definido.
+
+En este ejercicio y en el siguiente, reunirá todos estos conceptos y los aplicará a un problema simple de ciencia de datos. Cargará un conjunto de datos y desarrollará funcionalidades para extraer información simple de los datos.
+
+Para este ejercicio, su objetivo es recordar cómo cargar un conjunto de datos en un DataFrame. El conjunto de datos contiene datos de Twitter y iterará sobre las entradas en una columna para construir un diccionario en el que las claves son los nombres de los idiomas y los valores son el número de tweets en el idioma dado. El archivo tweets.csvestá disponible en su directorio actual.
+
+Tenga en cuenta que se trata de datos reales de Twitter y, como tal, siempre existe el riesgo de que contengan blasfemias u otro contenido ofensivo (en este ejercicio y los siguientes ejercicios que también utilicen datos reales de Twitter).
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+# Import pandas
+import pandas as pd
+
+# Import Twitter data as DataFrame: df
+df = pd.read_csv('tweets.csv')
+
+# Initialize an empty dictionary: langs_count
+langs_count = {}
+
+# Extract column from DataFrame: col
+col = df['lang']
+
+# Iterate over lang column in DataFrame
+for entry in col:
+
+    # If the language is in langs_count, add 1 
+    if entry in langs_count.keys():
+        langs_count[entry] += 1
+    # Else add the language to langs_count, set the value to 1
+    else:
+        langs_count[entry] = 1
+    print(entry)
+# Print the populated dictionary
+print(langs_count)
+
+
+------------------------------------------------------------------------------------------------------------------
+
+Reuniéndolo todo (2)
+¡Gran trabajo! Ahora ha definido la funcionalidad para iterar sobre las entradas en una columna y construir un diccionario con claves, nombres de idiomas y valores, el número de tweets en el idioma dado.
+
+En este ejercicio, definirá una función con la funcionalidad que desarrolló en el ejercicio anterior, devolverá el diccionario resultante desde dentro de la función y llamará a la función con los argumentos apropiados.
+
+Para su comodidad, el paquete pandas se ha importado como pdy el 'tweets.csv'archivo se ha importado a la tweets_dfvariable.
+------------------------------------------------------------------------------------------------------------------
+# Define count_entries()
+def count_entries(df, col_name):
+    """Return a dictionary with counts of 
+    occurrences as value for each key."""
+
+    # Initialize an empty dictionary: langs_count
+    langs_count = {}
+    
+    # Extract column from DataFrame: col
+    col = df[col_name]
+    
+    # Iterate over lang column in DataFrame
+    for entry in col:
+
+        # If the language is in langs_count, add 1
+        if entry in langs_count.keys():
+            langs_count[entry] += 1
+        # Else add the language to langs_count, set the value to 1
+        else:
+            langs_count[entry] = 1
+
+    # Return the langs_count dictionary
+    return (langs_count)
+
+# Call count_entries(): result
+result = count_entries(tweets_df, 'lang')
+
+# Print the result
+print(result)
+------------------------------------------------------------------------------------------------------------------
+Funciones anidadas I
+Aprendió en el último video acerca de anidar funciones dentro de funciones. Una razón por la que le gustaría hacer esto es para evitar escribir los mismos cálculos dentro de funciones repetidamente. No hay nada nuevo en la definición de funciones anidadas: simplemente defina como lo haría con una función normal defy la incruste dentro de otra función.
+
+En este ejercicio, dentro de una función three_shouts(), definirá una función anidada inner()que concatena un objeto de cadena con !!!. three_shouts()luego devuelve una tupla de tres elementos, cada uno una cadena concatenada con !!!using inner(). ¡Ve a por ello!
+
+------------------------------------------------------------------------------------------------------------
+
+# Define three_shouts
+def three_shouts(word1, word2, word3):
+    """Returns a tuple of strings
+    concatenated with '!!!'."""
+
+    # Define inner
+    def inner(word):
+        """Returns a string concatenated with '!!!'."""
+        return word + '!!!'
+
+    # Return a tuple of strings
+    return (inner(word1), inner(word2), inner(word3))
+
+# Call three_shouts() and print
+print(three_shouts('a', 'b', 'c'))
+
+------------------------------------------------------------------------------------------------------------------
+Funciones anidadas II
+Buen trabajo, acaba de anidar una función dentro de otra función. Otra razón bastante interesante para las funciones de anidamiento es la idea de un cierre . Esto significa que la función anidada o interna recuerda el estado de su ámbito adjunto cuando se llama. Por lo tanto, cualquier cosa definida localmente en el ámbito adjunto está disponible para la función interna incluso cuando la función externa ha finalizado su ejecución.
+
+¡Sigamos adelante entonces! En este ejercicio, completará la definición de la función interna inner_echo()y luego llamará echo()un par de veces, cada una con un argumento diferente. ¡Complete el ejercicio y vea cuál será el resultado!
+
+Instrucciones
+
+Complete el encabezado de la función interna con el nombre de la función inner_echo()y un solo parámetro word1.
+Completa la función echo()para que vuelva inner_echo.
+Hemos llamado echo(), pasando 2 como argumento y asignado la función resultante a twice. Tu trabajo es llamar echo(), pasando 3 como argumento. Asigne la función resultante a thrice.
+Pulse enviar a llamar twice()y thrice()e imprimir los resultados.
+
+------------------------------------------------------------------------------------------------------------------
+
+# Define echo
+def echo(n):
+    """Return the inner_echo function."""
+
+    # Define inner_echo
+    def inner_echo(word1):
+        """Concatenate n copies of word1."""
+        echo_word = word1 * n
+        return echo_word
+
+    # Return inner_echo
+    return inner_echo
+
+# Call echo: twice
+twice = echo(2)
+
+# Call echo: thrice
+thrice = echo(3)
+
+# Call twice() and thrice() then print
+print(twice('hello'), thrice('hello'))
+
+------------------------------------------------------------------------------------------------------------------
+La palabra clave funciones no locales y anidadas
+¡Trabajemos una vez más en su dominio del alcance! En este ejercicio, utilizará la palabra clave nonlocaldentro de una función anidada para alterar el valor de una variable definida en el ámbito adjunto.
+
+Instrucciones
+
+Asignar a echo_wordla cadena word, concatenado consigo mismo.
+Utilice la palabra clave nonlocalpara modificar el valor de echo_worden el ámbito adjunto.
+Cambie echo_worda echo_wordconcatenado con '!!!'.
+Llame a la función echo_shout(), pasándole un solo argumento 'hola'.
+
+------------------------------------------------------------------------------------------------------------------
+
+# Define echo_shout()
+def echo_shout(word):
+    """Change the value of a nonlocal variable"""
+    
+    # Concatenate word with itself: echo_word
+    echo_word = word
+    
+    # Print echo_word
+    print(echo_word)
+    
+    # Define inner function shout()
+    def shout():
+        """Alter a variable in the enclosing scope"""    
+        # Use echo_word in nonlocal scope
+        nonlocal echo_word
+        
+        # Change echo_word to echo_word concatenated with '!!!'
+        echo_word = echo_word + '!!!'
+    
+    # Call function shout()
+    shout()
+    
+    # Print echo_word
+    print(echo_word)
+
+# Call function echo_shout() with argument 'hello'
+echo_shout('hello')
+
+------------------------------------------------------------------------------------------------------------------
+
+Funciones con un argumento predeterminado
+En el capítulo anterior, aprendió a definir funciones con más de un parámetro y luego a llamar a esas funciones pasando el número requerido de argumentos. En el último video, Hugo se basó en esta idea mostrándote cómo definir funciones con argumentos predeterminados. Practicará esa habilidad en este ejercicio escribiendo una función que usa un argumento predeterminado y luego llamando a la función un par de veces.
+
+Instrucciones
+
+Complete el encabezado de la función con el nombre de la función shout_echo. Acepta un argumento word1y un argumento echopredeterminado con el valor predeterminado 1, en ese orden.
+Utilice el *operador para concatenar echocopias de word1. Asignar el resultado a echo_word.
+Llamar shout_echo()con sólo la cadena, "Hey". Asignar el resultado a no_echo.
+Llame shout_echo()con la cadena "Hey"y el valor 5para el argumento por defecto, echo. Asignar el resultado a with_echo.
+
+------------------------------------------------------------------------------------------------------------------
+
+# Define shout_echo
+def shout_echo(word1, echo=1):
+    """Concatenate echo copies of word1 and three
+     exclamation marks at the end of the string."""
+
+    # Concatenate echo copies of word1 using *: echo_word
+    echo_word = echo * word1
+
+    # Concatenate '!!!' to echo_word: shout_word
+    shout_word = echo_word + '!!!'
+
+    # Return shout_word
+    return shout_word
+
+# Call shout_echo() with "Hey": no_echo
+no_echo = shout_echo("Hey")
+
+# Call shout_echo() with "Hey" and echo=5: with_echo
+with_echo = shout_echo("Hey", echo=5)
+
+# Print no_echo and with_echo
+print(no_echo)
+print(with_echo)
+
+------------------------------------------------------------------------------------------------------------------
+
+Funciones con múltiples argumentos predeterminados
+Ahora ha definido una función que usa un argumento predeterminado, ¡no se detenga allí todavía! Ahora intentará definir una función con más de un argumento predeterminado y luego llamar a esta función de varias maneras.
+
+Después de definir la función, la llamará proporcionando valores a todos los argumentos predeterminados de la función. Además, llamará a la función al no pasar un valor a uno de los argumentos predeterminados; ¡vea cómo eso cambia la salida de su función!
+
+Instrucciones
+
+Complete el encabezado de la función con el nombre de la función shout_echo. Acepta un argumento word1, un argumento predeterminado echocon valor predeterminado 1y un argumento intensepredeterminado con valor predeterminado False, en ese orden.
+En el cuerpo de la ifdeclaración, ponga el objeto de cadena en echo_wordmayúsculas aplicando el método .upper()en él.
+Llame shout_echo()con la cadena, "Hey"el valor 5de echoy el valor Truede intense. Asignar el resultado a with_big_echo.
+Llame shout_echo()con la cadena "Hey"y el valor Truede intense. Asignar el resultado a big_no_echo.
+
+------------------------------------------------------------------------------------------------------------------
+# Define shout_echo
+def shout_echo(word1, echo=1, intense=False):
+    """Concatenate echo copies of word1 and three
+    exclamation marks at the end of the string."""
+
+    # Concatenate echo copies of word1 using *: echo_word
+    echo_word = word1 * echo
+
+    # Make echo_word uppercase if intense is True
+    if intense is True:
+        # Make uppercase and concatenate '!!!': echo_word_new
+        echo_word_new = echo_word.upper() + '!!!'
+    else:
+        # Concatenate '!!!' to echo_word: echo_word_new
+        echo_word_new = echo_word + '!!!'
+
+    # Return echo_word_new
+    return echo_word_new
+
+# Call shout_echo() with "Hey", echo=5 and intense=True: with_big_echo
+with_big_echo = shout_echo('Hey', echo=5, intense=True)
+
+# Call shout_echo() with "Hey" and intense=True: big_no_echo
+big_no_echo = shout_echo("Hey", intense=True)
+
+# Print values
+print(with_big_echo)
+print(big_no_echo)
+
+------------------------------------------------------------------------------------------------------------------
+Funciones con argumentos de longitud variable (* args)
+Los argumentos flexibles le permiten pasar un número variable de argumentos a una función. En este ejercicio, practicarás la definición de una función que acepta un número variable de argumentos de cadena.
+
+La función que definirá es la gibberish()que puede aceptar un número variable de valores de cadena. Su valor de retorno es una sola cadena compuesta por todos los argumentos de cadena concatenados juntos en el orden en que se pasaron a la llamada a la función. Llamará a la función con un solo argumento de cadena y verá cómo cambia la salida con otra llamada utilizando más de un argumento de cadena. Recuerde del video anterior que, dentro de la definición de función, argses una tupla.
+
+
+Complete el encabezado de la función con el nombre de la función gibberish. Acepta un solo argumento flexible *args.
+Inicializa una variable hodgepodgea una cadena vacía.
+Devuelve la variable hodgepodgeal final del cuerpo de la función.
+Llamar gibberish()a la única cadena, "luke". Asignar el resultado a one_word.
+Presione el botón Enviar para llamar gibberish()con múltiples argumentos e imprimir el valor en el Shell.
+------------------------------------------------------------------------------------------------------------------
+# Define gibberish
+def gibberish(*args):
+    """Concatenate strings in *args together."""
+
+    # Initialize an empty string: hodgepodge
+    hodgepodge = ''
+
+    # Concatenate the strings in args
+    for word in args:
+        hodgepodge += word 
+
+    # Return hodgepodge
+    return hodgepodge
+
+# Call gibberish() with one string: one_word
+one_word = gibberish('luke')
+
+# Call gibberish() with five strings: many_words
+many_words = gibberish("luke", "leia", "han", "obi", "darth")
+
+# Print one_word and many_words
+print(one_word)
+print(many_words)
+
+------------------------------------------------------------------------------------------------------------------
+Funciones con argumentos de palabras clave de longitud variable (** kwargs):
+
+Avancemos más en lo que ha aprendido sobre argumentos flexibles: ¡ha usado *args, ahora lo va a usar **kwargs! Lo que hace **kwargsdiferente es que le permite pasar un número variable de argumentos de palabras clave a funciones. Recuerde del video anterior que, dentro de la definición de función, kwargses un diccionario.
+
+Para comprender mejor esta idea, utilizará **kwargsen este ejercicio para definir una función que acepte un número variable de argumentos de palabras clave. La función simula un sistema de informe de estado simple que imprime el estado de un personaje en una película.
+
+Instrucciones
+
+Complete el encabezado de la función con el nombre de la función report_status. Acepta un solo argumento flexible **kwargs.
+Repita los pares clave-valor de kwargspara imprimir las claves y los valores, separados por dos puntos ':'.
+En la primera llamada a report_status(), pasar los siguientes pares de palabras clave-valor: name="luke", affiliation="jedi"y status="missing".
+En la segunda llamada a report_status(), pasar los siguientes pares de palabras clave-valor: name="anakin", affiliation="sith lord"y status="deceased".
+
+------------------------------------------------------------------------------------------------------------------
+# Define report_status
+def report_status(**kwargs):
+    """Print out the status of a movie character."""
+
+    print("\nBEGIN: REPORT\n")
+
+    # Iterate over the key-value pairs of kwargs
+    for key, value in kwargs.items():
+        # Print out the keys and values, separated by a colon ':'
+        print(key + ": " + value)
+
+    print("\nEND REPORT")
+
+# First call to report_status()
+report_status(name='luke', affiliation='jedi', status='missing')
+
+# Second call to report_status()
+report_status(name='anakin', affiliation='sith lord', status='deceased')
+
+------------------------------------------------------------------------------------------------------------------
+Reuniéndolo todo (1)
+Recuerde el ejercicio Unir todo en el capítulo anterior, donde hizo un análisis simple de Twitter mediante el desarrollo de una función que cuenta cuántos tweets hay en ciertos idiomas. El resultado de su función fue un diccionario que tenía el idioma como claves y el recuento de tweets en ese idioma como valor .
+
+En este ejercicio, generalizaremos el análisis del lenguaje de Twitter que hiciste en el capítulo anterior. Lo hará al incluir un argumento predeterminado que tome un nombre de columna.
+
+Para su comodidad, pandasse ha importado como pdy el 'tweets.csv'archivo se ha importado al DataFrame tweets_df. También se proporcionan partes del código de su trabajo anterior.
+
+Instrucciones
+¡
+Complete el encabezado de la función proporcionando el parámetro para un DataFrame dfy el parámetro col_namecon un valor predeterminado 'lang'para el nombre de la columna del DataFrame.
+Llame count_entries()pasando el tweets_dfDataFrame y el nombre de la columna 'lang'. Asignar el resultado a result1. Tenga en cuenta que, dado que 'lang'es el valor predeterminado del col_nameparámetro, no tiene que especificarlo aquí.
+Llame count_entries()pasando el tweets_dfDataFrame y el nombre de la columna 'source'. Asignar el resultado a result2.
+
+------------------------------------------------------------------------------------------------------------------
+# Define count_entries()
+def count_entries(df, col_name='lang'):
+    """Return a dictionary with counts of
+    occurrences as value for each key."""
+
+    # Initialize an empty dictionary: cols_count
+    cols_count = {}
+
+    # Extract column from DataFrame: col
+    col = df[col_name]
+    
+    # Iterate over the column in DataFrame
+    for entry in col:
+
+        # If entry is in cols_count, add 1
+        if entry in cols_count.keys():
+            cols_count[entry] += 1
+
+        # Else add the entry to cols_count, set the value to 1
+        else:
+            cols_count[entry] = 1
+
+    # Return the cols_count dictionary
+    return cols_count
+
+# Call count_entries(): result1
+result1 = count_entries(tweets_df, col_name='lang')
+
+# Call count_entries(): result2
+
+result2 = count_entries(tweets_df, col_name='source')
+
+# Print result1 and result2
+print(result1)
+print(result2)
+
+------------------------------------------------------------------------------------------------------------------
+
+Reuniéndolo todo (2)
+Vaya, acaba de generalizar el análisis del lenguaje de Twitter que hizo en el capítulo anterior para incluir un argumento predeterminado para el nombre de la columna. Ahora vas a generalizar esta función un paso más al permitir que el usuario le pase un argumento flexible, es decir, en este caso, ¡tantos nombres de columna como desee el usuario!
+
+Una vez más, para su comodidad, pandasse ha importado como pdy el 'tweets.csv'archivo se ha importado al DataFrame tweets_df. También se proporcionan partes del código de su trabajo anterior.
+
+Instrucciones
+
+Complete el encabezado de la función proporcionando el parámetro para el marco de datos dfy el argumento flexible *args.
+Complete el forciclo dentro de la definición de la función para que el ciclo se produzca sobre la tupla args.
+Llame count_entries()pasando el tweets_dfDataFrame y el nombre de la columna 'lang'. Asignar el resultado a result1.
+Llame count_entries()pasando el tweets_dfDataFrame y los nombres de las columnas 'lang'y 'source'. Asignar el resultado a result2.
+
+------------------------------------------------------------------------------------------------------------------
+# Define count_entries()
+def count_entries(df, *args):
+    """Return a dictionary with counts of
+    occurrences as value for each key."""
+    
+    #Initialize an empty dictionary: cols_count
+    cols_count = {}
+    
+    # Iterate over column names in args
+    for col_name in args:
+    
+        # Extract column from DataFrame: col
+        col = df[col_name]
+
+        # Iterate over the column in DataFrame
+        for entry in col:
+    
+            # If entry is in cols_count, add 1
+            if entry in cols_count.keys():
+                cols_count[entry] += 1
+    
+            # Else add the entry to cols_count, set the value to 1
+            else:
+                cols_count[entry] = 1
+    # Return the cols_count dictionary
+    return cols_count # diccionario que contine un df y toma varias columnas del mismo 
+
+# Call count_entries(): result1
+result1 = count_entries(tweets_df, 'lang')
+
+# Call count_entries(): result2
+result2 = count_entries(tweets_df, 'lang', 'source')
+
+# Print result1 and result2
+print(result1)
+print(result2)
+
+------------------------------------------------------------------------------------------------------------------
+						LAMBA FUNCTION IN PYTHON3
+
+------------------------------------------------------------------------------------------------------------------
+
+Escribir una función lambda que ya conoces
+Algunas definiciones de funciones son lo suficientemente simples como para convertirlas en una función lambda. Al hacer esto, escribe menos líneas de código, lo cual es bastante impresionante y será útil, especialmente cuando esté escribiendo y manteniendo grandes programas. En este ejercicio, usará lo que sabe acerca de las funciones lambda para convertir una función que realiza una tarea simple en una función lambda. Eche un vistazo a esta definición de función:
+
+def echo_word(word1, echo):
+    """Concatenate echo copies of word1."""
+    words = word1 * echo
+    return words
+La función de echo_wordtoma 2 parámetros: un valor de cadena, word1y un valor entero, echo. Devuelve una cadena que es una concatenación de echocopias de word1. Su tarea es convertir esta función simple en una función lambda.
+
+Instrucciones
+
+Defina la función lambda echo_wordusando las variables word1y echo. Replica lo que hace la definición de función original echo_word()anterior.
+Llame echo_word()con el argumento de cadena 'hey'y el valor 5, en ese orden. Asignar la llamada a result.
+
+------------------------------------------------------------------------------------------------------------------
+
+# Define echo_word as a lambda function: echo_word
+echo_word = (lambda word1, echo: word1 * echo)
+
+# Call echo_word: result
+result = echo_word('hey', 5)
+
+# Print result
+print(result)
+
+------------------------------------------------------------------------------------------------------------------
+
+Funciones map () y lambda
+
+Hasta ahora, ha utilizado funciones lambda para escribir funciones breves y simples, así como para redefinir funciones con funcionalidad simple. Sin embargo, el mejor caso de uso para las funciones lambda es cuando desea que estas funciones simples se incrusten de forma anónima en expresiones más grandes. Lo que eso significa es que la funcionalidad no se almacena en el entorno, a diferencia de una función definida con def. Para comprender mejor esta idea, utilizará una función lambda en el contexto de la map()función.
+
+Recuerde el video que map()aplica una función sobre un objeto, como una lista. Aquí, puede usar funciones lambda para definir la función que map()usará para procesar el objeto. Por ejemplo:
+
+nums = [2, 4, 6, 8, 10]
+
+result = map(lambda a: a ** 2, nums)
+Aquí se puede ver que una función lambda, lo que plantea un valor aa la potencia de 2, se pasa al map()lado de una lista de números, nums. El objeto de mapa que resulta de la llamada a map()se almacena en result. Ahora practicarás el uso de funciones lambda con map(). Para este ejercicio, mapeará la funcionalidad de la add_bangs()función que definió en ejercicios anteriores sobre una lista de cadenas.
+
+InstruccioneP
+En la map()llamada, pase una función lambda que concatene la cadena '!!!'con una cadena item; También pasar la lista de cadenas, spells. Asigne el objeto de mapa resultante a shout_spells.
+Convierta shout_spellsa una lista e imprima la lista.
+
+------------------------------------------------------------------------------------------------------------------
+
+# Create a list of strings: spells
+spells = ["protego", "accio", "expecto patronum", "legilimens"]
+
+# Use map() to apply a lambda function over spells: shout_spells
+shout_spells = map(lambda item: item + '!!!', spells)
+
+# Convert shout_spells to a list: shout_spells_list
+shout_spells_list = list(shout_spells)
+
+# Print the result
+print(shout_spells_list)
+
+------------------------------------------------------------------------------------------------------------------
+Funciones de filtro () y lambda
+En el ejercicio anterior, usó funciones lambda para incrustar de forma anónima una operación en map(). Volverá a practicar esto en este ejercicio utilizando una función lambda con filter(), ¡que puede ser nueva para usted! La función filter()ofrece una forma de filtrar elementos de una lista que no satisfacen ciertos criterios.
+
+Su objetivo en este ejercicio es utilizar filter()para crear, a partir de una lista de cadenas de entrada, una nueva lista que contenga solo cadenas que tengan más de 6 caracteres.
+
+Instrucciones
+100
+XP
+En la filter()llamada, pasar una función lambda y la lista de cadenas, fellowship. La función lambda debe verificar si el número de caracteres en una cadena memberes mayor que 6; use la len()función para hacer esto. Asigne el objeto de filtro resultante a result.
+Convierta resulta una lista e imprima la lista.
+
+------------------------------------------------------------------------------------------------------------------
+
+# Create a list of strings: fellowship
+fellowship = ['frodo', 'samwise', 'merry', 'pippin', 'aragorn', 'boromir', 'legolas', 'gimli', 'gandalf']
+
+# Use filter() to apply a lambda function over fellowship: result
+result = filter(lambda member: len(member) > 6, fellowship)
+
+# Convert result to a list: result_list
+result_list = list(result)
+
+# Print result_list
+print(result_list)
+
+------------------------------------------------------------------------------------------------------------------
+
+Funciones reduce () y lambda
+¡Se está volviendo muy bueno en el uso de funciones lambda! Aquí hay una función más para agregar a su repertorio de habilidades. La reduce()función es útil para realizar algunos cálculos en una lista y, a diferencia de map()y filter(), devuelve un solo valor como resultado. Para usarlo reduce(), debe importarlo desde el functoolsmódulo.
+
+¿Recuerdas gibberish()algunos ejercicios atrás?
+
+# Define gibberish
+def gibberish(*args):
+    """Concatenate strings in *args together."""
+    hodgepodge = ''
+    for word in args:
+        hodgepodge += word
+    return hodgepodge
+gibberish()simplemente toma una lista de cadenas como argumento y devuelve, como resultado de un solo valor, la concatenación de todas estas cadenas. En este ejercicio, replicará esta funcionalidad mediante el uso de reduce()una función lambda que concatena cadenas.
+
+Instrucciones
+
+Importe la reducefunción del functoolsmódulo.
+En la reduce()llamada, pasar una función lambda que toma dos argumentos de cadena item1y item2, y los concatena; También pasar la lista de cadenas, stark. Asignar el resultado a result. El primer argumento de reduce()debe ser la función lambda y el segundo argumento es la lista stark.
+
+------------------------------------------------------------------------------------------------------------------
+# Import reduce from functools
+from functools import reduce
+
+# Create a list of strings: stark
+stark = ['robb', 'sansa', 'arya', 'brandon', 'rickon']
+
+# Use reduce() to apply a lambda function over stark: result
+result = reduce(lambda item1, item2: item1+item2, stark)
+
+# Print the result
+print(result)
+
+------------------------------------------------------------------------------------------------------------------
+						ERROR HANDLING WITH TREXCEPT:					
+
+------------------------------------------------------------------------------------------------------------------
+
+Manejo de errores con try-except
+Una buena práctica al escribir sus propias funciones es también anticipar las formas en que otras personas (o usted mismo, si accidentalmente hace mal uso de su propia función) podrían usar la función que definió.
+
+Como en el ejercicio anterior, vio que la len()función puede manejar argumentos de entrada como cadenas, listas y tuplas, pero no los de tipo int y genera un error apropiado y un mensaje de error cuando encuentra argumentos de entrada no válidos. Una forma de hacerlo es mediante el manejo de excepciones con el try-exceptbloque.
+
+En este ejercicio, definirá una función y utilizará un try-exceptbloque para manejar casos en los que se pasen argumentos de entrada incorrectos a la función.
+
+Recuerde la shout_echo()función que definió en ejercicios anteriores; partes de la definición de función se proporcionan en el código de muestra. Su objetivo es completar el código de manejo de excepciones en la definición de la función y proporcionar un mensaje de error apropiado al generar un error.
+
+Instrucciones
+100
+XP
+Instructions
+100 XP
+Inicialice las variables echo_wordy shout_wordslas cadenas vacías.
+Agregue las palabras clave tryy excepten las ubicaciones apropiadas para el bloque de manejo de excepciones.
+Utilice el *operador para concatenar echocopias de word1. Asignar el resultado a echo_word.
+Concatenar la cadena '!!!'a echo_word. Asignar el resultado a shout_words.
+
+------------------------------------------------------------------------------------------------------------------
+
+# Define shout_echo
+def shout_echo(word1, echo=1):
+    """Concatenate echo copies of word1 and three
+    exclamation marks at the end of the string."""
+
+    # Initialize empty strings: echo_word, shout_words
+    echo_word = ''
+    shout_words = ''
+
+    # Add exception handling with try-except
+    try:
+        # Concatenate echo copies of word1 using *: echo_word
+        echo_word = echo * word1
+
+        # Concatenate '!!!' to echo_word: shout_words
+        shout_words = echo_word + '!!!'
+    except:
+        # Print error message
+        print("word1 must be a string and echo must be an integer.")
+
+    # Return shout_words
+    return shout_words
+
+# Call shout_echo
+shout_echo("particle", echo="accelerator")
+
+------------------------------------------------------------------------------------------------------------------
+Reuniéndolo todo (1)
+¡Esto es asombroso! Ahora ha aprendido a escribir usando funciones anónimas lambda, cómo pasar las funciones lambda como argumentos a otras funciones como map(), filter()y reduce(), al igual que la forma de escribir errores y mensajes de error de salida dentro de sus funciones. Ahora podrá hacer un buen uso de estos aprendizajes trabajando con un conjunto de datos de Twitter. Antes de practicar sus nuevas habilidades de manejo de errores, en este ejercicio, escribirá una función lambda y la usará filter()para seleccionar retweets, es decir, tweets que comienzan con la cadena 'RT'.
+
+Para ayudar a lograr esto, los datos de Twitter ha sido importado en la trama de datos, tweets_df. ¡Ve a por ello!
+
+Instrucciones
+En la filter()llamada, pasar una función lambda y la secuencia de tweets como cadenas, tweets_df['text']. La función lambda debe verificar si los primeros 2 caracteres de un tweet xson 'RT'. Asigne el objeto de filtro resultante a result. Para obtener los primeros 2 caracteres de un tweet x, use x[0:2]. Para verificar la igualdad, use un filtro booleano con ==.
+Convierta resulta una lista e imprima la lista.
+
+------------------------------------------------------------------------------------------------------------------
+
+# Select retweets from the Twitter DataFrame: result
+result = filter(lambda x: x[0:2] =='RT', tweets_df['text']) #aqui valido si en la columna text hay retweets osea cadena de texto que empiezen con 'RT'
+
+# Create list from filter object result: res_list
+res_list = list(result)
+
+# Print all retweets in res_list
+for tweet in res_list:
+    print(tweet)
+
+------------------------------------------------------------------------------------------------------------------
+Reuniéndolo todo (2)
+A veces cometemos errores al llamar a funciones, incluso las que usted mismo cometió. ¡Pero no te preocupes! En este ejercicio, mejorará su trabajo anterior con la count_entries()función del último capítulo agregando un try-exceptbloque. Esto permitirá que su función proporcione un mensaje útil cuando el usuario llame a su count_entries()función, pero proporcione un nombre de columna que no está en el DataFrame.
+
+Una vez más, para su comodidad, pandasse ha importado como pdy el 'tweets.csv'archivo se ha importado al DataFrame tweets_df. También se proporcionan partes del código de su trabajo anterior.
+
+Instrucciones
+
+Agregue un trybloque para que cuando se llame a la función con los argumentos correctos, procese el DataFrame y devuelva un diccionario de resultados.
+Añadir un exceptbloque de manera que cuando se invoca la función de forma incorrecta, se muestra el siguiente mensaje de error: 'The DataFrame does not have a ' + col_name + ' column.'.
+
+------------------------------------------------------------------------------------------------------------------
+
+# Define count_entries()
+def count_entries(df, col_name='lang'):
+    """Return a dictionary with counts of
+    occurrences as value for each key."""
+
+    # Initialize an empty dictionary: cols_count
+    cols_count = {}
+
+    # Add try block
+    try:
+        # Extract column from DataFrame: col
+        col = df[col_name]
+        
+        # Iterate over the column in dataframe
+        for entry in col:
+    
+            # If entry is in cols_count, add 1
+            if entry in cols_count.keys():
+                cols_count[entry] += 1
+            # Else add the entry to cols_count, set the value to 1
+            else:
+                cols_count[entry] = 1
+    
+        # Return the cols_count dictionary
+        return cols_count
+
+    # Add except block
+    except:
+        print('The DataFrame does not have a ' + col_name + ' column.')
+
+# Call count_entries(): result1
+result1 = count_entries(tweets_df, 'lang')
+
+# Print result1
+print(result1)
+------------------------------------------------------------------------------------------------------------------
+Reuniéndolo todo (3)
+En el ejercicio anterior, desarrolló su función count_entries()para agregar un try-exceptbloque. Esto fue para que los usuarios recibieran mensajes útiles al llamar a su count_entries()función y proporcionar un nombre de columna que no está en el DataFrame. En este ejercicio, en su lugar, generará un ValueErroren el caso de que el usuario proporcione un nombre de columna que no está en el DataFrame.
+
+Una vez más, para su comodidad, pandasse ha importado como pdy el 'tweets.csv'archivo se ha importado al DataFrame tweets_df. También se proporcionan partes del código de su trabajo anterior.
+
+Instrucciones
+XP
+Si nocol_name es una columna en el DataFrame , genere un .dfValueError 'The DataFrame does not have a ' + col_name + ' column.'
+Llame a su nueva función count_entries()para analizar la 'lang'columna de tweets_df. Guarde el resultado en result1.
+Imprimir result1. Esto se ha hecho para usted, así que presione 'Enviar respuesta' para ver el resultado. En el siguiente ejercicio, verá que plantea lo necesario ValueErrors.
+
+------------------------------------------------------------------------------------------------------------------
+# Define count_entries()
+def count_entries(df, col_name='lang'):
+    """Return a dictionary with counts of
+    occurrences as value for each key."""
+    
+    # Raise a ValueError if col_name is NOT in DataFrame
+    if col_name not in df.columns:
+        raise ValueError('The DataFrame does not have a ' + col_name + ' column.')
+
+    # Initialize an empty dictionary: cols_count
+    cols_count = {}
+    
+    # Extract column from DataFrame: col
+    col = df[col_name]
+    
+    # Iterate over the column in DataFrame
+    for entry in col:
+
+        # If entry is in cols_count, add 1
+        if entry in cols_count.keys():
+            cols_count[entry] += 1
+            # Else add the entry to cols_count, set the value to 1
+        else:
+            cols_count[entry] = 1
+        
+        # Return the cols_count dictionary
+    return cols_count
+
+# Call count_entries(): result1
+result1 = count_entries(tweets_df, 'lang')
+
+# Print result1
+print(result1)
+
+------------------------------------------------------------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+

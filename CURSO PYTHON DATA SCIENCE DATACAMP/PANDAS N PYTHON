@@ -1,0 +1,1021 @@
+NOTAS=> Inspección de un marco de datos EN LA LIBRERIA PANDAS
+
+
+Cuando obtiene un nuevo DataFrame para trabajar, lo primero que debe hacer es explorarlo y ver qué contiene. Hay varios métodos y atributos útiles para esto.
+
+.head() devuelve las primeras filas (la "cabeza" del DataFrame).
+.info() muestra información sobre cada una de las columnas, como el tipo de datos y el número de valores faltantes.
+.shape devuelve el número de filas y columnas del DataFrame.
+.describe() calcula algunas estadísticas de resumen para cada columna.
+homelessnesses un DataFrame que contiene estimaciones de personas sin hogar en cada estado de EE. UU. en 2018. La individualcolumna es el número de personas sin hogar que no forman parte de una familia con hijos. La family_memberscolumna es el número de personas sin hogar que forman parte de una familia con hijos. La state_popcolumna es la población total del estado.
+
+pandas es importado para ti
+-----------------------------------------------------------------------------
+EJEMPLO:
+
+-----------------------------------------------------------------------------
+
+# Print the head of the homelessness data
+print(homelessness.head())
+
+# Print information about homelessness
+print(homelessness.info())
+
+# Print the shape of homelessness
+print(homelessness.shape)
+
+# Print a description of homelessness
+print(homelessness.describe())
+
+-----------------------------------------------------------------------------
+SALIDA:
+-----------------------------------------------------------------------------
+<script.py> output:
+                   region       state  individuals  family_members  state_pop
+    0  East South Central     Alabama       2570.0           864.0    4887681
+    1             Pacific      Alaska       1434.0           582.0     735139
+    2            Mountain     Arizona       7259.0          2606.0    7158024
+    3  West South Central    Arkansas       2280.0           432.0    3009733
+    4             Pacific  California     109008.0         20964.0   39461588
+------------------------------------------------------------------------------    
+    <class 'pandas.core.frame.DataFrame'>
+    Int64Index: 51 entries, 0 to 50
+    Data columns (total 5 columns):
+    region            51 non-null object
+    state             51 non-null object
+    individuals       51 non-null float64
+    family_members    51 non-null float64
+    state_pop         51 non-null int64
+    dtypes: float64(2), int64(1), object(2)
+    memory usage: 2.4+ KB
+    None
+-------------------------------------------------------------------------------    
+    (51, 5)
+-------------------------------------------------------------------------------    
+    
+           individuals  family_members  state_pop
+    count       51.000          51.000  5.100e+01
+    mean      7225.784        3504.882  6.406e+06
+    std      15991.025        7805.412  7.327e+06
+    min        434.000          75.000  5.776e+05
+    25%       1446.500         592.000  1.777e+06
+    50%       3082.000        1482.000  4.461e+06
+    75%       6781.500        3196.000  7.341e+06
+    max     109008.000       52070.000  3.946e+07
+-------------------------------------------------------------------------------
+
+Partes de un marco de datos pandas=>⭐⭐⭐
+-----------------------------
+Para comprender mejor los objetos DataFrame, es útil saber que constan de tres componentes, almacenados como atributos:
+
+.values: Una matriz de valores NumPy bidimensional.
+.columns: Un índice de columnas: los nombres de las columnas.
+.index: Un índice para las filas: ya sea números de fila o nombres de fila.
+Por lo general, puede pensar en los índices como una lista de cadenas o números, aunque el Indextipo de datos pandas permite opciones más sofisticadas. (Estos serán cubiertos más adelante en el curso).
+
+homelessness está disponible.
+---------------------------------------------------------------------------------
+INSTRUCCIONES:
+----------------------------------------------------------------------------------
+Importar pandasusando el alias pd.
+Imprima una matriz 2D NumPy de los valores en homelessness.
+Imprima los nombres de columna de homelessness.
+Imprima el índice de homelessness.
+-----------------------------------------------------------------------------------------
+EJEMPLO:
+-----------------------------------------------------------------------------------------
+# Import pandas using the alias pd
+import pandas as pd
+
+# Print the values of homelessness
+print(homelessness.values)
+
+# Print the column index of homelessness
+print(homelessness.columns)
+
+# Print the row index of homelessness
+print(homelessness.index) #tenemos 50 filas
+-----------------------------------------------------------------------------------------
+
+Ordenar filas=>⭐⭐⭐
+
+Encontrar bits de datos interesantes en un DataFrame a menudo es más fácil si cambia el orden de las filas. Puede ordenar las filas pasando un nombre de columna a .sort_values().
+
+En los casos en que las filas tienen el mismo valor (esto es común si ordena en una variable categórica), es posible que desee romper los lazos ordenando en otra columna. Puede ordenar en varias columnas de esta manera pasando una lista de nombres de columna.
+
+Ordenar por ...	Sintaxis
+una columna	df.sort_values("breed")
+múltiples columnas	df.sort_values(["breed", "weight_kg"])
+Al combinar .sort_values()con .head(), puede responder preguntas en el formulario, "¿Cuáles son los casos principales donde ...?".
+
+homelessnessestá disponible y pandasse carga como pd.
+----------------------------------------------------------------------------------------------
+Subconjunto de filas_>⭐⭐⭐
+
+Una gran parte de la ciencia de datos se trata de encontrar qué partes de su conjunto de datos son interesantes. Una de las técnicas más simples para esto es encontrar un subconjunto de filas que coincidan con algunos criterios. Esto a veces se conoce como filtrar filas o seleccionar filas .
+
+Hay muchas formas de subconjuntar un DataFrame, quizás la más común es usar operadores relacionales para regresar Trueo Falsepara cada fila, luego pasar eso entre corchetes.
+
+dogs[dogs["height_cm"] > 60]
+dogs[dogs["color"] == "tan"]
+Puede filtrar varias condiciones a la vez utilizando el operador "lógico y" &.
+
+dogs[(dogs["height_cm"] > 60) & (dogs["col_b"] == "tan")]
+-----------------------------------------------------------------------------------------------
+
+Subconjunto de filas por variables categóricas =>
+
+Subconjunto de datos basados ​​en una variable categórica a menudo implica el uso del operador "o" ( |) para seleccionar filas de múltiples categorías. Esto puede volverse tedioso cuando quiere todos los estados en una de tres regiones diferentes, por ejemplo. En su lugar, utilice el .isin()método, que le permitirá abordar este problema escribiendo una condición en lugar de tres diferentes.
+
+colors = ["brown", "black", "tan"]
+condition = dogs["color"].isin(colors)
+dogs[condition]
+homelessnessestá disponible y pandasse carga como pd.
+------------------------------------------------------------------------------------------------
+
+Agregar nuevas columnas=>⭐⭐⭐
+
+No está atrapado solo con los datos que se le dan. En su lugar, puede agregar nuevas columnas a un DataFrame. Esto tiene muchos nombres, como transformación , mutación e ingeniería de características .
+
+Puede crear nuevas columnas desde cero, pero también es común derivarlas de otras columnas, por ejemplo, agregando columnas o cambiando sus unidades.
+
+EJEMPLOS:
+
+# Add total col as sum of individuals and family_members
+homelessness['total'] = homelessness['individuals'] + homelessness['family_members']
+
+
+# Add p_individuals col as proportion of individuals
+homelessness['p_individuals'] = homelessness['individuals'] / homelessness['total']
+# See the result
+print(homelessness)
+---------------------------------------------------------------------------------------------------
+NOTA: cuando es descendiente siganifica que acsenidg es igual a false
+--------------------------------------------------------------------------------------------------
+REPASO DE LAS 4 COSAS QUE PUEDO HACER CON UN DATAFRAME DE PANDAS: ⭐⭐⭐
+Combo-ataque!
+Ha visto los cuatro tipos más comunes de manipulación de datos: clasificación de filas, subconjunto de columnas, subconjunto de filas y adición de nuevas columnas. En un análisis de datos de la vida real, puede mezclar y combinar estas cuatro manipulaciones para responder una multitud de preguntas.
+
+En este ejercicio, responderá la pregunta: "¿Qué estado tiene el mayor número de personas sin hogar por cada 10.000 personas en el estado?" Combina tus nuevas pandashabilidades para descubrirlo.
+
+EJERCICIO:
+
+Agregue una columna a homelessness, que indiv_per_10kcontenga el número de personas sin hogar por cada diez mil personas en cada estado.
+Subconjunto de filas donde indiv_per_10kes más alto que 20, asignando a high_homelessness.
+Ordenar high_homelessnesspor descendente indiv_per_10k, asignando a high_homelessness_srt.
+Seleccionar sólo el statey indiv_per_10kcolumnas de high_homelessness_srty guardar como result. Mira el result.
+
+# Create indiv_per_10k col as homeless individuals per 10k state pop
+homelessness["indiv_per_10k"] = 10000 * homelessness["individuals"] / homelessness["state_pop"] 
+
+# Subset rows for indiv_per_10k greater than 20
+high_homelessness = homelessness[homelessness["indiv_per_10k"] > 20]
+
+# Sort high_homelessness by descending indiv_per_10k
+high_homelessness_srt = high_homelessness.sort_values("indiv_per_10k", ascending=False)
+
+# From high_homelessness_srt, select the state and indiv_per_10k cols
+result = high_homelessness_srt[["state", "indiv_per_10k"]]
+
+# See the result
+print(result)
+---------------------------------------------------------------------------------------------------
+Resúmenes eficientes⭐⭐⭐
+
+Si bien los pandas y NumPy tienen toneladas de funciones, a veces es posible que necesite una función diferente para resumir sus datos.
+
+El .agg()método le permite aplicar sus propias funciones personalizadas a un DataFrame, así como aplicar funciones a más de una columna de un DataFrame a la vez, haciendo que sus agregaciones sean súper eficientes.
+
+En la función personalizada para este ejercicio, "IQR" es la abreviatura de rango intercuartil, que es el percentil 75 menos el percentil 25. Es una alternativa a la desviación estándar que es útil si sus datos contienen valores atípicos.
+
+sales está disponible y pandasse carga como pd.
+-------------------------------------------------------------------------------------------------------------------
+EJEMPLO:
+--------------------------------------------------------------------------------------------------------------------
+# Import NumPy and create custom IQR function
+import numpy as np
+def iqr(column):
+    return column.quantile(0.75) - column.quantile(0.25)
+
+# Update to print IQR and median of temperature_c, fuel_price_usd_per_l, & unemployment
+print(sales[["temperature_c", "fuel_price_usd_per_l", "unemployment"]].agg([iqr, np.median]))
+-------------------------------------------------------------------------------------------------------------------------
+
+Estadísticas acumulativas⭐⭐⭐
+
+Las estadísticas acumulativas también pueden ser útiles para rastrear estadísticas resumidas a lo largo del tiempo. En este ejercicio, calculará la suma acumulativa y el máximo acumulado de las ventas semanales de un departamento, lo que le permitirá identificar cuáles fueron las ventas totales hasta ahora y cuáles fueron las ventas semanales más altas hasta ahora.
+
+Se creó un DataFrame llamado sales_1_1para usted, que contiene los datos de ventas para el departamento 1 de la tienda 1. pandasse carga como pd.
+
+Instrucciones
+-------------------------------------------------------------------------------------------------------------------------
+Ordene las filas de sales_1_1por la datecolumna en orden ascendente.
+Obtenga la suma acumulativa de weekly_salesy agréguela como una nueva columna de sales_1_1llamada cum_weekly_sales.
+Obtenga el máximo acumulado de weekly_salesy agréguelo como una columna llamada cum_max_sales.
+Imprimir los date, weekly_sales, cum_weekly_sales, y cum_max_salescolumnas.
+
+--------------------------------------------------------------------------------------------------------------------------
+SOLUCION
+--------------------------------------------------------------------------------------------------------------------------
+# Sort sales_1_1 by date
+sales_1_1 = sales_1_1.sort_values("date")
+
+# Get the cumulative sum of weekly_sales, add as cum_weekly_sales col
+sales_1_1["cum_weekly_sales"] = sales_1_1["weekly_sales"].cumsum()
+
+# Get the cumulative max of weekly_sales, add as cum_max_sales col
+sales_1_1["cum_max_sales"] = sales_1_1["weekly_sales"].cummax()
+
+# See the columns you calculated
+print(sales_1_1[["date", "weekly_sales", "cum_weekly_sales", "cum_max_sales"]])
+
+----------------------------------------------------------------------------------------------------------------------------
+MI SITIO IDEAL PAGINA DE DATACAMP SOBRE TODO DE DATAFRAMES: https://trenton3983.github.io/files/projects/2019-01-24_pandas_dataframes/2019-01-24_pandas_dataframes.html
+-----------------------------------------------------------------------------------------------------------------------------
+Dejar caer duplicados ⭐⭐⭐
+
+Eliminar duplicados es una habilidad esencial para obtener conteos precisos, porque a menudo no desea contar lo mismo varias veces. En este ejercicio, creará algunos nuevos marcos de datos utilizando valores únicos de sales.
+
+salesestá disponible y pandasse importa como pd.
+
+Instrucciones
+100
+XP
+Eliminar filas de salescon pares de duplicados storey typey guardar como store_typese imprimir la cabeza.
+Eliminar filas de salescon pares de duplicados storey departmenty guardar como store_deptse imprimir la cabeza.
+Subconjunte las filas que son semanas de vacaciones y suelte los duplicados date, guardando como holiday_dates.
+Seleccione la datecolumna de holiday_datese imprima.
+-----------------------------------------------------------------------------------------------------------------------------
+EJEMPLO:
+
+# Drop duplicate store/type combinations
+store_types = sales.drop_duplicates(subset=['store', 'type'])
+print(store_types.head())
+
+# Drop duplicate store/department combinations
+store_depts = sales.drop_duplicates(subset=['store', 'department'])
+print(store_depts.head())
+
+# Subset the rows that are holiday weeks and drop duplicate dates
+holiday_dates = sales[sales['is_holiday']].drop_duplicates(subset='date')
+
+# Print date col of holiday_dates
+print(holiday_dates['date'])
+
+NOTA:eliminamos los datos duplicados para luego ahi si poder contar todos los datos con precision!
+------------------------------------------------------------------------------------------------------------------------------
+Contando variables categóricas ⭐⭐⭐
+
+Contar es una excelente manera de obtener una visión general de sus datos y detectar curiosidades que de otro modo no notaría. En este ejercicio, contará el número de cada tipo de tienda y el número de cada número de departamento utilizando los marcos de datos que creó en el ejercicio anterior:
+
+# Drop duplicate store/type combinations
+store_types = sales.drop_duplicates(subset=["store", "type"])
+
+# Drop duplicate store/department combinations
+store_depts = sales.drop_duplicates(subset=["store", "department"])
+
+Los store_types y store_depts tramas de datos que ha creado en el último ejercicio están disponibles y pandasse importa como pd.
+
+#Instrucciones
+
+Cuente el número de tiendas de cada tienda typeen store_types.
+Cuente la proporción de tiendas de cada tienda typeen store_types.
+Cuente el número de diferentes departments store_depts, ordenando los recuentos en orden descendente.
+Cuente la proporción de diferentes departments store_depts, ordenando las proporciones en orden descendente.
+-------------------------------------------------------------------------------------------------------------------------------
+EJEMPLO:
+
+# Count the number of stores of each type
+store_counts = store_types['type'].value_counts()
+print(store_counts)
+
+# Get the proportion of stores of each type
+store_props = store_types['type'].value_counts(normalize=True)
+print(store_props)
+
+# Count the number of each department number and sort
+dept_counts_sorted = store_depts['department'].value_counts(sort=True)
+print(dept_counts_sorted)
+
+# Get the proportion of departments of each number and sort
+dept_props_sorted = store_depts['department'].value_counts(sort=True, normalize=True)
+print(dept_props_sorted)
+
+-------------------------------------------------------------------------------------------------------------------------------
+¿Qué porcentaje de ventas se produjo en cada tipo de tienda? ⭐⭐⭐
+
+Si bien .groupby()es útil, puede calcular estadísticas de resumen agrupadas sin él.
+
+Walmart distingue tres tipos de tiendas: "supercentros", "tiendas de descuento" y "mercados de barrio", codificados en este conjunto de datos como tipo "A", "B" y "C". En este ejercicio, calculará las ventas totales realizadas en cada tipo de tienda, sin usar .groupby(). Luego puede usar estos números para ver qué proporción de las ventas totales de Walmart se realizaron en cada uno.
+
+salesestá disponible y pandasse importa como pd.
+
+Instrucciones
+
+Calcule las ventas semanales totales sobre todo el conjunto de datos.
+Subconjunto para tiendas de tipo "A" y calcule sus ventas semanales totales.
+Haga lo mismo para las tiendas tipo "B" y tipo "C".
+Combine los resultados de A / B / C en una lista y divídalos entre las ventas totales para obtener la proporción de ventas por tipo.
+-------------------------------------------------------------------------------------------------------------------------------
+EJEMPLO:
+# Calc total weekly sales
+sales_all = sales["weekly_sales"].sum()
+
+# Subset for type A stores, calc total weekly sales
+sales_A = sales[sales["type"] == "A"]["weekly_sales"].sum()
+
+# Subset for type B stores, calc total weekly sales
+sales_B = sales[sales["type"] == "B"]["weekly_sales"].sum()
+
+# Subset for type C stores, calc total weekly sales
+sales_C = sales[sales["type"] == "C"]["weekly_sales"].sum()
+
+# Get proportion for each type
+sales_propn_by_type = [sales_A, sales_B, sales_C] / sales_all
+print(sales_propn_by_type)
+NOTA :ESTUDIA ESTO DANIELA !!!
+-------------------------------------------------------------------------------------------------------------------------------
+Cálculos con .groupby() => NOTA: ES LO MISMO QUE HIZE ARRIBA SOLO UQE MAS SIMPLIFICADO LOL⭐⭐⭐
+
+El .groupby()método hace la vida mucho más fácil. En este ejercicio, realizará los mismos cálculos que la última vez, excepto que usará el .groupby()método. También realizará cálculos sobre datos agrupados por dos variables para ver si las ventas difieren según el tipo de tienda dependiendo de si es una semana de vacaciones o no.
+
+sales está disponible y pandas se carga como pd.
+
+Instrucciones
+Agrupar sales por "type", tomar la suma de "weekly_sales" y almacenar como sales_by_type.
+Calcule la proporción de ventas en cada tipo de tienda dividiendo por la suma de sales_by_type. Asignar a sales_propn_by_type.
+-----------------------------------------------------------------------------------------------------------------------------------
+EJEMPLO O ILUSTRACION:
+# Group by type; calc total weekly sales
+sales_by_type = sales.groupby("type")["weekly_sales"].sum()
+
+# Get proportion for each type
+sales_propn_by_type = sales_by_type / sales_by_type.sum()
+print(sales_propn_by_type)
+---------------------------------------------------------------------------------------------------------------------------------
+
+Múltiples resúmenes agrupados:::⭐⭐⭐
+
+Anteriormente en este capítulo viste que el .agg()método es útil para calcular múltiples estadísticas en múltiples variables. También funciona con datos agrupados. NumPy, que se importa como np, tiene muchas funciones diferentes estadísticos de resumen, entre ellos: np.min, np.max, np.mean, y np.median.
+
+Tenga en cuenta que el nombre de la columna fuel_price_usd_per_ltiene una "L" en minúscula al final, no el número 1.
+
+sales está disponible y pandas se importa como pd.
+
+INSTRUCCIONES:
+
+Importar NumPy con el alias np.
+
+Obtenga el mínimo, el máximo, la media y la mediana de weekly_salescada tipo de tienda usando .groupby()y .agg(). Almacene esto como sales_stats. ¡Asegúrate de usar las numpyfunciones!
+
+Obtenga el mínimo, el máximo, la media y la mediana de unemploymenty fuel_price_usd_per_lpara cada tipo de tienda. Almacene esto como unemp_fuel_stats.
+
+------------------------------------------------------------------------------------------------------------------------------------
+EJEMPLO:
+# Import NumPy with the alias np
+import numpy as np
+
+# For each store type, aggregate weekly_sales: get min, max, mean, and median
+sales_stats = sales.groupby('type')['weekly_sales'].agg([np.min, np.max, np.mean, np.median])
+
+# Print sales_stats
+print(sales_stats)
+
+# For each store type, aggregate unemployment and fuel_price_usd_per_l: get min, max, mean, and median
+unemp_fuel_stats = sales.groupby('type')[['unemployment', 'fuel_price_usd_per_l']].agg([np.min, np.max, np.mean, np.median])
+
+
+# Print unemp_fuel_stats
+print(unemp_fuel_stats)
+
+--------------------------------------------------------------------------------------------------------------------------------------
+Pivotando en una variable: ⭐⭐⭐
+
+Las tablas dinámicas son la forma estándar de agregar datos en hojas de cálculo. En los pandas, las tablas dinámicas son esencialmente otra forma de realizar cálculos agrupados. Es decir, el .pivot_table()método es solo una alternativa a .groupby().
+
+En este ejercicio, realizará cálculos utilizando .pivot_table()para replicar los cálculos que realizó en la última lección utilizando .groupby()
+
+sales está disponible y pandasse importa como pd.
+
+Instrucciones
+
+Obtener la media weekly_salespor typeel uso .pivot_table()y la tienda como mean_sales_by_type.
+Toma una pista (- 10 XP)
+
+Recibe las (funciones) usando NumPy media y la mediana de weekly_salespor typeel uso .pivot_table()y la tienda como mean_med_sales_by_type.
+
+Obtenga la media de weekly_salesby typey is_holidayuse .pivot_table()y almacene como mean_sales_by_type_holiday.
+--------------------------------------------------------------------------------------------------------------------------------------
+EJEMPLO Y SOLUCION:
+
+# Pivot for mean weekly_sales by store type and holiday 
+mean_sales_by_type_holiday = sales.pivot_table(values='weekly_sales', index='type', columns='is_holiday')
+
+# Print mean_sales_by_type_holiday
+print(mean_sales_by_type_holiday)
+--------------------------------------------------------------------------------------------------------------------------------------
+Complete los valores faltantes y los valores de suma con tablas dinámicas:⭐⭐⭐
+
+El .pivot_table() método tiene varios argumentos útiles, incluidos fill_value y margins.
+
+fill_valuereemplaza los valores faltantes con un valor real (conocido como imputación ). Con qué reemplazar los valores perdidos es un tema lo suficientemente grande como para tener su propio curso ( Manejo de datos faltantes en Python ), pero lo más simple es sustituir un valor ficticio.
+margins es un acceso directo para cuando se pivotan dos variables, pero también se desea pivotar por cada una de esas variables por separado: proporciona los totales de fila y columna del contenido de la tabla dinámica.
+En este ejercicio, practicará el uso de estos argumentos para mejorar sus habilidades en la tabla dinámica, lo que lo ayudará a resolver los números de manera más eficiente.
+
+sales está disponible y pandasse importa como pd.
+
+Instrucciones:
+
+1-Imprima la media weekly_sales por department y type, completando los valores faltantes con 0.
+
+2-Imprima la media weekly_sales por department y type, completando los valores faltantes con 0y sumando todas las filas y columnas.
+-----------------------------------------------------------------------------------------------------------------------------
+EJEMPLO Y SOLUCION:(Magnífico margen haciendo! Ahora está armado con habilidades de tabla dinámica que pueden ayudarlo a calcular resúmenes en múltiples niveles agrupados en una línea de código)
+
+1- print(sales.pivot_table(values='weekly_sales', index='type', columns='department', fill_values=0))
+2- print(sales.pivot_table(values='weekly_sales', index='type', columns='department', fill_values=0, margins=True))
+---------------------------------------------------------------------------------------------------------------------------------------
+
+Establecer y eliminar índices:⭐⭐⭐
+
+pandas le permite designar columnas como índice . Esto permite un código más limpio cuando se toman subconjuntos (además de proporcionar una búsqueda más eficiente en algunas circunstancias).
+
+En este capítulo, explorará temperaturesun DataFrame de temperaturas medias en ciudades de todo el mundo. pandasse carga como pd.
+
+Instrucciones:
+
+Mira temperatures .
+
+Establezca el índice de temperaturesa "city", asignando a temperatures_ind.
+
+Mira temperatures_ind. ¿Cómo es diferente de temperatures?
+
+Restablece el índice de temperatures_ind, manteniendo su contenido.
+
+Restablece el índice de temperatures_ind, dejando caer su contenido.
+---------------------------------------------------------------------------------
+EJEMPLO O SOLUCION:
+# Look at temperatures
+print(temperatures)
+print('-' * 40)
+# Index temperatures by city
+temperatures_ind = temperatures.set_index('city')
+
+# Look at temperatures_ind
+print(temperatures_ind)
+print('-' * 40)
+# Reset the index, keeping its contents
+
+print(temperatures_ind.reset_index())
+print('-' * 40)
+# Reset the index, dropping its contents
+print(temperatures_ind.reset_index(drop=True))
+-------------------------------------------------------------------------------------
+SALIDA:
+            date     city        country  avg_temp_c
+0     2000-01-01  Abidjan  Côte D'Ivoire      27.293
+1     2000-02-01  Abidjan  Côte D'Ivoire      27.685
+2     2000-03-01  Abidjan  Côte D'Ivoire      29.061
+3     2000-04-01  Abidjan  Côte D'Ivoire      28.162
+4     2000-05-01  Abidjan  Côte D'Ivoire      27.547
+...          ...      ...            ...         ...
+16495 2013-05-01     Xian          China      18.979
+16496 2013-06-01     Xian          China      23.522
+16497 2013-07-01     Xian          China      25.251
+16498 2013-08-01     Xian          China      24.528
+16499 2013-09-01     Xian          China         NaN
+
+[16500 rows x 4 columns]
+----------------------------------------
+              date        country  avg_temp_c
+city                                         
+Abidjan 2000-01-01  Côte D'Ivoire      27.293
+Abidjan 2000-02-01  Côte D'Ivoire      27.685
+Abidjan 2000-03-01  Côte D'Ivoire      29.061
+Abidjan 2000-04-01  Côte D'Ivoire      28.162
+Abidjan 2000-05-01  Côte D'Ivoire      27.547
+...            ...            ...         ...
+Xian    2013-05-01          China      18.979
+Xian    2013-06-01          China      23.522
+Xian    2013-07-01          China      25.251
+Xian    2013-08-01          China      24.528
+Xian    2013-09-01          China         NaN
+
+[16500 rows x 3 columns]
+----------------------------------------
+          city       date        country  avg_temp_c
+0      Abidjan 2000-01-01  Côte D'Ivoire      27.293
+1      Abidjan 2000-02-01  Côte D'Ivoire      27.685
+2      Abidjan 2000-03-01  Côte D'Ivoire      29.061
+3      Abidjan 2000-04-01  Côte D'Ivoire      28.162
+4      Abidjan 2000-05-01  Côte D'Ivoire      27.547
+...        ...        ...            ...         ...
+16495     Xian 2013-05-01          China      18.979
+16496     Xian 2013-06-01          China      23.522
+16497     Xian 2013-07-01          China      25.251
+16498     Xian 2013-08-01          China      24.528
+16499     Xian 2013-09-01          China         NaN
+
+[16500 rows x 4 columns]
+----------------------------------------
+            date        country  avg_temp_c
+0     2000-01-01  Côte D'Ivoire      27.293
+1     2000-02-01  Côte D'Ivoire      27.685
+2     2000-03-01  Côte D'Ivoire      29.061
+3     2000-04-01  Côte D'Ivoire      28.162
+4     2000-05-01  Côte D'Ivoire      27.547
+...          ...            ...         ...
+16495 2013-05-01          China      18.979
+16496 2013-06-01          China      23.522
+16497 2013-07-01          China      25.251
+16498 2013-08-01          China      24.528
+16499 2013-09-01          China         NaN
+
+[16500 rows x 3 columns]
+----------------------------------------------------------------------------------------------------------------------------------------
+Establecer índices de varios niveles: ⭐⭐⭐
+
+Los índices también pueden estar formados por múltiples columnas, formando un índice de varios niveles (a veces llamado índice jerárquico ). Hay una compensación al usar estos.
+
+El beneficio es que los índices de niveles múltiples hacen que sea más natural razonar sobre variables categóricas anidadas. Por ejemplo, en un ensayo clínico puede tener grupos de control y tratamiento. Luego, cada sujeto de prueba pertenece a uno u otro grupo, y podemos decir que un sujeto de prueba está anidado dentro del grupo de tratamiento. Del mismo modo, en el conjunto de datos de temperatura, la ciudad se encuentra en el país, por lo que podemos decir que una ciudad está anidada dentro del país.
+
+El principal inconveniente es que el código para manipular índices es diferente del código para manipular columnas, por lo que debe aprender dos sintaxis y realizar un seguimiento de cómo se representan sus datos.
+
+pandasse carga como pd. temperaturesestá disponible.
+
+-------------------------------------------------------------------------------------------------------
+EJEMPLO SOLUCION:
+
+# Index temperatures by country & city
+temperatures_ind = temperatures.set_index(['country', 'city'])
+
+# List of tuples: Brazil, Rio De Janeiro & Pakistan, Lahore
+rows_to_keep = [('Brazil', 'Rio De Janeiro'), ('Pakistan', 'Lahore')]
+
+# Subset for rows to keep
+print(temperatures_ind.loc[rows_to_keep])
+-----------------------------------------------
+SALIDA ANTERIOR:
+
+                              date  avg_temp_c
+country  city                                 
+Brazil   Rio De Janeiro 2000-01-01      25.974
+         Rio De Janeiro 2000-02-01      26.699
+         Rio De Janeiro 2000-03-01      26.270
+         Rio De Janeiro 2000-04-01      25.750
+         Rio De Janeiro 2000-05-01      24.356
+...                            ...         ...
+Pakistan Lahore         2013-05-01      33.457
+         Lahore         2013-06-01      34.456
+         Lahore         2013-07-01      33.279
+         Lahore         2013-08-01      31.511
+         Lahore         2013-09-01         NaN
+
+[330 rows x 2 columns]
+-------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------- 
+ORDENAR POR VALORES DE INDICE: ⭐⭐⭐
+
+Anteriormente, cambió el orden de las filas en un DataFrame llamando .sort_values(). También es útil poder ordenar por elementos en el índice. Para esto, necesitas usar .sort_index().
+
+pandasse carga como pd. temperatures_indtiene un índice multinivel de countryy city, y está disponible.
+-----------------------------------------------------
+Instrucciones:
+-----------------------------------------------------
+Ordenar temperatures_indpor los valores del índice.
+Ordenar temperatures_indpor los valores del índice en el "city"nivel.
+Ordenar temperatures_indpor país ascendente y luego ciudad descendente.
+------------------------------------------------------
+SOLUCION:
+-------------------------------------------------------------------------------------------
+# Sort temperatures_ind by index values
+print(temperatures_ind.sort_index())
+
+# Sort temperatures_ind by index values at the city level
+print(temperatures_ind.sort_index(level='city'))
+
+# Sort temperatures_ind by country then descending city
+print(temperatures_ind.sort_index(level=['country', 'city'], ascending=[True, False]))
+--------------------------------------------------------------------------------------------
+SALIDA:
+--------------------------------------------------------------------------------------------
+                         date  avg_temp_c
+country     city                         
+Afghanistan Kabul  2000-01-01       3.326
+            Kabul  2000-02-01       3.454
+            Kabul  2000-03-01       9.612
+            Kabul  2000-04-01      17.925
+            Kabul  2000-05-01      24.658
+...                       ...         ...
+Zimbabwe    Harare 2013-05-01      18.298
+            Harare 2013-06-01      17.020
+            Harare 2013-07-01      16.299
+            Harare 2013-08-01      19.232
+            Harare 2013-09-01         NaN
+
+[16500 rows x 2 columns]
+                            date  avg_temp_c
+country       city                          
+Côte D'Ivoire Abidjan 2000-01-01      27.293
+              Abidjan 2000-02-01      27.685
+              Abidjan 2000-03-01      29.061
+              Abidjan 2000-04-01      28.162
+              Abidjan 2000-05-01      27.547
+...                          ...         ...
+China         Xian    2013-05-01      18.979
+              Xian    2013-06-01      23.522
+              Xian    2013-07-01      25.251
+              Xian    2013-08-01      24.528
+              Xian    2013-09-01         NaN
+
+[16500 rows x 2 columns]
+                         date  avg_temp_c
+country     city                         
+Afghanistan Kabul  2000-01-01       3.326
+            Kabul  2000-02-01       3.454
+            Kabul  2000-03-01       9.612
+            Kabul  2000-04-01      17.925
+            Kabul  2000-05-01      24.658
+...                       ...         ...
+Zimbabwe    Harare 2013-05-01      18.298
+            Harare 2013-06-01      17.020
+            Harare 2013-07-01      16.299
+            Harare 2013-08-01      19.232
+            Harare 2013-09-01         NaN
+
+[16500 rows x 2 columns]
+
+<script.py> output:
+                             date  avg_temp_c
+    country     city                         
+    Afghanistan Kabul  2000-01-01       3.326
+                Kabul  2000-02-01       3.454
+                Kabul  2000-03-01       9.612
+                Kabul  2000-04-01      17.925
+                Kabul  2000-05-01      24.658
+    ...                       ...         ...
+    Zimbabwe    Harare 2013-05-01      18.298
+                Harare 2013-06-01      17.020
+                Harare 2013-07-01      16.299
+                Harare 2013-08-01      19.232
+                Harare 2013-09-01         NaN
+    
+    [16500 rows x 2 columns]
+                                date  avg_temp_c
+    country       city                          
+    Côte D'Ivoire Abidjan 2000-01-01      27.293
+                  Abidjan 2000-02-01      27.685
+                  Abidjan 2000-03-01      29.061
+                  Abidjan 2000-04-01      28.162
+                  Abidjan 2000-05-01      27.547
+    ...                          ...         ...
+    China         Xian    2013-05-01      18.979
+                  Xian    2013-06-01      23.522
+                  Xian    2013-07-01      25.251
+                  Xian    2013-08-01      24.528
+                  Xian    2013-09-01         NaN
+    
+    [16500 rows x 2 columns]
+                             date  avg_temp_c
+    country     city                         
+    Afghanistan Kabul  2000-01-01       3.326
+                Kabul  2000-02-01       3.454
+                Kabul  2000-03-01       9.612
+                Kabul  2000-04-01      17.925
+                Kabul  2000-05-01      24.658
+    ...                       ...         ...
+    Zimbabwe    Harare 2013-05-01      18.298
+                Harare 2013-06-01      17.020
+                Harare 2013-07-01      16.299
+                Harare 2013-08-01      19.232
+                Harare 2013-09-01         NaN
+    
+    [16500 rows x 2 columns]
+
+
+--------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+REBANAR O DIVIDIR VALORES DE INDICE: ⭐⭐⭐
+
+La división le permite seleccionar elementos consecutivos de un objeto utilizando la first:lastsintaxis. Los marcos de datos se pueden dividir por valores de índice o por número de fila / columna; Comenzaremos con el primer caso. Esto implica cortar dentro del .loc[]método.
+
+En comparación con las listas de corte, hay algunas cosas para recordar.
+
+Solo puede dividir un índice si el índice está ordenado (usando .sort_index()).
+Para cortar en el nivel exterior, firsty lastpueden ser cadenas.
+Para cortar en niveles internos, firsty lastdeben ser tuplas.
+Si le pasa un solo corte a .loc[], cortará las filas.
+pandasse carga como pd. temperatures_indtiene país y ciudad en el índice, y está disponible.
+-----------------------------------------------------------------
+Instrucciones:
+-----------------------------------------------------------------
+Ordenar el índice de temperatures_ind.
+Utilice el corte con .loc[]para obtener estos subconjuntos:
+De Pakistán a Rusia.
+de Lahore a Moscú. ( Esto devolverá tonterías ) .
+desde Pakistán, Lahore a Rusia, Moscú.
+------------------------------------------------------------------
+SOLUCION:
+------------------------------------------------------------------
+# Sort the index of temperatures_ind
+temperatures_srt = temperatures_ind.sort_index()
+
+# Subset rows from Pakistan to Russia
+print(temperatures_srt.loc['Pakistan':'Russia'])
+
+# Try to subset rows from Lahore to Moscow
+print(temperatures_srt.loc['Lahore':'Moscow'])
+
+# Subset rows from Pakistan, Lahore to Russia, Moscow
+print(temperatures_srt.loc[('Pakistan', 'Lahore'):('Russia', 'Moscow')])
+------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Cortar series de tiempo:⭐⭐⭐
+
+La división es particularmente útil para series de tiempo, ya que es común querer filtrar datos dentro de un rango de fechas. Agregue la datecolumna al índice, luego use .loc[]para realizar el subconjunto. Lo importante a recordar es mantener las fechas en formato ISO 8601, es decir, yyyy-mm-dd.
+
+Recuerde del Capítulo 1 que puede combinar múltiples condiciones booleanas utilizando operadores lógicos (como &). Para hacerlo en una línea de código, deberá agregar paréntesis ()alrededor de cada condición.
+
+pandas se carga como pd y temperatures, sin índice, está disponible.
+--------------------------
+Instrucciones
+------------------------
+Utilice condiciones booleanas (no .isin()o .loc[]) para subconjuntos de filas en 2010 y 2011 e imprima los resultados.
+Tenga en cuenta que debido a que la fecha no se establece como un índice, una condición que contiene solo un año, como df["date"] == "2009", verificará si la fecha es igual al primer día del primer mes del año (por ejemplo 2009-01-01), en lugar de verificar si la fecha ocurre dentro del año dado. Recomendamos escribir la fecha completa cuando se utilizan condiciones booleanas (p 2009-12-31. Ej .).
+Establecer el índice a la datecolumna.
+Use .loc[]para subconjuntos de filas en 2010 y 2011.
+Use .loc[]para subconjuntos de filas de agosto de 2010 a febrero de 2011.
+
+--------------------------------
+# Use Boolean conditions to subset temperatures for rows in 2010 and 2011
+temperatures_bool = temperatures[(temperatures["date"] >= "2010-01-01") & (temperatures["date"] <= "2011-12-31")]
+print(temperatures_bool)
+
+# Set date as an index
+temperatures_ind = temperatures.set_index("date")
+
+# Use .loc[] to subset temperatures_ind for rows in 2010 and 2011
+print(temperatures_ind.loc["2010":"2011"])
+
+# Use .loc[] to subset temperatures_ind for rows from Aug 2010 to Feb 2011
+print(temperatures_ind.loc["2010-08":"2011-02"])
+
+-----------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Subconjunto por número de fila / columna:⭐⭐⭐
+-----------------------------------------------------------
+Las formas más comunes de subconjuntos de filas son las formas que hemos discutido anteriormente: usar una condición booleana o por etiquetas de índice. Sin embargo, en ocasiones también es útil pasar números de fila.
+
+Esto se hace usando .iloc[], y como .loc[], puede tomar dos argumentos para permitirle subconjuntos por filas y columnas.
+
+pandas se carga como pd. temperatures(sin índice) está disponible.
+--------------------------
+Instrucciones
+----------------------------
+Utilizar .iloc[] en temperaturestomar subconjuntos.
+
+Obtenga la 23a fila, 2da columna (posiciones de índice 22 y 1).
+Obtenga las primeras 5 filas (posiciones de índice de 0 a 5).
+Obtenga todas las filas, columnas 3 y 4 (posiciones de índice 2 a 4).
+Obtenga las primeras 5 filas, columnas 3 y 4.
+-----------------------------------------
+SOLUCION OE EJEMPLAR:
+
+-----------------------------------------
+# Get 23rd row, 2nd column (index 22, 1)
+print(temperatures.iloc[22, 1])
+
+# Use slicing to get the first 5 rows
+print(temperatures.iloc[:5])
+
+# Use slicing to get columns 3 to 4
+print(temperatures.iloc[:, 2:4])
+------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Temperatura de pivote por ciudad y año: ⭐⭐⭐
+
+Es interesante ver cómo las temperaturas de cada ciudad cambian con el tiempo. Mirar cada mes da como resultado una gran tabla, que puede ser difícil de razonar. En cambio, veamos cómo cambian las temperaturas por año.
+
+Puede acceder a los componentes de una fecha (año, mes y día) utilizando el código del formulario dataframe["column"].dt.component. Por ejemplo, el componente del mes es dataframe["column"].dt.monthy el componente del año es dataframe["column"].dt.year.
+
+Una vez que tenga la columna de año, puede crear una tabla dinámica con los datos agregados por ciudad y año, que explorará en los próximos ejercicios.
+
+pandas se carga como pd. temperaturesestá disponible.
+-----------------------------------
+Instrucciones
+-----------------------------------
+- Agregue una yearcolumna a temperatures, desde el yearcomponente de la datecolumna.
+
+- Haga una tabla dinámica de la avg_temp_c columna, con country y city como filas y year como columnas.
+- Asignar a temp_by_country_city_vs_year, y mirar el resultado
+------------------------------------
+SOLUCION:
+------------------------------------
+# Add a year column to temperatures
+temperatures["year"] = temperatures["date"].dt.year
+
+# Pivot avg_temp_c by country and city vs year
+temp_by_country_city_vs_year = temperatures.pivot_table("avg_temp_c", index = ["country", "city"], columns = "year")
+
+# See the result
+print(temp_by_country_city_vs_year)
+------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Subconjunto de tablas dinámicas: ⭐⭐⭐
+
+Una tabla dinámica es solo un DataFrame con índices ordenados, por lo que las técnicas que ya ha aprendido se pueden usar para subconjuntos. En particular, la .loc[]combinación de corte + a menudo es útil.
+
+pandas se carga como pd temp_by_country_city_vs_year está disponible.
+----------------------------
+Instrucciones:
+----------------------------
+Utilizar .loc[] en temp_by_country_city_vs_year tomar subconjuntos:
+----------------------------
+- De Egipto a la India.
+- Desde Egipto, El Cairo hasta India, Delhi.
+- Desde Egipto, El Cairo hasta India, Delhi y 2005 a 2010.
+-----------------------------
+SOLUCION
+-----------------------------
+# Subset for Egypt to India
+temp_by_country_city_vs_year.loc["Egypt":"India"]
+
+# Subset for Egypt, Cairo to India, Delhi
+temp_by_country_city_vs_year.loc[("Egypt", "Cairo"):("India", "Delhi")]
+
+# Subset in both directions at once
+temp_by_country_city_vs_year.loc[("Egypt", "Cairo"):("India", "Delhi"), "2005":"2010"]
+-----------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+Cálculo en una tabla dinámica: ⭐⭐⭐
+-----------------------------
+Las tablas dinámicas están llenas de estadísticas de resumen, pero son solo un primer paso para encontrar algo perspicaz. A menudo necesitará realizar más cálculos sobre ellos. Una cosa común que hacer es encontrar las filas o columnas donde ocurre un valor más alto o más bajo.
+
+Recuerde del Capítulo 1 que puede subconjugar fácilmente una Serie o un Marco de datos para encontrar filas de interés utilizando una condición lógica dentro de corchetes. Por ejemplo: series[series > value].
+
+pandasse carga como pdy el DataFrame temp_by_country_city_vs_yearestá disponible.
+---------------------------
+Instrucciones
+---------------------------
+- Calcule la temperatura media para cada año, asignando a mean_temp_by_year.
+- Filtre mean_temp_by_yearpara el año que tuvo la temperatura media más alta.
+- Calcule la temperatura media para cada ciudad (a través de columnas), asignando a mean_temp_by_city.
+- Filtra mean_temp_by_citypor la ciudad que tuvo la temperatura media más baja.
+---------------------------
+SOLUCION:
+---------------------------
+# Get the worldwide mean temp by year
+mean_temp_by_year = temp_by_country_city_vs_year.mean()
+
+# Filter for the year that had the highest mean temp
+print(mean_temp_by_year[mean_temp_by_year == mean_temp_by_year.max()])
+
+# Get the mean temp by city
+mean_temp_by_city = temp_by_country_city_vs_year.mean(axis='columns')
+
+# Filter for the city that had the lowest mean temp
+print(mean_temp_by_city[mean_temp_by_city == mean_temp_by_city.min()])
+----------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+NOTA IMPORTANTES: NaN == (no es un numero) ⭐⭐⭐
+-------------------------------------------------------
+Reemplazar valores perdidos: ⭐⭐⭐
+
+Otra forma de manejar los valores perdidos es reemplazarlos todos con el mismo valor. Para las variables numéricas, una opción es reemplazar los valores con 0; lo hará aquí. Sin embargo, cuando reemplaza valores perdidos, hace suposiciones sobre lo que significa un valor perdido. En este caso, supondrá que un número faltante vendido significa que no se realizaron ventas para ese tipo de aguacate esa semana.
+
+En este ejercicio, verá cómo reemplazar los valores perdidos puede afectar la distribución de una variable usando histogramas. Puede trazar histogramas para múltiples variables a la vez de la siguiente manera:
+------------------------------------------
+dogs[["height_cm", "weight_kg"]].hist()
+----------------------------------------
+pandasha sido importado como pdy matplotlib.pyplotha sido importado como plt.
+---------------------------
+- Crear una lista, cols_with_missingnombrando las columnas con valores perdidos: "small_sold", "large_sold", y "xl_sold".
+
+- Crea un histograma de esas columnas.
+
+- Mostrar la trama.
+------------------------------------------------------------------------------------------------------------------------------------
+CSV a DataFrame: ⭐⭐⭐
+
+Usted trabaja para una aerolínea y su gerente le ha pedido que haga un análisis competitivo y vea con qué frecuencia los pasajeros que vuelan en otras aerolíneas son expulsados ​​involuntariamente de sus vuelos. Recibió un archivo CSV ( airline_bumping.csv) del Departamento de Transporte que contiene datos sobre pasajeros a los que se les negó el embarque involuntariamente en 2016 y 2017, pero no tiene los números exactos que desea. ¡Para resolver esto, necesitarás poner el CSV en un DataFrame de pandas y hacer alguna manipulación!
+
+pandas es importado para usted como pd. "airline_bumping.csv" está en tu directorio de trabajo.
+---------------------------------------------------
+INSTRUCCIONES:
+---------------------------------------------------
+1- Lea el archivo CSV "airline_bumping.csv"y guárdelo como un DataFrame llamado airline_bumping.
+
+2- Imprima las primeras filas de airline_bumping.
+
+3- Para cada grupo de aerolíneas, seleccione el nb_bumped, y total_passengerscolumnas, y calcular la suma (en ambos años). Almacene esto como airline_totals.
+
+4- Cree una nueva columna de airline_totalsllamadas bumps_per_10k, que es la cantidad de pasajeros que se transportan por cada 10,000 pasajeros en 2016 y 2017.
+
+5- Imprima airline_totalspara ver los resultados de sus manipulaciones.
+
+---------------------------------------------------
+SOLUCION:
+
+1- # Read CSV as DataFrame called airline_bumping
+airline_bumping = pd.read_csv("airline_bumping.csv")
+
+2- # Take a look at the DataFrame
+print(airline_bumping.head())
+
+3- # From previous step
+airline_bumping = pd.read_csv("airline_bumping.csv")
+print(airline_bumping.head())
+
+3- # For each airline, select nb_bumped and total_passengers and sum
+airline_totals = airline_bumping.groupby("airline")[["nb_bumped", "total_passengers"]].sum()
+
+# From previous steps
+airline_bumping = pd.read_csv("airline_bumping.csv")
+print(airline_bumping.head())
+airline_totals = airline_bumping.groupby("airline")[["nb_bumped", "total_passengers"]].sum()
+
+4- # Create new col, bumps_per_10k: no. of bumps per 10k passengers for each airline
+airline_totals["bumps_per_10k"] = airline_totals["nb_bumped"] / airline_totals["total_passengers"] * 10000
+
+5- print(airline_totals)
+
+---------------------------------------------------------------------------------------
+SALIDA:
+
+            airline  year  nb_bumped  total_passengers
+0    DELTA AIR LINES  2017        679          99796155
+1     VIRGIN AMERICA  2017        165           6090029
+2    JETBLUE AIRWAYS  2017       1475          27255038
+3    UNITED AIRLINES  2017       2067          70030765
+4  HAWAIIAN AIRLINES  2017         92           8422734
+--------------------------------------------------
+                     nb_bumped  total_passengers  bumps_per_10k
+airline                                                        
+ALASKA AIRLINES           1392          36543121          0.381
+AMERICAN AIRLINES        11115         197365225          0.563
+DELTA AIR LINES           1591         197033215          0.081
+EXPRESSJET AIRLINES       3326          27858678          1.194
+FRONTIER AIRLINES         1228          22954995          0.535
+HAWAIIAN AIRLINES          122          16577572          0.074
+JETBLUE AIRWAYS           3615          53245866          0.679
+SKYWEST AIRLINES          3094          47091737          0.657
+SOUTHWEST AIRLINES       18585         228142036          0.815
+SPIRIT AIRLINES           2920          32304571          0.904
+UNITED AIRLINES           4941         134468897          0.367
+VIRGIN AMERICA             242          12017967          0.201
+
+<script.py> output:
+                 airline  year  nb_bumped  total_passengers
+    0    DELTA AIR LINES  2017        679          99796155
+    1     VIRGIN AMERICA  2017        165           6090029
+    2    JETBLUE AIRWAYS  2017       1475          27255038
+    3    UNITED AIRLINES  2017       2067          70030765
+    4  HAWAIIAN AIRLINES  2017         92           8422734
+    --------------------------------------------------
+                         nb_bumped  total_passengers  bumps_per_10k
+    airline                                                        
+    ALASKA AIRLINES           1392          36543121          0.381
+    AMERICAN AIRLINES        11115         197365225          0.563
+    DELTA AIR LINES           1591         197033215          0.081
+    EXPRESSJET AIRLINES       3326          27858678          1.194
+    FRONTIER AIRLINES         1228          22954995          0.535
+    HAWAIIAN AIRLINES          122          16577572          0.074
+    JETBLUE AIRWAYS           3615          53245866          0.679
+    SKYWEST AIRLINES          3094          47091737          0.657
+    SOUTHWEST AIRLINES       18585         228142036          0.815
+    SPIRIT AIRLINES           2920          32304571          0.904
+    UNITED AIRLINES           4941         134468897          0.367
+    VIRGIN AMERICA             242          12017967          0.201
+
+
+
+-------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+DataFrame a CSV:  ⭐⭐⭐
+
+¡Ya casi estás ahí! Para facilitar la lectura, deberá clasificar los datos y exportarlos a CSV para que sus colegas puedan leerlos.
+
+pandascomo pdha sido importado para ti.
+---------------------------
+Instrucciones:
+---------------------------
+Ordenar airline_totalspor los valores de bumps_per_10kmayor a menor, almacenando como airline_totals_sorted.
+Imprima su DataFrame ordenado.
+Guarde el DataFrame ordenado como un CSV llamado "airline_totals_sorted.csv".
+---------------------------
+SOLUCION:
+---------------------------
+
+# Create airline_totals_sorted
+airline_totals_sorted = airline_totals.sort_values("bumps_per_10k" ,ascending=False)
+
+# Print airline_totals_sorted
+print(airline_totals_sorted)
+
+# Save as airline_totals_sorted.csv
+airline_totals_sorted.to_csv("airline_totals_sorted.csv")
+
+
+---------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+

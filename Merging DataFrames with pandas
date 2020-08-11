@@ -1,0 +1,533 @@
+							Merging DataFrames with pandas
+							
+--------------------------------------------------------------------------------------------------------------------------------------------
+							--------------------------------------------------------------------------------------
+							
+Serie de pandas de concatenación a lo largo del eje de fila:
+------------------------------------------------------------------------------------------------------------------------------------------
+Después de haber aprendido cómo agregar Series, ahora aprenderá cómo lograr el mismo resultado concatenando Series en su lugar. Continuará trabajando con los datos de ventas que ha visto anteriormente. Esta vez, las tramas de datos jan, feby marhan sido pre-cargado.
+
+Su trabajo es usar pd.concat()una lista de Series para lograr el mismo resultado que obtendría al encadenar llamadas .append().
+
+Tal vez se esté preguntando acerca de la diferencia entre pd.concat()el .append()método y los pandas . Una forma de pensar en la diferencia es que .append()es un caso específico de una concatenación, a la vez que pd.concat()le brinda más flexibilidad, como verá en ejercicios posteriores.
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Instrucciones
+
+------------------------------------------------------------------------------------------------------------------------------------------
+Crea una lista vacía llamada units. Esto se ha hecho por ti.
+Use un forbucle para iterar sobre [jan, feb, mar]:
+En cada iteración del bucle, agregue la 'Units'columna de cada DataFrame a units.
+Concatene la Serie contenida en la lista unitsen una Serie más larga llamada quarter1utilizando pd.concat().
+Especifique el argumento de la palabra clave axis='rows'para apilar la Serie verticalmente.
+Verifique que quarter1la Serie individual esté apilada verticalmente mediante la impresión de sectores. ¡Esto se ha hecho por usted, así que presione 'Enviar respuesta' para ver el resultado!
+
+------------------------------------------------------------------------------------------------------------------------------------------
+SOLUCION:
+# Initialize empty list: units
+units = []
+
+# Build the list of Series
+for month in [jan, feb, mar]:
+    units.append(month['Units'])
+print(units)
+print("-"*20)
+# Concatenate the list: quarter1
+quarter1 = pd.concat(units, axis='rows')
+
+# Print slices from quarter1
+print(quarter1.loc['jan 27, 2015':'feb 2, 2015'])
+print("-"* 20)
+print(quarter1.loc['feb 26, 2015':'mar 7, 2015'])
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+Agregar DataFrames con ignore_index:
+------------------------------------------------------------------------------------------------------------------------------------------
+
+En este ejercicio, usará nuevamente el conjunto de datos de nombres de bebés (de data.gov ). Esta vez, ambos DataFrames names_1981y names_1881 se cargan sin especificar una columna de índice (por lo que los índices predeterminados para ambos son RangeIndexes).
+
+Utilizará el .append()método DataFrame para hacer un DataFrame combined_names. Para distinguir las filas de los dos DataFrames originales, agregará una 'year'columna a cada una con el año (1881 o 1981 en este caso). Además, especificará ignore_index=Truepara que los valores de índice no se usen a lo largo del eje de concatenación. En su lugar, el eje resultante se etiquetará 0, 1, ..., n-1, lo cual es útil si está concatenando objetos donde el eje de concatenación no tiene información de indexación significativa.
+------------------------------------------------------------------------------------------------------------------------------------------
+Instrucciones
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Cree una 'year'columna en los DataFrames names_1881y names_1981, con valores de 1881y 1981respectivamente. Recuerde que asignar un valor escalar a una columna DataFrame transmite ese valor en todo momento.
+Cree un nuevo DataFrame llamado combined_namesagregando las filas names_1981debajo de las filas de names_1881. Especifique el argumento de la palabra clave ignore_index=Truepara crear un nuevo RangeIndex de enteros únicos para cada fila.
+Imprima las formas de los tres DataFrames. Esto se ha hecho por ti.
+Extraiga todas las filas combined_namesque tengan el nombre 'Morgan'. Para hacer esto, use el .loc[]descriptor de acceso con un filtro apropiado. La columna relevante de combined_namesaquí es 'name'.
+------------------------------------------------------------------------------------------------------------------------------------------
+
+SOLCUION:
+
+# Add 'year' column to names_1881 and names_1981
+names_1881['year'] = 1881
+names_1981['year'] = 1981
+
+# Append names_1981 after names_1881 with ignore_index=True: combined_names
+combined_names = names_1881.append(names_1981, ignore_index=True)
+
+# Print shapes of names_1981, names_1881, and combined_names
+print(names_1981.shape)
+print(names_1881.shape)
+print(combined_names.shape)
+
+# Print all rows that contain the name 'Morgan'
+print(combined_names.loc[combined_names['name'] == 'Morgan'])
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+Concatenación de pandas DataFrames a lo largo del eje de la columna:
+------------------------------------------------------------------------------------------------------------------------------------------
+
+La función pd.concat() puede concatenar marcos de datos tanto horizontal como verticalmente (vertical es el valor predeterminado). Para hacer que los marcos de datos se apilen horizontalmente, debe especificar el argumento de palabra clave axis=1o axis='columns'.
+
+En este ejercicio, utilizará datos meteorológicos con temperaturas diarias máximas y medias muestreadas a diferentes velocidades (trimestralmente o mensualmente). Concatenará las filas de ambos y verá que, cuando faltan filas en el DataFrame más grueso, se insertan valores nulos en el DataFrame concatenado. Esto corresponde a una unión externa (que explorarás con más detalle en ejercicios posteriores).
+
+Los archivos 'quarterly_max_temp.csv'ya 'monthly_mean_temp.csv'se han cargado previamente en los marcos de datos weather_maxy weather_meanrespectivamente, y pandasse han importado como pd.
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Instrucciones
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Crear weather_list, una lista de los marcos de datos weather_maxy weather_mean.
+Cree un nuevo DataFrame llamado weather concatenando weather_list horizontalmente .
+Pase la lista pd.concat()y especifique el argumento de la palabra clave axis=1para apilarlos horizontalmente.
+Imprima el nuevo DataFrame weather.
+------------------------------------------------------------------------------------------------------------------------------------------
+SOLUCION:
+
+import pandas as pd
+
+weather_list = [weather_max, weather_mean]
+weather = pd.concat(weather_list, axis=1)
+print(weather)
+-----------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+Lectura de múltiples archivos para construir un DataFrame:
+-------------------------------------------------------------------------------
+----------------------------------------------------------
+
+A menudo es conveniente construir un DataFrame grande analizando muchos archivos como DataFrames y concatenándolos todos a la vez. Hará esto aquí con tres archivos, pero, en principio, este enfoque se puede utilizar para combinar datos de docenas o cientos de archivos.
+
+Aquí, trabajará con DataFrames compilados del conjunto de datos de medallas olímpicas de The Guardian .
+
+pandasse ha importado como pdy la lista medal_typesha sido pre-cargado para ti, que contiene las cuerdas 'bronze', 'silver'y 'gold'.
+-------------------------------------------------------------------------------
+----------------------------------------------------------
+Instrucciones
+-------------------------------------------------------------------------------
+----------------------------------------------------------
+Repetir medal_typesen el forciclo.
+Dentro del forbucle:
+Cree file_nameutilizando la interpolación de cadenas con la variable de bucle medal. Esto se ha hecho por ti. La expresión se "%s_top5.csv" % medalevalúa como una cadena con el valor de medalreemplazar %sen la cadena de formato.
+Cree la lista de nombres de columna llamados columns. Esto se ha hecho por ti.
+Leer file_nameen un DataFrame llamado medal_df. Especificar los argumentos de palabras clave header=0, index_col='Country'y names=columnspara obtener las filas y las columnas correctas índices.
+Anexar medal_dfal medalsuso del .append()método de lista .
+Concatene la lista de marcos de datos medalshorizontalmente (usando axis='columns') para crear un solo marco de datos llamado medals_df. Imprimirlo en su totalidad.
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+SOLUCION:
+------------------------------------------------------------------------------------------------------------------------------------------
+
+#Initialize an empyy list: medals
+medals =[]
+for medal in medal_types:
+    # Create the file name: file_name
+    file_name = "%s_top5.csv" % medal
+    # Create list of column names: columns
+    columns = ['Country', medal]
+    # Read file_name into a DataFrame: medal_df
+    medal_df = pd.read_csv(file_name, header=0, index_col='Country', names=columns)
+    # Append medal_df to medals
+    medals.append(medal_df)
+
+# Concatenate medals horizontally: medals_df
+medals_df = pd.concat(medals, axis='columns')
+
+# Print medals_df
+print(medals_df)
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+Concatenando verticalmente para obtener filas MultiIndexed
+
+------------------------------------------------------------------------------------------------------------------------------------------
+Al apilar una secuencia de marcos de datos verticalmente, a veces es deseable construir un MultiIndex para indicar el marco de datos del que se originó cada fila. Esto se puede hacer especificando el keysparámetro en la llamada a pd.concat(), que genera un índice jerárquico con las etiquetas keyscomo la etiqueta de índice más externa. Por lo tanto, no tiene que cambiar el nombre de las columnas de cada DataFrame mientras lo carga. En cambio, solo se debe especificar la columna Índice.
+
+Aquí, continuará trabajando con DataFrames compilados a partir del conjunto de datos de medallas olímpicas de The Guardian . Una vez más, pandasse ha importado como pdy dos listas han sido pre-cargado: Una lista vacía llamada medals, y medal_types, que contiene las cuerdas 'bronze', 'silver'y 'gold'.
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Instrucciones
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Dentro del forbucle:
+Leer file_nameen un DataFrame llamado medal_df. Especifique el índice para ser 'Country'.
+Añadir medal_dfa medals.
+Concatene la lista de DataFrames medalsen un solo DataFrame llamado medals. Asegúrese de utilizar el argumento de la palabra clave keys=['bronze', 'silver', 'gold']para crear un DataFrame apilado verticalmente con un MultiIndex.
+Imprima el nuevo DataFrame medals. ¡Esto se ha hecho por usted, así que presione 'Enviar respuesta' para ver el resultado!
+------------------------------------------------------------------------------------------------------------------------------------------
+SOLUCION:
+------------------------------------------------------------------------------------------------------------------------------------------
+
+for medal in medal_types:
+
+    file_name = "%s_top5.csv" % medal
+
+    # Read file_name into a DataFrame: medal_df
+    medal_df = pd.read_csv(file_name, index_col='Country')
+    
+    # Append medal_df to medals
+    medals.append(medal_df)
+
+# Concatenate medals: medals
+medals = pd.concat(medals, keys=['bronze', 'silver', 'gold'])
+
+# Print medals
+print(medals)
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+Cortar marcos de datos multiindexados:
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Este ejercicio continúa donde terminó el último (nuevamente usando el conjunto de datos de medallas olímpicas de The Guardian ).
+
+Se le proporciona el Marco de datos de índice múltiple tal como se produjo al final del ejercicio anterior. Su tarea es ordenar el DataFrame y usarlo pd.IndexSlicepara extraer sectores específicos. Consulte este ejercicio de Manipulación de marcos de datos con pandas para actualizar su memoria sobre cómo lidiar con marcos de datos de múltiples índices.
+
+pandasse ha importado para usted como pdy el DataFrame medalsya está en su espacio de nombres.
+
+Instrucciones
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Cree un nuevo DataFrame medals_sortedcon las entradas de medalsordenado. Utilícelo .sort_index(level=0)para asegurarse de que el índice se clasifica adecuadamente.
+Imprima el número de medallas de bronce ganadas por Alemania y todos los datos de medallas de plata. Esto se ha hecho por ti.
+Crea un alias para pd.IndexSlicellamado idx. Se requiere un rebanador pd.IndexSlice al rebanar en el nivel interno de un MultiIndex.
+Corte todos los datos sobre medallas ganadas por el Reino Unido en el DataFrame medals_sorted. Para hacer esto, use el .loc[]descriptor de acceso con idx[:,'United Kingdom'], :.
+------------------------------------------------------------------------------------------------------------------------------------------
+SOLUCION
+------------------------------------------------------------------------------------------------------------------------------------------
+
+# Sort the entries of medals: medals_sorted
+medals_sorted = medals.sort_index(level=0)
+# Print the number of Bronze medals won by Germany
+print(medals_sorted.loc[('bronze','Germany')])
+
+# Print data about silver medals
+print(medals_sorted.loc['silver'])
+# Create alias for pd.IndexSlice: idx
+idx = pd.IndexSlice
+
+# Print all the data on medals won by the United Kingdom
+print(medals_sorted.loc[idx[:, 'United Kingdom'], :])
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+Concatenando horizontalmente para obtener columnas MultiIndexed:
+------------------------------------------------------------------------------------------------------------------------------------------
+También es posible construir un DataFrame con columnas indexadas jerárquicamente. Para este ejercicio, comenzará con pandas importados y una lista de tres DataFrames llamados dataframes. Los tres tramas de datos contienen 'Company', 'Product'y 'Units'columnas con una 'Date'columna que el índice correspondiente a las ventas durante el mes de febrero de 2015. La primera trama de datos se describen Hardwarelas transacciones, la segunda describe Softwarelas transacciones, y la tercera, Servicelas transacciones.
+
+Su tarea es concatenar los DataFrames horizontalmente y crear un MultiIndex en las columnas. A partir de ahí, puede resumir el DataFrame resultante y cortar parte de su información.
+------------------------------------------------------------------------------------------------------------------------------------------
+Instrucciones:
+------------------------------------------------------------------------------------------------------------------------------------------
+Construya un nuevo DataFrame februarycon columnas MultiIndexed concatenando la lista dataframes.
+Use axis=1para apilar los marcos de datos horizontalmente y el argumento de palabras clave keys=['Hardware', 'Software', 'Service']para construir un índice jerárquico a partir de cada marco de datos.
+Imprima información resumida del nuevo DataFrame februaryutilizando el .info()método Esto se ha hecho por ti.
+Crear un alias llamado idxpara pd.IndexSlice.
+Extraiga un corte llamado slice_2_8desde february(usando .loc[]& idx) que comprenda filas entre el 2 de febrero de 2015 y el 8 de febrero de 2015 de las columnas debajo 'Company'.
+Imprime el slice_2_8. ¡Esto se ha hecho por usted, así que presione 'Enviar respuesta' para ver los datos cortados!
+------------------------------------------------------------------------------------------------------------------------------------------
+SOLUCION:
+------------------------------------------------------------------------------------------------------------------------------------------
+
+# Concatenate dataframes: february
+february = pd.concat(dataframes, keys=['Hardware', 'Software', 'Service'], axis=1)
+# Print february.info()
+print(february.info())
+
+# Assign pd.IndexSlice: idx
+idx = pd.IndexSlice
+
+
+# Create the slice: slice_2_8
+slice_2_8 = february.loc['2015-2-2':'2015-2-8', idx[:, 'Company']]
+
+# Print slice_2_8
+print(slice_2_8)
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Concatenación de marcos de datos de un dict:
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Ahora volverá a visitar los datos de ventas con los que trabajó anteriormente en el capítulo. Tres DataFrames jan, feby marhan sido precargados para usted. Su tarea es agregar la suma de todas las ventas de la 'Company'columna en un solo DataFrame. Lo hará construyendo un diccionario de estos marcos de datos y luego concatenándolos.
+------------------------------------------------------------------------------------------------------------------------------------------
+Instrucciones
+------------------------------------------------------------------------------------------------------------------------------------------
+Crear una lista month_listque consta de las tuplas ('january', jan), ('february', feb)y ('march', mar).
+Crea un diccionario vacío llamado month_dict.
+Dentro del forbucle:
+Agrupar month_datapor 'Company'y usar .sum()para agregar.
+Construya un nuevo DataFrame llamado salesconcatenando los DataFrames almacenados en month_dict.
+Cree un alias pd.IndexSlicee imprima todas las ventas por 'Mediacore'. ¡Esto se ha hecho por usted, así que presione 'Enviar respuesta' para ver el resultado!
+------------------------------------------------------------------------------------------------------------------------------------------
+SOLUCION
+------------------------------------------------------------------------------------------------------------------------------------------
+# Make the list of tuples: month_list
+month_list = [('january', jan), ('february', feb), ('march', mar)]
+
+# Create an empty dictionary: month_dict
+month_dict = {}
+
+for month_name, month_data in month_list:
+
+    # Group month_data: month_dict[month_name]
+    month_dict[month_name] = month_data.groupby('Company').sum()
+# Concatenate data in month_dict: sales
+sales = pd.concat(month_dict)
+
+# Print sales
+print(sales)
+
+# Print all sales by Mediacore
+idx = pd.IndexSlice
+print(sales.loc[idx[:, 'Mediacore'], :])
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+Concatenación de marcos de datos con unión interna:
+------------------------------------------------------------------------------------------------------------------------------------------
+Aquí, continuará trabajando con DataFrames compilados a partir del conjunto de datos de medallas olímpicas de The Guardian .
+Los DataFrames bronze, silvery goldhan sido precargados para usted.
+Su tarea es calcular una unión interna .
+------------------------------------------------------------------------------------------------------------------------------------------
+Instrucciones:
+------------------------------------------------------------------------------------------------------------------------------------------
+Construir una lista de tramas de datos denominados medal_listcon las entradas bronze, silvery gold.
+Concatene medal_listhorizontalmente con una unión interna para crear medals.
+Utilice el argumento de la palabra clave keys=['bronze', 'silver', 'gold']para obtener una indexación jerárquica adecuada.
+Úselo axis=1para obtener concatenación horizontal.
+Use join='inner'para mantener solo filas que comparten etiquetas de índice comunes.
+Imprima el nuevo DataFrame medals.
+------------------------------------------------------------------------------------------------------------------------------------------
+SOLUCION:
+------------------------------------------------------------------------------------------------------------------------------------------
+# Create the list of DataFrames: medal_list
+medal_list = [bronze, silver, gold]
+
+# Concatenate medal_list horizontally using an inner join: medals
+medals = pd.concat(medal_list, keys=['bronze', 'silver', 'gold'], axis=1, join='inner')
+
+# Print medals
+print(medals)
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+Fusionar en una columna específica:
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Este ejercicio sigue al último con los DataFrames revenuey managerspara su empresa. Espera que su empresa crezca y, eventualmente, opere en ciudades con el mismo nombre en diferentes estados. Como tal, usted decide que cada rama debe tener un identificador numérico de rama. Por lo tanto, agrega una branch_idcolumna a ambos DataFrames. Además, se han agregado nuevas ciudades a los marcos de datos revenuey también a los managersmarcos de datos. pandasse ha importado como pdy ambos DataFrames están disponibles en su espacio de nombres.
+
+En la actualidad, debe haber una relación de 1 a 1 entre los campos cityy branch_id. En ese caso, el resultado de una fusión en las citycolumnas debería proporcionarle el mismo resultado que una fusión en las branch_idcolumnas. ¿Ellos? ¿Puedes detectar una ambigüedad en uno de los marcos de datos?
+------------------------------------------------------------------------------------------------------------------------------------------
+INSTRUCCIONES:
+
+Utilizando pd.merge(), combine los DataFrames revenuey managersen la 'city'columna de cada uno. Almacene el resultado como merge_by_city.
+Imprima el DataFrame merge_by_city. Esto se ha hecho por ti.
+Combinar los marcos de datos revenuey managersen la 'branch_id'columna de cada uno. Almacene el resultado como merge_by_id.
+Imprima el DataFrame merge_by_id. ¡Esto se ha hecho por usted, así que presione 'Enviar respuesta' para ver el resultado!
+
+------------------------------------------------------------------------------------------------------------------------------------------
+SOLUCION:
+
+# Merge revenue with managers on 'city': merge_by_city
+merge_by_city = pd.merge(revenue, managers, on='city')
+
+# Print merge_by_city
+print(merge_by_city)
+
+# Merge revenue with managers on 'branch_id': merge_by_id
+merge_by_id = pd.merge(revenue, managers, on='branch_id')
+
+# Print merge_by_id
+print(merge_by_id)
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+Fusión izquierda y derecha en múltiples columnas:
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Ahora tiene, además de los DataFrames revenuey managersde los ejercicios anteriores, un DataFrame salesque resume las unidades vendidas de sucursales específicas (identificadas por cityy stateno branch_id).
+
+Una vez más, el managersDataFrame usa la etiqueta branchen lugar de citycomo en los otros dos DataFrames. Su tarea aquí es emplear combinaciones izquierda y derecha para preservar los datos e identificar dónde faltan datos.
+
+Al combinar revenuey salescon una combinación correcta , puede identificar los revenuevalores faltantes . Aquí, no necesita especificar left_ono right_onporque las columnas para fusionar tienen etiquetas coincidentes.
+
+Al combinar salesy managerscon una combinación izquierda , puede identificar los desaparecidos manager. Aquí, las columnas para fusionar tienen etiquetas en conflicto, por lo que debe especificar left_ony right_on. En ambos casos, está buscando descubrir cómo conectar los campos en filas que contienen Springfield.
+
+pandasse ha importado como pdy las tres tramas de datos revenue, managersy saleshan sido pre-cargado. Se han impreso para que los explore en el Shell de IPython.
+------------------------------------------------------------------------------------------------------------------------------------------
+Instrucciones
+------------------------------------------------------------------------------------------------------------------------------------------
+Ejecute una combinación correcta usando pd.merge()con revenuey salespara generar un nuevo DataFrame revenue_and_sales.
+Uso how='right'y on=['city', 'state'].
+Imprima el nuevo DataFrame revenue_and_sales. Esto se ha hecho por ti.
+Ejecute una combinación izquierda con salesy managerspara producir un nuevo DataFrame sales_and_managers.
+Uso how='left', left_on=['city', 'state']y right_on=['branch', 'state'].
+Imprima el nuevo DataFrame sales_and_managers. ¡Esto se ha hecho por usted, así que presione 'Enviar respuesta' para ver el resultado!
+------------------------------------------------------------------------------------------------------------------------------------------
+SOLUCION:
+------------------------------------------------------------------------------------------------------------------------------------------
+# Merge revenue and sales: revenue_and_sales
+revenue_and_sales = pd.merge(revenue, sales, on=['city', 'state'], how='right')
+
+# Print revenue_and_sales
+print(revenue_and_sales)
+
+# Merge sales and managers: sales_and_managers
+sales_and_managers = pd.merge(sales, managers, how='left', left_on=['city', 'state'], right_on=['branch', 'state'])
+
+# Print sales_and_managers
+print(sales_and_managers)
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Usando merge_ordered ():
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Este ejercicio utiliza DataFrames precargados austiny houstonque contienen datos meteorológicos de las ciudades Austin y Houston, respectivamente. Se han impreso en el Shell de IPython para que lo examine.
+
+Las condiciones climáticas se registraron en días separados y debe fusionar estos dos DataFrames para que las fechas estén ordenadas. Para hacer esto, lo usarás pd.merge_ordered(). Una vez que haya terminado, tenga en cuenta el orden de las filas antes y después de la fusión.
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Instrucciones
+------------------------------------------------------------------------------------------------------------------------------------------
+Realice una fusión ordenada austiny houstonusando pd.merge_ordered(). Almacene el resultado como tx_weather.
+Imprimir tx_weather. Debes notar que las filas están ordenadas por la fecha, pero no es posible saber qué observación vino de qué ciudad.
+Realice otra fusión ordenada en austiny houston.
+Esta vez, especifique los argumentos de palabras clave on='date'y suffixes=['_aus','_hus']para que las filas se puedan distinguir. Almacene el resultado como tx_weather_suff.
+Imprima tx_weather_suffpara examinar su contenido. Esto se ha hecho por ti.
+Realizar una tercera fusión ordenada en austiny houston.
+Esta vez, además de los parámetros ony suffixes, especifique el argumento de la palabra clave fill_method='ffill'para usar el relleno hacia adelante para reemplazar las NaNentradas con la entrada no nula más reciente, y presione 'Enviar respuesta' para examinar el contenido de los marcos de datos combinados.
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+SOLUCION:
+
+# Perform the first ordered merge: tx_weather
+tx_weather = pd.merge_ordered(austin, houston)
+
+# Print tx_weather
+print(tx_weather)
+
+# Perform the second ordered merge: tx_weather_suff
+tx_weather_suff = pd.merge_ordered(austin, houston, on='date', suffixes=['_aus', '_hus'])
+
+# Print tx_weather_suff
+print(tx_weather_suff)
+
+# Perform the third ordered merge: tx_weather_ffill
+tx_weather_ffill = pd.merge_ordered(austin, houston, on='date', suffixes=['_aus', '_hus'], fill_method='ffill' )
+
+# Print tx_weather_ffill
+print(tx_weather_ffill)
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+Usando merge_asof ()
+------------------------------------------------------------------------------------------------------------------------------------------
+Similar a pd.merge_ordered(), la pd.merge_asof()función también fusionará valores en orden usando la oncolumna, pero para cada fila en el DataFrame izquierdo, solo se mantendrán las filas del DataFrame derecho cuyos 'on'valores de columna son menores que el valor izquierdo.
+
+Esta función se puede usar para alinear frecuencias dispares de fecha y hora sin tener que volver a muestrear primero.
+
+Aquí, fusionará los precios mensuales del petróleo (dólares estadounidenses) en un conjunto completo de datos de eficiencia de combustible para automóviles. Los DataFrames de petróleo y automóvil se han cargado previamente como oil y auto. Las primeras 5 filas de cada una se han impreso en el Shell de IPython para que las explore.
+
+Estos conjuntos de datos se alinearán de tal manera que el primer precio del año se transmitirá a las filas del DataFrame de automóviles. Esto se considera correcto ya que al comienzo de cualquier año dado, la mayoría de los automóviles para ese año ya se habrán fabricado.
+
+Luego inspeccionará el DataFrame combinado, volverá a muestrear por año y calculará la media 'Price'y 'mpg'. Debería poder ver una tendencia en estas dos columnas, que puede confirmar calculando la correlación de Pearson entre remuestreado 'Price'y 'mpg'.
+------------------------------------------------------------------------------------------------------------------------------------------
+INSTRUCCIONES:
+
+Fusionar autoy oilusar pd.merge_asof()con left_on='yr'y right_on='Date'. Almacene el resultado como merged.
+Imprime la cola de merged. Esto se ha hecho por ti.
+Vuelva a muestrear mergedusando 'A'(frecuencia anual), y on='Date'. Seleccione [['mpg','Price']]y agregue la media. Almacene el resultado como yearly.
+Presione Enviar respuesta para examinar el contenido de yearlyy yearly.corr(), que muestra la correlación de Pearson entre el remuestreado 'Price'y 'mpg'.
+------------------------------------------------------------------------------------------------------------------------------------------
+SOLUCION:
+------------------------------------------------------------------------------------------------------------------------------------------
+
+# Merge auto and oil: merged
+merged = pd.merge_asof(auto, oil, left_on='yr', right_on='Date')
+
+# Print the tail of merged
+print(merged.tail())
+
+# Resample merged: yearly
+yearly = merged.resample('A',on='Date')[['mpg','Price']].mean()
+
+# Print yearly
+print(yearly)
+
+# Print yearly.corr()
+print(yearly.corr())
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+Construyendo medallas DataFrame
+------------------------------------------------------------------------------------------------------------------------------------------
+Aquí, comenzará con el DataFrame editionsdel ejercicio anterior.
+
+Tiene una secuencia de archivos summer_1896.csv, summer_1900.csv... summer_2008.csv, uno para cada edición olímpica (año).
+
+medals_dictCreará un diccionario con las ediciones olímpicas (años) como claves y DataFrames como valores.
+
+El diccionario se construye dentro de un bucle sobre yearcada edición olímpica (del Índice de editions).
+
+Una vez que se haya creado el diccionario de DataFrames, combinará los DataFrames con pd.concat().
+------------------------------------------------------------------------------------------------------------------------------------------
+INSTRUCCIONES:
+------------------------------------------------------------------------------------------------------------------------------------------
+Dentro del forbucle:
+Crea la ruta del archivo. Esto se ha hecho por ti.
+Leer file_pathen un DataFrame. Asigne el resultado a la yearclave de medals_dict.
+Seleccionar sólo las columnas 'Athlete', 'NOC'y 'Medal'de medals_dict[year].
+Cree una nueva columna llamada 'Edition'en el DataFrame medals_dict[year]cuyas entradas son todas year .
+Concatene el diccionario de DataFrames medals_dicten un DataFame llamado medals. Especifique el argumento de la palabra clave ignore_index=Truepara evitar índices enteros repetidos.
+Imprima las primeras y últimas 5 filas de medals. ¡Esto se ha hecho por usted, así que presione 'Enviar respuesta' para ver el resultado!
+------------------------------------------------------------------------------------------------------------------------------------------
+SOLUCION:
+------------------------------------------------------------------------------------------------------------------------------------------
+# Import pandas
+import pandas as pd
+
+# Create empty dictionary: medals_dict
+medals_dict = {}
+
+for year in editions['Edition']:
+
+    # Create the file path: file_path
+    file_path = 'summer_{:d}.csv'.format(year)
+    
+    # Load file_path into a DataFrame: medals_dict[year]
+    medals_dict[year] = pd.read_csv(file_path)
+    
+    # Extract relevant columns: medals_dict[year]
+    medals_dict[year] = medals_dict[year][['Athlete', 'NOC', 'Medal']] 
+    
+    # Assign year to column 'Edition' of medals_dict
+    medals_dict[year]['Edition'] = year
+    
+# Concatenate medals_dict: medals
+medals = pd.concat(medals_dict, ignore_index=True)
+
+# Print first and last 5 rows of medals
+print(medals.head())
+print(medals.tail())
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+

@@ -1,0 +1,70 @@
+							INTRODUCTION TO NPL WITH PYTHON
+--------------------------------------------------------------------------------------------------------------------------------------------
+#Practicando expresiones regulares: re.split () y re.findall ():
+--------------------------------------------------------------------------------------------------------------------------------------------
+Ahora tendrá la oportunidad de escribir algunas expresiones regulares para que coincidan con dígitos, cadenas y caracteres no alfanuméricos. my_stringPrimero eche un vistazo imprimiéndolo en el Shell de IPython, para determinar cómo podría coincidir mejor con los diferentes pasos.
+
+Nota: Es importante prefijar sus patrones de expresiones regulares rpara asegurarse de que sus patrones se interpreten de la manera que desee. De lo contrario, puede encontrar problemas relacionados con secuencias de escape en cadenas. Por ejemplo, "\n"en Python se usa para indicar una nueva línea, pero si usa el rprefijo, se interpretará como la cadena sin formato "\n", es decir, el carácter "\"seguido del carácter "n", y no como una nueva línea.
+
+El módulo de expresión regular reya ha sido importado por usted.
+
+Recuerde del video que la sintaxis para la biblioteca de expresiones regulares es siempre pasar primero el patrón y luego la cadena en segundo lugar .
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Instrucciones
+--------------------------------------------------------------------------------------------------------------------------------------------
+Dividir my_stringen cada oración que termina. Para hacer esto:
+Escriba un patrón llamado sentence_endingspara unir las terminaciones de las oraciones ( .?!).
+Use re.split()para dividir my_stringel patrón e imprimir el resultado.
+Encuentre e imprima todas las palabras en mayúscula my_stringescribiendo un patrón llamado capitalized_wordsy usando re.findall().
+¿Recuerdas el [a-z]patrón que se muestra en el video para que coincida con los grupos en minúsculas? Modifique ese patrón adecuadamente para que coincida con los grupos en mayúsculas.
+Escriba un patrón llamado spacespara que coincida con uno o más espacios ( "\s+") y luego use re.split()para dividir my_stringen este patrón, manteniendo intactos todos los signos de puntuación. Imprime el resultado.
+Encuentra todos los dígitos my_stringescribiendo un patrón llamado digits( "\d+") y usando re.findall(). Imprime el resultado.
+--------------------------------------------------------------------------------------------------------------------------------------------
+SOLUCION:
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+# Write a pattern to match sentence endings: sentence_endings
+print(my_string)
+sentence_endings = r"[!?.]"
+
+# Split my_string on sentence endings and print the result
+print(re.split(sentence_endings, my_string))
+
+# Find all capitalized words in my_string and print the result
+capitalized_words = r"[A-Z]\w+"
+print(re.findall(capitalized_words, my_string))
+
+# Split my_string on spaces and print the result
+spaces = r"\s+"
+print(re.split(spaces, my_string))
+
+# Find all digits in my_string and print the result
+digits = r"\d+"
+print(re.findall(digits, my_string))
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+

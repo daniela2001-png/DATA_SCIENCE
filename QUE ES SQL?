@@ -1,0 +1,579 @@
+Comenzando su viaje SQL⭐
+Ahora que está familiarizado con la interfaz, vamos directamente a ella.
+
+SQL, que significa lenguaje de consulta estructurado , es un lenguaje para interactuar con datos almacenados en algo llamado una base de datos relacional .
+
+Puede pensar en una base de datos relacional como una colección de tablas. Una tabla es solo un conjunto de filas y columnas, como una hoja de cálculo, que representa exactamente un tipo de entidad. Por ejemplo, una tabla puede representar a empleados de una empresa o compras realizadas, pero no ambas.
+
+Cada fila o registro de una tabla contiene información sobre una sola entidad. Por ejemplo, en una tabla que representa a los empleados, cada fila representa a una sola persona. Cada columna o campo de una tabla contiene un solo atributo para todas las filas de la tabla. Por ejemplo, en una tabla que representa a los empleados, podríamos tener una columna que contenga los nombres y apellidos de todos los empleados.
+
+La tabla de empleados podría verse así:
+
+carné de identidad	nombre	años	nacionalidad
+1	Jessica	22	Irlanda
+2	Gabriel	48	Francia
+3	Laura	36	Estados Unidos
+-----------------------------------------------------------------------------
+COMO SELECCIONAR UNA COLUMNA DE FORMA INDIVIDUAL EN SQL:
+>>> EJEMPLO: SELECT columna_de_la_tabla FROM tabla_de_datos;
+-----------------------------------------------------------------------------
+SELECCIONAR múltiples columnas EN SQL:⭐
+
+¡Bien hecho! Ahora ya sabe cómo seleccionar columnas individuales.
+
+En el mundo real, a menudo querrá seleccionar varias columnas. Afortunadamente, SQL hace esto realmente fácil. Para seleccionar varias columnas de una tabla, ¡simplemente separe los nombres de las columnas con comas!
+
+Por ejemplo, esta consulta selecciona dos columnas namey birthdate, de la peopletabla:
+--------------------------------------------
+SELECT name, birthdate
+FROM people;
+---------------------------------------------
+A veces, es posible que desee seleccionar todas las columnas de una tabla. Escribir cada nombre de columna sería un dolor, por lo que hay un atajo útil:
+----------------------------------------------
+SELECT *
+FROM people;
+----------------------------------------------
+Si solo desea devolver una cierta cantidad de resultados, puede usar la LIMIT palabra clave para limitar la cantidad de filas devueltas:
+------------------------------------------------------
+SELECT *
+FROM people
+LIMIT 10;
+------------------------------------------------------
+---------------------------------------------------------------------------------------------------------
+SELECCIONAR DISTINTO SI QUIERO TENER UNICOS VALORES EN MIC COLUMNAS DE MI TABLA:⭐
+
+A menudo, sus resultados incluirán muchos valores duplicados. Si desea seleccionar todos los valores únicos de una columna, puede usar la <<<DISTINCT>>> palabra clave.
+
+Esto podría ser útil si, por ejemplo, le interesa saber qué idiomas están representados en la filmstabla:
+---------------------------------------------------------------------------
+SELECT DISTINCT language
+FROM films;
+---------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+METODO COUNT PARA SABER CUANTAS FILAS HAY EN UNA COLUMNA DE MI TABLA EN SQL:⭐
+
+¿Qué sucede si desea contar el número de empleados en su tabla de empleados? La COUNTdeclaración le permite hacer esto devolviendo el número de filas en una o más columnas.
+
+Por ejemplo, este código da el número de filas en la people tabla:
+--------------------------------------
+SELECT COUNT(*)
+FROM people;
+---------------------------------------
+--------------------------------------------------------------------------------------------------
+PRACTICANDO EL METODO COUNT EN SQL:⭐
+
+Como has visto, COUNT(*) te dice cuántas filas hay en una tabla. Sin embargo, si desea contar el número de valores que no faltan en una columna en particular, puede llamar COUNTsolo a esa columna.
+
+Por ejemplo, para contar el número de fechas de nacimiento presentes en la peopletabla:
+--------------------------------------
+SELECT COUNT(birthdate)
+FROM people;
+--------------------------------------
+También es común combinar COUNTcon DISTINCTpara contar el número de valores distintos en una columna.
+
+Por ejemplo, esta consulta cuenta el número de fechas de nacimiento distintas contenidas en la peopletabla:
+---------------------------------------
+SELECT COUNT(DISTINCT birthdate)
+FROM people;
+---------------------------------------
+---------------------------------------------------------------------------------------------------
+RESULTADOS DE FILTRADO EN SQL:⭐
+
+¡Felicidades por terminar el primer capítulo! Ahora sabe cómo seleccionar columnas y realizar recuentos básicos. Este capítulo se centrará en filtrar sus resultados.
+
+En SQL, la WHERE palabra clave le permite filtrar en base a texto y valores numéricos en una tabla. Hay algunos operadores de comparación diferentes que puede usar:
+------------------------------
+= igual
+<> no es igual
+< menos que
+> mas grande que
+<= Menos que o igual a
+>= Mayor qué o igual a
+-------------------------------
+Por ejemplo, puede filtrar registros de texto como title. El siguiente código devuelve todas las películas con el título 'Metropolis':
+-------------------------------
+SELECT title
+FROM films
+WHERE title = 'Metropolis';
+-------------------------------
+NOTA<<<¡Tenga en cuenta que la WHERE cláusula siempre viene después de la FROM declaración!>>>
+-----------------------------------------------------------------------------------------------
+Tenga en cuenta que en este curso utilizaremos <>y no !=para el operador no igual, según el estándar SQL.
+--------------------------------------------------
+¿Qué devuelve la siguiente consulta?
+SELECT title
+FROM films
+WHERE release_year > 2000;
+--------------------------------------------------
+RESPUESTA=> devolvera los los lanzamientos despues del año 2000!
+--------------------------------------------------
+------------------------------------------------------------------------------------------------------
+FILTRAR CON EL METODO WHERE (LA PARTE NUMERICA DE 1 COLUMNA):⭐
+
+Como aprendió en el ejercicio anterior, la WHERE cláusula también se puede usar para filtrar registros numéricos, como años o edades.
+
+Por ejemplo, la siguiente consulta selecciona todos los detalles de las películas con un presupuesto superior a diez mil dólares:
+-------------------------------
+SELECT *
+FROM films
+WHERE budget > 10000;
+-------------------------------
+------------------------------------------------------------------------------------------------------
+FILTRADO DE TEXTO SIMPLE CON WHERE EN SQL:⭐
+
+Recuerde, la WHEREcláusula también se puede usar para filtrar resultados de texto, como nombres o países.
+
+Por ejemplo, esta consulta obtiene los títulos de todas las películas filmadas en China:
+----------------------------------
+SELECT title
+FROM films
+WHERE country = 'China';
+----------------------------------
+Importante: en PostgreSQL (la versión de SQL que estamos usando), debe usar comillas simples con WHERE.
+------------------------------------------------------------------------------------------------------
+WHERE y AND en SQL:⭐
+
+A menudo, querrá seleccionar datos en función de múltiples condiciones. Puede desarrollar sus WHEREconsultas combinando múltiples condiciones con la ANDpalabra clave.
+
+Por ejemplo,
+------------------------------------------------
+SELECT title
+FROM films
+WHERE release_year > 1994
+AND release_year < 2000;
+-------------------------------------------------
+te da los títulos de películas lanzadas entre 1994 y 2000.
+--------------------------------------------------
+Tenga en cuenta que debe especificar el nombre de la columna por separado para cada ANDcondición, por lo que lo siguiente no sería válido:
+------------------------------------------
+SELECT title
+FROM films						! NOTA : ESTA SINTAXIS ES INVALIDA SIN LOS PARENTESIS QUE ENCIERRAN TODO EL WHERE! WHERE release_year > 1994 AND < 2000;
+---------------------------------------------
+¡Puede agregar tantas AND condiciones como necesite!
+-----------------------------------------------------------------------------------------------------
+WHERE; AND; OR; en SQL: ⭐
+
+¿Qué sucede si desea seleccionar filas en función de varias condiciones en las que se deben cumplir algunas pero no todas las condiciones? Para esto, SQL tiene el ORoperador.
+
+Por ejemplo, los siguientes rendimientos todas películas estrenadas en ya sea 1994 o 2000:
+----------------------------------------------
+SELECT title
+FROM films
+WHERE release_year = 1994
+OR release_year = 2000;
+-----------------------------------------------
+Tenga en cuenta que debe especificar la columna para cada ORcondición, por lo que lo siguiente no es válido:
+--------------------------------------------------
+SELECT title
+FROM films
+WHERE release_year = 1994 OR 2000;
+---------------------------------------------------
+Al combinar AND y OR, asegúrese de encerrar las cláusulas individuales entre paréntesis, así:
+-----------------------------------------------------
+SELECT title
+FROM films
+WHERE (release_year = 1994 OR release_year = 1995)
+AND (certification = 'PG' OR certification = 'R');
+-----------------------------------------------------
+De lo contrario, debido a las reglas de precedencia de SQL, ¡es posible que no obtenga los resultados que espera!
+-----------------------------------------------------------------------------------------------------
+BETWEEN metodo en SQL:  🐒
+
+Como ha aprendido, puede usar la siguiente consulta para obtener títulos de todas las películas lanzadas en y entre 1994 y 2000:
+----------------------------------------
+SELECT title
+FROM films
+WHERE release_year >= 1994
+AND release_year <= 2000;
+----------------------------------------
+Verificar rangos como este es muy común, por lo que en SQL la BETWEENpalabra clave proporciona una abreviatura útil para filtrar valores dentro de un rango especificado. Esta consulta es equivalente a la anterior:
+----------------------------------------
+SELECT title
+FROM films
+WHERE release_year
+BETWEEN 1994 AND 2000;
+----------------------------------------
+¡Es importante recordar que BETWEEN es inclusivo , lo que significa que los valores iniciales y finales están incluidos en los resultados!
+-----------------------------------------------------------------------------------------------------
+METODO BETWEEN(2): 🐒
+
+Similar a la WHEREcláusula, la BETWEENcláusula se puede usar con múltiples ANDy ORoperadores, por lo que puede acumular sus consultas y hacerlas aún más poderosas.
+
+Por ejemplo, supongamos que tenemos una tabla llamada kids. Podemos obtener los nombres de todos los niños entre las edades de 2 y 12 años de los Estados Unidos:
+---------------------------------
+SELECT name
+FROM kids
+WHERE age BETWEEN 2 AND 12
+AND nationality = 'USA';
+---------------------------------
+Tome un ir en el uso BETWEEN de ANDlos datos de películas para obtener el título y el año de lanzamiento de todas las películas en español publicados entre 1990 y 2000 (ambos inclusive) con presupuestos superiores a $ 100 millones. Hemos dividido el problema en pasos más pequeños para que pueda construir la consulta a medida que avanza.
+-----------------------------------------------------------------------------------------------------
+METODO WHERE (IN) EN SQL: 🐒 
+Como has visto, WHERE es muy útil para filtrar resultados. Sin embargo, si desea filtrar en función de muchas condiciones, WHEREpuede ser difícil de manejar. Por ejemplo:
+-------------------------------------
+SELECT name
+FROM kids
+WHERE age = 2
+OR age = 4
+OR age = 6
+OR age = 8
+OR age = 10;
+--------------------------------------
+Ingrese el IN operador! El IN operador le permite especificar múltiples valores en una WHEREcláusula, lo que hace que sea más fácil y rápido especificar múltiples ORcondiciones. Aseado, ¿verdad?
+
+Entonces, el ejemplo anterior sería simplemente:
+---------------------------------------
+SELECT name
+FROM kids
+WHERE age IN (2, 4, 6, 8, 10);
+---------------------------------------
+-----------------------------------------------------------------------------------------------------
+INTRODUCCION a NULL y IS NULL: 🐒 
+
+En SQL, NULL representa un valor perdido o desconocido. Puede verificar los NULL valores utilizando la expresión IS NULL. Por ejemplo, para contar la cantidad de fechas de nacimiento que faltan en la people tabla:
+-----------------------------
+SELECT COUNT(*)
+FROM people
+WHERE birthdate IS NULL;
+-----------------------------
+Como puede ver, IS NULL
+es útil cuando se combina WHEREpara averiguar qué datos falta.
+A veces, querrás filtrar los valores perdidos para que solo obtengas resultados que no lo son NULL. Para hacer esto, puede usar el IS NOT NULL operador.
+Por ejemplo, esta consulta proporciona los nombres de todas las personas cuyas fechas de nacimiento no faltan en la peopletabla.
+-------------------------------
+SELECT name
+FROM people
+WHERE birthdate IS NOT NULL;
+-------------------------------
+-----------------------------------------------------------------------------------------------------
+METODOS LIKE and NOTLIKE en SQL: 🐒
+
+Como has visto, la WHERE cláusula se puede usar para filtrar datos de texto. Sin embargo, hasta ahora solo ha podido filtrar especificando el texto exacto que le interesa. En el mundo real, a menudo querrá buscar un patrón en lugar de una cadena de texto específica.
+
+En SQL, el LIKE operador se puede usar en una WHERE cláusula para buscar un patrón en una columna. Para lograr esto, utiliza algo llamado comodín como marcador de posición para algunos otros valores. Hay dos comodines que puede usar con LIKE:
+
+El (%) comodín coincidirá con cero, uno o muchos caracteres en el texto. Por ejemplo, la siguiente consulta coincide con empresas como 'Data', 'DataC' 'DataCamp', 'DataMind', y así sucesivamente:
+--------------------------------------
+SELECT name
+FROM companies
+WHERE name LIKE 'Data%';
+--------------------------------------
+El (_) comodín coincidirá con un solo personaje. Por ejemplo, la siguiente consulta coincide con compañías como 'DataCamp', 'DataComp'y así sucesivamente:
+--------------------------------------
+SELECT name
+FROM companies
+WHERE name LIKE 'DataC_mp';
+--------------------------------------
+Obtenga los nombres de las personas cuyos nombres tienen 'r' como segunda letra. El patrón que necesitas es '_r%'.
+---------------------------------------
+SELECT name
+FROM people
+WHERE name LIKE '_r%';
+----------------------------------------
+OUTPUT:
+Arie Posin
+Ariel Gade
+Ariel Hsing
+Ariel Vromen
+Aries Spears
+Arik Ascherman
+Arjun Rampal
+Arjun Sablok
+Arliss Howard
+Arly Jover
+----------------------------------------
+También puede usar el NOT LIKE operador para buscar registros que no coincidan con el patrón que especifique.
+-----------------------------------------------------------------------------------------------------
+FUNCIONES AGREGADAS EN SQL: 🐒 
+
+A menudo, querrá realizar algunos cálculos sobre los datos en una base de datos. SQL proporciona algunas funciones, llamadas funciones agregadas , para ayudarlo con esto.
+
+Por ejemplo,
+--------------------------------
+SELECT AVG(budget)
+FROM films;
+--------------------------------
+le da el valor promedio de la budget columna de la films tabla. Del mismo modo, la MAX función devuelve el presupuesto más alto:
+--------------------------------
+SELECT MAX(budget)
+FROM films;
+--------------------------------
+La SUM función devuelve el resultado de sumar los valores numéricos en una columna:
+---------------------------------
+SELECT SUM(budget)
+FROM films;
+---------------------------------
+¡Probablemente puedas adivinar qué hace la MINfunción! Ahora es tu turno de probar algunas funciones SQL.
+-----------------------------------------------------------------------------------------------------
+Combinando funciones agregadas con WHERE: 🐒
+
+Las funciones agregadas se pueden combinar con la WHERE cláusula para obtener más información de sus datos.
+
+Por ejemplo, para obtener el presupuesto total de películas realizadas en el año 2010 o posterior:
+----------------------------------
+SELECT SUM(budget)
+FROM films
+WHERE release_year >= 2010;
+------------------------------------
+-----------------------------------------------------------------------------------------------------
+NOTA OPERACIONES ARITMETICAS EN SQL: 🐒
+
+Además de utilizar las funciones de agregado, puede realizar operaciones aritméticas básicas con símbolos como +, -, *, y /.
+
+Entonces, por ejemplo, esto da un resultado de 12:
+------------------------------
+SELECT (4 * 3);
+Sin embargo, lo siguiente da un resultado de 1:
+----------------------------
+SELECT (4 / 3);
+-----------------------------
+¿Que está pasando aqui?
+
+SQL asume que si divide un número entero por un número entero, desea recuperar un número entero. ¡Así que ten cuidado al dividir!
+
+Si desea más precisión al dividir, puede agregar lugares decimales a sus números. Por ejemplo,
+-----------------------------------
+SELECT (4.0 / 3.0) AS result;
+le da el resultado que se puede esperar: 1.333.
+-------------------------------------
+-----------------------------------------------------------------------------------------------------
+METODO (AS) COMO ALIAS EN SQL: 🐒
+
+Es posible que haya notado en el primer ejercicio de este capítulo que el nombre de la columna de su resultado era solo el nombre de la función que utilizó. Por ejemplo,
+----------------------------
+SELECT MAX(budget)
+FROM films;
+----------------------------
+le da un resultado con una columna, llamada max. Pero, ¿qué pasa si usa dos funciones como esta?
+---------------------------------------
+SELECT MAX(budget), MAX(duration)
+FROM films;
+---------------------------------------
+Bueno, entonces tendrías dos columnas con nombre max, ¡lo cual no es muy útil!
+
+Para evitar situaciones como esta, SQL le permite hacer algo llamado alias . Aliasing simplemente significa que asigna un nombre temporal a algo. Para alias, utiliza la ASpalabra clave, que ya ha visto anteriormente en este curso.
+
+Por ejemplo, en el ejemplo anterior podríamos usar alias para aclarar el resultado:
+-----------------------------------------
+SELECT MAX(budget) AS max_budget,
+       MAX(duration) AS max_duration
+FROM films;
+-----------------------------------------
+¡Los alias son útiles para hacer que los resultados sean más legibles!
+-----------------------------------------------------------------------------------------------------
+MAS ALIAS EN SQL: 🐒
+
+¡Practiquemos sus nuevas habilidades de alias un poco más antes de continuar!
+
+Recordar: SQL supone que si divide un número entero por un número entero, desea recuperar un número entero.
+
+Esto significa que lo siguiente resultará erróneamente en 400.0:
+-------------------------------
+SELECT 45 / 10 * 100.0;
+-------------------------------
+Esto se debe a que se 45 / 10evalúa como un número entero ( 4) y no como un número decimal como podríamos esperar.
+
+Entonces, cuando esté dividiendo, asegúrese de que al menos uno de sus números tenga un lugar decimal:
+------------------------------
+SELECT 45 * 100.0 / 10;
+------------------------------
+¡Lo anterior ahora da la respuesta correcta 450.0ya que el numerador ( 45 * 100.0) de la división es ahora un decimal!
+-----------------------------------------------------------------------------------------------------
+
+EJERCICIO QUE CASI NO ENTENDI PREGUNTAR A FREDDY NO OLVIDAR: 😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭
+
+Get the number of decades the films table covers. Alias the result as number_of_decades. The top half of your fraction should be enclosed in parentheses.
+----------------------------------------------
+RESPUESTA CON AYUDA DE UN TIP: Y FUNCIONO! 😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭😭
+
+SELECT (MAX(release_year) - MIN(release_year)) / 10.0 AS number_of_decades
+FROM films;
+-----------------------------------------------
+-----------------------------------------------------------------------------------------------------
+METODO ORDER BY EN SQL: 🐒 
+
+¡Felicidades por haber llegado tan lejos! Ahora sabe cómo seleccionar y filtrar sus resultados.
+
+En este capítulo aprenderá cómo ordenar y agrupar sus resultados para obtener una mejor comprensión. ¡Vamonos!
+
+En SQL, la ORDER BYpalabra clave se usa para ordenar los resultados en orden ascendente o descendente de acuerdo con los valores de una o más columnas.
+
+Por defecto ORDER BYse ordenará en orden ascendente. Si desea ordenar los resultados en orden descendente, puede usar la DESCpalabra clave. Por ejemplo,
+------------------------------
+SELECT title
+FROM films
+ORDER BY release_year DESC;
+------------------------------
+le ofrece los títulos de las películas ordenadas por año de lanzamiento, desde las más recientes hasta las más antiguas.
+------------
+EJERCICIO:🐒 🐒 🐒 ejercicioooo
+------------
+Get the title of films released in 2000 or 2012, in the order they were released:
+------------
+SELECT title
+FROM films
+WHERE release_year IN (2000, 2012)
+ORDER BY release_year
+------------
+-----------------------------------------------------------------------------------------------------
+ORDENAR COLUMNAS INDIVIDUALES EN SQL CON EL METODO ( ORDER BY x DESC): 🐒 
+
+Para ordenar los resultados en orden descendente , puede colocar la palabra clave DESCdespués de su ORDER BY. Por ejemplo, para obtener todos los nombres en la peopletabla, en orden alfabético inverso:
+------------------------
+SELECT name
+FROM people
+ORDER BY name DESC;
+------------------------
+¡Ahora practique el uso ORDER BYcon DESCpara ordenar columnas individuales en orden descendente!
+-----------------------------------------------------------------------------------------------------
+ORDENAR MULTIPLES COLUMNAS EN SQL CON ORDER BY:  🐒
+
+ORDER BY También se puede utilizar para ordenar en varias columnas. Se ordenará por la primera columna especificada, luego se ordenará por la siguiente, luego la siguiente, y así sucesivamente. Por ejemplo,
+----------------------------
+SELECT birthdate, name
+FROM people
+ORDER BY birthdate, name;
+----------------------------
+ordena primero las fechas de nacimiento (de la más antigua a la más reciente) y luego ordena los nombres en orden alfabético. ¡El orden de las columnas es importante!
+
+¡Intenta usar ORDER BYpara ordenar varias columnas! Recuerde, para especificar varias columnas, separe los nombres de las columnas con una coma.
+-----------------------------------------------------------------------------------------------------
+METODO (GROUP BY) EN SQL: 🐒
+
+¡Ahora sabes cómo ordenar los resultados! A menudo necesitará agregar resultados. Por ejemplo, es posible que desee contar el número de empleados masculinos y femeninos en su empresa. Aquí, lo que quieres es agrupar a todos los machos y contarlos, y agrupar a todas las hembras y contarlas. En SQL, le GROUP BYpermite agrupar un resultado por una o más columnas, así:
+--------------------------------
+SELECT sex, count(*)
+FROM employees
+GROUP BY sex;
+--------------------------------
+Esto podría dar, por ejemplo:
+--------------------------------
+sexo	contar
+masculino	15
+hembra	19
+--------------------------------
+NOTA : Comúnmente, GROUP BY se usa con funciones agregadas como COUNT()o MAX(). Tenga en cuenta que GROUP BYsiempre va después de la FROM cláusula!
+---------------------------------------------------------------------------------------------------
+USANDO METODO (GROUP BY) EN SQL: 🐒
+
+Como acaba de ver, ¡combinar funciones agregadas con GROUP BYpuede producir algunos resultados poderosos!
+
+Una advertencia: SQL devolverá un error si intenta SELECTun campo que no está en su GROUP BYcláusula sin usarlo para calcular algún tipo de valor sobre todo el grupo.
+
+Tenga en cuenta que se puede combinar GROUP BYcon ORDER BYagrupar sus resultados, calcular algo sobre ellos, y luego ordenar los resultados. Por ejemplo,
+------------------------------
+SELECT sex, count(*)
+FROM employees
+GROUP BY sex
+ORDER BY count DESC;
+------------------------------
+podría devolver algo como
+-------------------------------
+sexo	contar
+hembra	19
+masculino	15
+-------------------------------
+porque hay más mujeres en nuestra empresa que hombres. Tenga en cuenta también que ORDER BYsiempre va después GROUP BY. ¡Probemos algunos ejercicios!
+NOTA : CASI SIEMPRE ORDER BY VA DE ULTIMAS!
+-----------------------------------------------------------------------------------------------------
+METODO (HAVING) PARA PODER USAR LAS FUNCIONES AGREGADAS EN SQL: 🐒
+
+En SQL, las funciones agregadas no se pueden usar en WHEREcláusulas. Por ejemplo, la siguiente consulta no es válida:
+-------------------------
+SELECT release_year
+FROM films
+GROUP BY release_year
+WHERE COUNT(title) > 10;
+-------------------------
+Esto significa que si desea filtrar en función del resultado de una función agregada, ¡necesita otra forma! Ahí es donde HAVINGentra la cláusula. Por ejemplo,
+---------------------------
+SELECT release_year
+FROM films
+GROUP BY release_year
+HAVING COUNT(title) > 10;
+----------------------------
+muestra solo aquellos años en los que se estrenaron más de 10 películas.
+-----------------------------------------------------------------------------------------------------
+EJERCICIO DE REPASO DE METODOS (HAVING, ORDER BY, GROUP BY) EN SQL: 🐒
+------------------------------------------------------------------------
+Todos juntos ahora
+Tiempo para practicar el uso ORDER BY, GROUP BYy HAVINGjuntos.
+
+Ahora va a escribir una consulta que devuelva el presupuesto promedio y los ingresos brutos promedio de las películas en cada año posterior a 1990, si el presupuesto promedio es superior a $ 60 millones.
+
+Esta será una gran consulta, ¡pero puede manejarla!
+------------------------------------------------------------------------
+SELECT release_year, AVG(budget) AS avg_budget, AVG(gross) AS avg_gross
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year
+HAVING AVG(budget) > 60000000
+ORDER BY avg_gross DESC;
+--------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------
+EJERCICIO: 🐒
+
+All together now (2)
+Great work! Now try another large query. This time, all in one go!
+
+Remember, if you only want to return a certain number of results, you can use the LIMIT keyword to limit the number of rows returned
+
+Instructions:
+
+Get the country, average budget, and average gross take of countries that have made more than 10 films. Order the result by country name, and limit the number of results displayed to 5. You should alias the averages as avg_budget and avg_gross respectively.
+-----------------------------------
+SOLUCION:
+-----------------------------------
+-- select country, average budget, average gross
+SELECT country, AVG (budget) AS avg_budget, AVG (gross) AS avg_gross
+-- from the films table
+FROM films
+-- group by country 
+GROUP BY country
+-- where the country has more than 10 titles
+HAVING COUNT(title) > 10
+-- order by country
+ORDER BY country
+-- limit to only show 5 results
+LIMIT 5;
+-------------------------------------
+SALIDA:
+country	avg_budget	avg_gross
+Australia	31172110.460000000000	40205909.571428571429
+Canada	14798458.715596330275	22432066.680555555556
+China	62219000.000000000000	14143040.736842105263
+Denmark	13922222.222222222222	1418469.111111111111
+France	30672034.615384615385	16350593.578512396694
+--------------------------------------
+-----------------------------------------------------------------------------------------------------
+EJEMPLO DE UNA COMBINACION ENTRE TABLAS EN SQL: 🐒🐒🐒 
+
+¡Felicidades por llegar al final del curso! A estas alturas ya debe tener una buena comprensión de los conceptos básicos de SQL.
+
+Hay un concepto más que vamos a presentar. Es posible que haya notado que todos sus resultados hasta ahora provienen de una sola tabla, por ejemplo, filmso people.
+
+Sin embargo, en el mundo real, a menudo querrá consultar varias tablas. Por ejemplo, ¿qué pasa si desea ver la puntuación IMDB para una película en particular?
+
+En este caso, querrá obtener la ID de la película de la filmstabla y luego usarla para obtener información de IMDB de la reviewstabla. En SQL, este concepto se conoce como una combinación , y una combinación básica se muestra en el editor a la derecha.
+
+¡La consulta en el editor obtiene la puntuación IMDB para la película To Kill a Mockingbird ! ¿Guay, verdad?
+
+Como puede ver, las uniones son increíblemente útiles e importantes de entender para cualquiera que use SQL.
+
+¡Tenemos un curso de seguimiento completo dedicado a ellos llamado Unir datos en PostgreSQL para que pueda perfeccionar aún más sus habilidades en la base de datos!
+------------------------------
+EJEMPLO:
+------------------------------
+SELECT title, imdb_score
+FROM films
+JOIN reviews
+ON films.id = reviews.film_id
+WHERE title = 'To Kill a Mockingbird';
+
+------------------------------
+-----------------------------------------------------------------------------------------------------
+
+
+
+
+-----------------------------------------------------------------------------------------------------

@@ -1,0 +1,928 @@
+							ITERABLES EN PYTHON3:
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Iterando sobre iterables (1)
+Genial, estás familiarizado con los iterables y los iteradores. En este ejercicio, reforzará sus conocimientos sobre estos iterando e imprimiendo desde iterables e iteradores.
+
+Se le proporciona una lista de cadenas flash. Practicará iterando sobre la lista utilizando un forbucle. También creará un iterador para la lista y accederá a los valores desde el iterador.
+
+Instrucciones
+
+Cree un forbucle para recorrer flashe imprimir los valores de la lista. Utilizar personcomo variable de ciclo.
+Cree un iterador para la lista flashy asigne el resultado a superhero.
+Imprima cada uno de los elementos del superherouso next()4 veces.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Create a list of strings: flash
+flash = ['jay garrick', 'barry allen', 'wally west', 'bart allen']
+
+# Print each list item in flash using a for loop
+
+for person in flash:
+    print(person)
+
+# Create an iterator for flash: superhero
+
+superhero = iter(flash)
+
+# Print each item from the iterator
+print(next(superhero))
+print(next(superhero))
+print(next(superhero))
+print(next(superhero))
+--------------------------------------------------------------------------------------------------------------------------------------------
+Iteradores como argumentos de función:
+
+Ha estado utilizando la iter()función para obtener un objeto iterador, así como la next()función para recuperar los valores uno por uno del objeto iterador.
+
+También hay funciones que toman iteradores e iterables como argumentos. Por ejemplo, las funciones list()y sum()devuelven una lista y la suma de elementos, respectivamente.
+
+En este ejercicio, utilizará estas funciones pasando un iterable desde range()y luego imprimiendo los resultados de las llamadas a la función.
+
+Instrucciones
+
+Cree un rangeobjeto que produzca los valores de 10 a 20 usando range(). Asignar el resultado a values.
+Utilice la list()función para crear una lista de valores a partir del objeto de rango values. Asignar el resultado a values_list.
+Utilice la sum()función para obtener la suma de los valores de 10 a 20 del objeto de rango values. Asignar el resultado a values_sum.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+# Create a range object: values
+values = range(10, 21)
+
+# Print the range object
+print(values)
+
+# Create a list of integers: values_list
+values_list = list(values)
+
+# Print values_list
+print(values_list)
+
+# Get the sum of values: values_sum
+values_sum = sum(values)
+
+# Print values_sum
+print(values_sum)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Usando enumerar:
+
+Realmente estás aprendiendo a usar iteradores, ¡excelente trabajo!
+
+Acaba de obtener varias ideas nuevas sobre iteradores del último video y una de ellas es la enumerate()función. Recuerde que enumerate()devuelve un enumerateobjeto que produce una secuencia de tuplas, y cada una de las tuplas es un par índice-valor .
+
+En este ejercicio, se le da una lista de cadenas mutantsy practicará su uso enumerate()imprimiendo una lista de tuplas y desempaquetando las tuplas usando un forbucle.
+
+Instrucciones
+
+Cree una lista de tuplas de mutantsy asigne el resultado a mutant_list. Asegúrese de generar las tuplas usando enumerate()y convertir el resultado en una lista usando list().
+Complete el primer forciclo desempaquetando las tuplas generadas al llamar enumerate()a mutants. Úselo index1para el índice y value1para el valor al descomprimir la tupla.
+Complete el segundo forciclo de manera similar al primero, pero esta vez cambie el índice inicial desde el que comenzar 1pasándolo como un argumento al startparámetro de enumerate(). Úselo index2para el índice y value2para el valor al descomprimir la tupla.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Create a list of strings: mutants
+mutants = ['charles xavier', 
+            'bobby drake', 
+            'kurt wagner', 
+            'max eisenhardt', 
+            'kitty pryde']
+
+# Create a list of tuples: mutant_list
+mutant_list = list(enumerate(mutants))
+
+# Print the list of tuples
+print(mutant_list)
+
+# Unpack and print the tuple pairs
+for index1, value1 in enumerate(mutants):
+    print(index1, value1)
+
+# Change the start index
+for index2, value2 in enumerate(mutants, start=1):
+    print(index2, value2)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Usando zip
+
+Otra función interesante que ha aprendido es la zip()que toma cualquier número de iterables y devuelve un zipobjeto que es un iterador de tuplas. Si desea imprimir los valores de un zipobjeto, puede convertirlo en una lista y luego imprimirlo. Imprimir solo un zipobjeto no devolverá los valores a menos que lo desempaquete primero. En este ejercicio, lo explorará usted mismo.
+
+Tres listas de cadenas están pre-cargados: mutants, aliases, y powers. Primero, usará list()y zip()en estas listas para generar una lista de tuplas. Luego, creará un zipobjeto usando zip(). Finalmente, descomprimirá este zipobjeto en un forciclo para imprimir los valores en cada tupla. Observe la salida diferente generada al imprimir la lista de tuplas, luego el zipobjeto y, finalmente, los valores de tupla en el forciclo.
+
+Instrucciones
+
+El uso zip()con list(), crear una lista de tuplas de las tres listas mutants, aliasesy powers(en ese orden) y asignar el resultado a mutant_data.
+El uso zip(), crear un objeto postal llamada mutant_zipde las tres listas mutants, aliasesy powers.
+Complete el forciclo desempaquetando el zipobjeto que creó e imprimiendo los valores de la tupla. Uso value1, value2, value3para los valores de cada una de mutants, aliasesy powers, en ese orden.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Create a list of tuples: mutant_data
+mutant_data = list(zip(mutants, aliases, powers))
+
+# Print the list of tuples
+print(mutant_data)
+
+# Create a zip object using the three lists: mutant_zip
+mutant_zip = zip(mutants, aliases, powers)
+#print(mutant_zip == iter(mutant_zip))#valido si obejto zip es un iterable y da True!
+# Print the zip object
+print(mutant_zip)
+
+# Unpack the zip object and print the tuple values
+for value1, value2, value3 in mutant_zip:
+    print(value1, value2, value3)
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Usando * y zip para 'descomprimir'
+
+Sabe cómo utilizar zip()y cómo imprimir valores de un zipobjeto. ¡Excelente!
+
+Juguemos zip()un poco más. No hay una función de descompresión para hacer lo contrario de lo que zip()hace. ¡Sin embargo, podemos revertir lo que se ha hecho zipusando zip()con un poco de ayuda de *! *descomprime un iterable como una lista o una tupla en argumentos posicionales en una llamada de función.
+
+En este ejercicio, utilizará *en una llamada a zip()para descomprimir las tuplas producidas por zip().
+
+Dos tuplas de cadenas mutantsy powersse han precargado.
+
+Instrucciones
+
+Cree un zipobjeto utilizando zip()on mutantsy powers, en ese orden. Asignar el resultado a z1.
+Imprima las tuplas z1descomprimiéndolas en argumentos posicionales utilizando el *operador en una print()llamada.
+Debido a que la print()llamada anterior habría agotado los elementos de z1, zipvuelva a crear el objeto que definió anteriormente y asigne el resultado nuevamente a z1.
+'Descomprima' las tuplas z1descomprimiéndolas en argumentos posicionales usando el *operador en una zip()llamada. Asigne los resultados a result1y result2, en ese orden.
+Las últimas print()declaraciones imprime la salida de comparar result1a mutantsy result2a powers. Haga clic Submit Answerpara ver si los desempaquetados result1y result2son equivalentes a mutantsy powers, respectivamente.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+# Create a zip object from mutants and powers: z1
+z1 = zip(mutants, powers)
+
+# Print the tuples in z1 by unpacking with *
+print(*z1)
+
+# Re-create a zip object from mutants and powers: z1
+z1 = zip(mutants, powers)
+
+# 'Unzip' the tuples in z1 by unpacking with * and zip(): result1, result2
+result1, result2 = zip(*z1)
+
+# Check if unpacked tuples are equivalent to original tuples
+print(result1 == mutants) #true
+print(result2 == powers) #true
+--------------------------------------------------------------------------------------------------------------------------------------------
+Procesando grandes cantidades de datos de Twitter
+
+A veces, los datos que tenemos que procesar alcanzan un tamaño que es demasiado para que los maneje la memoria de una computadora. Este es un problema común al que se enfrentan los científicos de datos. Una solución a esto es procesar una fuente de datos completa fragmento a fragmento, en lugar de una sola operación de una sola vez.
+
+En este ejercicio, hará precisamente eso. Procesará un archivo csv grande de datos de Twitter de la misma manera que procesó 'tweets.csv'en los ejercicios de Reunirlo todo del curso de precuela, pero esta vez, trabajando en trozos de 10 entradas a la vez.
+
+Si está interesado en aprender cómo acceder a los datos de Twitter para poder trabajar con ellos en su propio sistema, consulte la Parte 2 del curso DataCamp sobre Importación de datos en Python.
+
+El paquete pandas se ha importado como pdy el archivo 'tweets.csv'está en su directorio actual para su uso.
+
+Tenga en cuenta que se trata de datos reales de Twitter y, como tal, siempre existe el riesgo de que contengan blasfemias u otro contenido ofensivo (en este ejercicio y los siguientes ejercicios que también utilicen datos reales de Twitter).
+
+Instrucciones
+
+Inicialice un diccionario vacío counts_dictpara almacenar los resultados del procesamiento de los datos de Twitter.
+Itera sobre el 'tweets.csv'archivo usando un forbucle. Utilice la variable de bucle chunky repita la llamada a pd.read_csv()con un valor chunksizede 10.
+En el bucle interno, iterar sobre la columna 'lang'en chunkusando un forbucle. Utilice la variable de bucle entry.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Initialize an empty dictionary: counts_dict
+counts_dict = {}
+
+# Iterate over the file chunk by chunk
+for chunk in pd.read_csv('tweets.csv', chunksize=10):
+    # Iterate over the column in DataFrame
+    for entry in chunk['lang']:
+        if entry in counts_dict.keys():
+            counts_dict[entry] += 1
+        else:
+            counts_dict[entry] = 1
+
+# Print the populated dictionary
+print(counts_dict)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Extraer información para grandes cantidades de datos de Twitter
+
+Gran trabajo fragmentando ese archivo en el ejercicio anterior. Ahora sabe cómo lidiar con situaciones en las que necesita procesar un archivo muy grande y esa es una habilidad muy útil.
+
+Es bueno saber cómo procesar un archivo en fragmentos más pequeños y manejables, pero puede resultar muy tedioso tener que escribir y reescribir el mismo código para la misma tarea cada vez. En este ejercicio, hará que su código sea más reutilizable poniendo su trabajo en el último ejercicio en una definición de función .
+
+El paquete pandas se ha importado como pdy el archivo 'tweets.csv'está en su directorio actual para su uso.
+
+Instrucciones
+
+Defina la función count_entries(), que tiene 3 parámetros. El primer parámetro es csv_filepara el nombre del archivo, el segundo es c_sizepara el tamaño del fragmento y el último es colnamepara el nombre de la columna.
+Itere sobre el archivo en csv_filearchivo usando un forbucle. Utilice la variable de bucle chunky repita la llamada a pd.read_csv(), pasando c_sizea chunksize.
+En el ciclo interno, itera sobre la columna dada por colnamein chunkusando un forciclo. Utilice la variable de bucle entry.
+Llame a la count_entries()función pasándole el nombre del archivo 'tweets.csv', el tamaño de los fragmentos 10y el nombre de la columna a contar 'lang'. Asignar el resultado de la llamada a la variable result_counts.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+# Define count_entries()
+def count_entries(csv_file, c_size, colname):
+    """Return a dictionary with counts of
+    occurrences as value for each key."""
+    
+    # Initialize an empty dictionary: counts_dict
+    counts_dict = {}
+
+    # Iterate over the file chunk by chunk
+    #chunk es cada df que contine las colnames de mi interes
+    for chunk in pd.read_csv(csv_file, chunksize=c_size): 
+
+        # Iterate over the column in DataFrame
+        for entry in chunk[colname]:
+            #print(entry) comntiene el valor de la columna de mi interes
+            if entry in counts_dict.keys():
+                counts_dict[entry] += 1
+            else:
+                counts_dict[entry] = 1
+
+    # Return counts_dict
+    return counts_dict
+
+# Call count_entries(): result_counts
+result_counts = count_entries('tweets.csv', 10, 'lang')
+
+# Print result_counts
+print(result_counts)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Comprensiones de listas anidadas:
+
+¡Excelente! En este punto, tiene una buena comprensión de la sintaxis básica de las listas por comprensión. Llevemos un poco más sus habilidades de escritura de código. En este ejercicio, estará escribiendo una lista de comprensión dentro de otra lista de comprensión o lista de comprensión anidada. Suena un poco complicado, ¡pero puedes hacerlo!
+
+Vamos a apartarnos un rato de las cuerdas. Una de las formas en que se pueden utilizar las listas es en la representación de objetos multidimensionales como matrices . Las matrices se pueden representar como una lista de listas en Python. Por ejemplo, una matriz de 5 x 5 con valores 0de 4en cada fila se puede escribir como:
+
+matrix = [[0, 1, 2, 3, 4],
+          [0, 1, 2, 3, 4],
+          [0, 1, 2, 3, 4],
+          [0, 1, 2, 3, 4],
+          [0, 1, 2, 3, 4]]
+
+Su tarea es recrear esta matriz utilizando comprensiones enumeradas anidadas. Recuerde que puede crear una de las filas de la matriz con una sola lista de comprensión. Para crear la lista de listas, simplemente debe proporcionar la comprensión de la lista como la expresión de salida de la comprensión de la lista general:
+
+#[[ expresión de salida ] for iterador variable in iterable]
+
+Tenga en cuenta que aquí, la expresión de salida es en sí misma una lista de comprensión.
+
+Instrucciones
+
+En la lista comprensión interna - es decir, la expresión de salida de la lista de comprensión anidada - crear una lista de valores de 0a 4usar range(). Úselo colcomo variable de iterador.
+En la parte iterable de su comprensión de lista anidada, use range()para contar 5 filas, es decir, cree una lista de valores desde 0hasta 4. Utilizar rowcomo variable de iterador; tenga en cuenta que no lo necesitará para crear valores en la lista de listas.
+Insinuación
+La sintaxis básica para la comprensión de una lista es la variable iteradora de [expresión de salida iterable .for in ]
+Utilice la comprensión de la primera lista como expresión de salida de la comprensión de la segunda lista
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Create a 5 x 5 matrix using a list of lists: matrix
+matrix = [[col for col in range(5)] for row in range(5)]
+#print(matrix) me retorna una lista d etuplas con ragne === 5 -1
+# Print the matrix
+for row in matrix:
+    print(row) #aqui imprimo la matrix
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Usar condicionales en comprensiones (1):
+
+Ha estado usando listas por comprensión para construir listas de valores, a veces usando operaciones para crear estos valores.
+Un mecanismo interesante en las comprensiones de listas es que también puede crear listas con valores que cumplan solo una determinada condición. Una forma de hacerlo es mediante el uso de condicionales en variables de iterador. ¡En este ejercicio, harás exactamente eso!
+Recuerde del video que puede aplicar una declaración condicional para probar la variable de iterador agregando una ifdeclaración en la parte de expresión de predicado opcional después de la fordeclaración en la comprensión:
+
+#[ Expresión de salida for Variable de iterador Expresión de predicado in iterable .if ]
+
+Utilizará esta receta para escribir una lista de comprensión para este ejercicio. Se le da una lista de cadenas fellowshipy, usando una lista de comprensión, creará una lista que solo incluye los miembros de fellowshipque tienen 7 caracteres o más.
+
+Instrucciones
+
+Utilizar membercomo variable de iterador en la comprensión de la lista. Para el condicional, use len()para evaluar la variable de iterador. Tenga en cuenta que solo desea cadenas de 7 caracteres o más.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+# Create a list of strings: fellowship
+fellowship = ['frodo', 'samwise', 'merry', 'aragorn', 'legolas', 'boromir', 'gimli']
+
+# Create list comprehension: new_fellowship
+new_fellowship = [member for member in fellowship if len(member)>=7]
+
+# Print the new list
+print(new_fellowship)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Uso de condicionales en comprensiones (2):
+
+En el ejercicio anterior, usó una ifdeclaración condicional en la parte de expresión de predicado de una lista de comprensión para evaluar una variable de iterador. En este ejercicio, utilizará una if-elsedeclaración en la expresión de salida de la lista.
+
+Trabajará en la misma lista fellowshipy, utilizando una lista de comprensión y una if-elsedeclaración condicional en la expresión de salida, creará una lista que mantenga miembros de fellowshipcon 7 o más caracteres y reemplace a otros con una cadena vacía. Utilizar membercomo variable de iterador en la comprensión de la lista.
+
+Instrucciones
+
+En la expresión de salida, mantenga la cadena como está si el número de caracteres es> = 7; de lo contrario , reemplácela con una cadena vacía , es decir, ''o "".
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Create a list of strings: fellowship
+fellowship = ['frodo', 'samwise', 'merry', 'aragorn', 'legolas', 'boromir', 'gimli']
+
+# Create list comprehension: new_fellowship
+new_fellowship = [member  if len(member) >= 7 else '' for member in fellowship]
+
+# Print the new list
+print(new_fellowship)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Dict comprensiones:
+
+Las comprensiones no se relegan meramente al mundo de las listas. Hay muchos otros objetos que puede construir usando comprensiones, como diccionarios, objetos omnipresentes en Data Science. Creará un diccionario utilizando la sintaxis de comprensión de este ejercicio. En este caso, la comprensión se denomina comprensión de dict .
+
+Recuerde que la principal diferencia entre una comprensión de listas y una comprensión de dictados es el uso de llaves en {}lugar de []. Además, los miembros del diccionario se crean utilizando dos puntos :, como en <key> : <value>.
+
+Se le da una lista de cadenas fellowshipy, utilizando una comprensión de dict , crea un diccionario con los miembros de la lista como claves y la longitud de cada cadena como los valores correspondientes.
+
+Instrucciones
+
+Cree una comprensión de dict donde la clave es una cadena fellowshipy el valor es la longitud de la cadena. Recuerde utilizar la sintaxis <key> : <value>en la expresión de salida como parte de la comprensión para crear los miembros del diccionario. Úselo membercomo variable de iterador.
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Create a list of strings: fellowship
+fellowship = ['frodo', 'samwise', 'merry', 'aragorn', 'legolas', 'boromir', 'gimli']
+
+# Create dict comprehension: new_fellowship
+new_fellowship = {member: len(member) for member in fellowship}
+
+# Print the new dictionary
+print(new_fellowship)
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Escribe tus propias expresiones generadoras
+
+Recuerde que las expresiones generadoras tienen básicamente la misma sintaxis que las listas por comprensión, excepto que utiliza paréntesis en ()lugar de corchetes []; ¡esto debería hacer que las cosas se sientan familiares! Además, si alguna vez ha iterado sobre un diccionario .items()o ha utilizado la range()función, por ejemplo, ya ha encontrado y utilizado generadores antes, ¡sin saberlo! Cuando usa estas funciones, Python crea generadores detrás de escena.
+
+Ahora, comenzará de manera simple creando un objeto generador que produzca valores numéricos.
+
+Instrucciones
+
+Cree un objeto generador que produzca valores desde 0hasta 30. Asigne el resultado ay resultutilícelo numcomo variable de iterador en la expresión del generador.
+Imprima los primeros 5valores usando next()apropiadamente en print().
+Imprima el resto de los valores utilizando un forbucle para iterar sobre el objeto generador.
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Create generator object: result
+result = (num for num in range(0, 31))
+
+# Print the first 5 values
+print(next(result))
+print(next(result))
+print(next(result))
+print(next(result))
+print(next(result))
+
+# Print the rest of the values
+for value in result:
+    print(value)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Construye un generador
+
+En ejercicios anteriores, se ha ocupado principalmente de la escritura de expresiones generadoras, que utilizan sintaxis de comprensión. ¡Poder utilizar la sintaxis de comprensión para las expresiones generadoras hizo que su trabajo fuera mucho más fácil!
+
+Ahora, recuerde del video que no solo hay expresiones generadoras, también hay funciones generadoras . Las funciones generadoras son funciones que, como las expresiones generadoras, producen una serie de valores, en lugar de devolver un solo valor. Una función generadora se define como una función normal, pero siempre que genera un valor, utiliza la palabra clave en yieldlugar de return.
+
+En este ejercicio, creará una función generadora con un mecanismo similar al de la expresión generadora que definió en el ejercicio anterior:
+
+lengths = (len(person) for person in lannister)
+Instrucciones
+
+Complete el encabezado de la función para la función get_lengths()que tiene un solo parámetro, input_list.
+En el forbucle de la definición de función, yieldla longitud de las cadenas en input_list.
+Complete la parte iterable del forciclo para imprimir los valores generados por la get_lengths()función del generador. Suministre la llamada a get_lengths(), pasando la lista lannister.
+
+--------------------------------------------------------------------------------------------------
+# Create a list of strings
+lannister = ['cersei', 'jaime', 'tywin', 'tyrion', 'joffrey']
+
+# Define generator function get_lengths
+def get_lengths(input_list):
+    """Generator function that yields the
+    length of the strings in input_list."""
+
+    # Yield the length of a string
+    for person in input_list:
+        yield len(person)
+
+# Print the values generated by get_lengths()
+for value in get_lengths(lannister): # aqui le paso el iter a  traves de la funcion misma
+    print(value)
+    ---------------------------------------------------------------------------------------------------------------------------------------
+Lista de comprensiones para datos con marca de tiempo:
+
+Ahora utilizará lo que ha aprendido en este capítulo para resolver un problema simple de extracción de datos. También se le presentará una estructura de datos, la serie pandas , en este ejercicio. No lo explicaremos mucho aquí, pero lo que debe saber es que es una estructura de datos con la que trabajará muchas veces al analizar datos de pandas DataFrames. Puede pensar en las columnas DataFrame como matrices unidimensionales llamadas Series.
+
+En este ejercicio, utilizará una lista de comprensión para extraer la hora de los datos de Twitter con marca de tiempo. El paquete pandas se ha importado como pdy el archivo 'tweets.csv'se ha importado como dfDataFrame para su uso.
+
+Instrucciones
+
+Extraiga la columna 'created_at'de dfy asigne el resultado a tweet_time. Dato curioso: ¡la columna extraída tweet_timeaquí es una estructura de datos en serie!
+Cree una lista de comprensión que extraiga el tiempo de cada fila en tweet_time. Cada fila es una cadena que representa una marca de tiempo, y accederá a los caracteres del 12 al 19 en la cadena para extraer la hora. Utilizar entrycomo variable de iterador y asignar el resultado a tweet_clock_time. ¡Recuerde que Python usa indexación basada en 0!
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Extract the created_at column from df: tweet_time
+tweet_time = df['created_at']
+
+#print(type(tweet_time)) rta => <class 'pandas.core.series.Series'>
+
+# Extract the clock time: tweet_clock_time
+#el rango esta entre 11 y 19 porque se lee de izq-derecha entry[11:19]
+tweet_clock_time = [entry[11:19] for entry in tweet_time]
+
+# Print the extracted times
+print(tweet_clock_time)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Comprensiones de listas condicionales para datos con marca de tiempo
+¡Genial, ha extraído con éxito los datos de interés, la hora, de un DataFrame de pandas! Modifiquemos aún más su trabajo agregando un condicional que especifique más qué entradas seleccionar.
+
+En este ejercicio, utilizará una lista de comprensión para extraer la hora de los datos de Twitter con marca de tiempo. Agregará una expresión condicional a la lista de comprensión para que solo seleccione los tiempos en los que entry[17:19]es igual a '19'. El paquete pandas se ha importado como pdy el archivo 'tweets.csv'se ha importado como dfDataFrame para su uso.
+
+Instrucciones
+
+Extraiga la columna 'created_at'de dfy asigne el resultado a tweet_time.
+Cree una lista de comprensión que extraiga el tiempo de cada fila en tweet_time. Cada fila es una cadena que representa una marca de tiempo, y accederá a los caracteres del 12 al 19 en la cadena para extraer la hora. Utilizar entrycomo variable de iterador y asignar el resultado a tweet_clock_time. Además, agregue una expresión condicional que verifique si entry[17:19]es igual a '19'.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+# Extract the created_at column from df: tweet_time
+tweet_time = df['created_at']
+
+# Extract the clock time: tweet_clock_time
+tweet_clock_time = [entry[11:19] for entry in tweet_time if entry[17:19] == '19']
+
+# Print the extracted times
+print(tweet_clock_time)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Diccionarios para ciencia de datos
+
+Para este ejercicio, utilizará lo que ha aprendido sobre la zip()función y combinará dos listas en un diccionario.
+
+Estas listas en realidad se extraen de un archivo de conjunto de datos más grande de indicadores de desarrollo mundial del Banco Mundial. Para fines pedagógicos, hemos procesado previamente este conjunto de datos en las listas con las que trabajará.
+
+La primera lista feature_namescontiene los nombres de encabezado del conjunto de datos y la segunda lista row_valscontiene los valores reales de una fila del conjunto de datos, correspondientes a cada uno de los nombres de encabezado.
+
+Instrucciones
+
+Cree un objeto zip llamando zip()y pasándole feature_namesy row_vals. Asignar el resultado a zipped_lists.
+Cree un diccionario a partir del zipped_listsobjeto zip llamando dict()con zipped_lists. Asigne el diccionario resultante a rs_dict.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Zip lists: zipped_lists
+zipped_lists = zip(feature_names, row_vals)
+
+# Create a dictionary: rs_dict
+rs_dict = dict(zipped_lists)
+
+# Print the dictionary
+print(rs_dict)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Escribir una función para ayudarte
+
+Suponga que necesita repetir el mismo proceso realizado en el ejercicio anterior para muchas, muchas filas de datos. Reescribir su código una y otra vez podría volverse muy tedioso, repetitivo e imposible de mantener.
+
+En este ejercicio, creará una función para albergar el código que escribió anteriormente para hacer las cosas más fáciles y concisas. ¿Por qué? De esta manera, ¡solo necesita llamar a la función y proporcionar las listas apropiadas para crear sus diccionarios! Nuevamente, las listas feature_namesy row_valsestán precargadas y contienen los nombres de encabezado del conjunto de datos y los valores reales de una fila del conjunto de datos, respectivamente.
+
+Instrucciones
+
+Defina la función lists2dict()con dos parámetros: el primero es list1y el segundo es list2.
+Devuelve el diccionario resultante rs_dicten formato lists2dict().
+Llame a la lists2dict()función con los argumentos feature_namesy row_vals. Asignar el resultado de la llamada a la función a rs_fxn.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Define lists2dict()
+def lists2dict(list1, list2):
+    """Return a dictionary where list1 provides
+    the keys and list2 provides the values."""
+
+    # Zip lists: zipped_lists
+    zipped_lists = zip(list1, list2)
+
+    # Create a dictionary: rs_dict
+    rs_dict = dict(zipped_lists)
+
+    # Return the dictionary
+    return rs_dict
+
+# Call lists2dict: rs_fxn
+rs_fxn = lists2dict(feature_names, row_vals)
+
+# Print rs_fxn
+print(rs_fxn)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Usando una lista de comprensión:
+
+Esta vez, utilizará la lists2dict()función que definió en el último ejercicio para convertir un montón de listas en una lista de diccionarios con la ayuda de una lista de comprensión.
+
+La lists2dict()función ya está precargada, junto con un par de listas, feature_namesy row_lists. feature_namescontiene los nombres de encabezado del conjunto de datos del Banco Mundial y row_listses una lista de listas, donde cada sublista es una lista de valores reales de una fila del conjunto de datos.
+
+Su objetivo es utilizar una lista de comprensión para generar una lista de dictados, donde las claves son los nombres de los encabezados y los valores son las entradas de las filas.
+
+Instrucciones
+
+Inspeccione el contenido de row_listsimprimiendo las dos primeras listas en formato row_lists.
+Cree una lista de comprensión que genere un diccionario usando lists2dict()para cada sublista en row_lists. Las claves son de la feature_nameslista y los valores son las entradas de fila en row_lists. Úselo sublistcomo su variable de iterador y asigne la lista resultante de diccionarios a list_of_dicts.
+Mire los dos primeros diccionarios list_of_dictsimprimiéndolos.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+#hare que una lista d elistas quede como dict con sus key : values respectivos usando feature_names como key y cada sublista que contiene los valores de cada key  tomando solamente las 2s 1ras sublistas o valores
+# Print the first two lists in row_lists
+print(row_lists[0])
+print('-' * 50)
+print(row_lists[1])
+print('-' * 50)
+# Turn list of lists into list of dicts: list_of_dicts
+list_of_dicts = [lists2dict(feature_names, sublist) for sublist in row_lists]
+
+# Print the first two dictionaries in list_of_dicts
+print(list_of_dicts[0])
+print('-' * 50)
+print(list_of_dicts[1])
+--------------------------------------------------------------------------------------------------------------------------------------------
+Convirtiendo todo esto en un DataFrame
+
+Ha comprimido listas juntas, ha creado una función para albergar su código e incluso ha utilizado la función en una lista de comprensión para generar una lista de diccionarios. ¡Eso fue mucho trabajo e hiciste un gran trabajo!
+
+Ahora utilizará todos estos para convertir la lista de diccionarios en un DataFrame de pandas. Verás lo conveniente que es generar un DataFrame a partir de diccionarios con la DataFrame()función del paquete pandas.
+
+La lists2dict()función, la feature_nameslista y la row_listslista se han cargado previamente para este ejercicio.
+
+¡Ve a por ello!
+
+Instrucciones
+
+Para usar la DataFrame()función que necesita, primero importe el paquete pandas con el alias pd.
+Cree un DataFrame de la lista de diccionarios en list_of_dictsllamando pd.DataFrame(). Asigne el DataFrame resultante a df.
+Inspeccione el contenido de la dfimpresión del cabezal del DataFrame. Se dfpuede acceder a la cabeza del DataFrame llamando df.head().
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Import the pandas package
+import pandas as pd
+
+# Turn list of lists into list of dicts: list_of_dicts
+list_of_dicts = [lists2dict(feature_names, sublist) for sublist in row_lists]
+
+# Turn list of dicts into a DataFrame: df
+df = pd.DataFrame(list_of_dicts)
+
+# Print the head of the DataFrame
+print(df.head())
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Procesamiento de datos en fragmentos (1):
+
+A veces, las fuentes de datos pueden tener un tamaño tan grande que almacenar todo el conjunto de datos en la memoria requiere demasiados recursos. En este ejercicio, procesará las primeras 1000 filas de un archivo línea por línea, para crear un diccionario de la cantidad de veces que aparece cada país en una columna del conjunto de datos.
+
+El archivo csv 'world_dev_ind.csv'está en su directorio actual para su uso. Para comenzar, debe abrir una conexión a este archivo utilizando lo que se conoce como administrador de contexto. Por ejemplo, el comando with open('datacamp.csv') as datacampvincula el archivo csv 'datacamp.csv'como datacampen el administrador de contexto. Aquí, la withdeclaración es el administrador de contexto y su propósito es garantizar que los recursos se asignen de manera eficiente al abrir una conexión a un archivo.
+
+Si desea obtener más información sobre los administradores de contexto, consulte el curso DataCamp sobre la importación de datos en Python.
+
+Instrucciones
+
+Úselo open()para vincular el archivo csv 'world_dev_ind.csv'como fileen el administrador de contexto.
+Complete el forciclo para que se repita 1000 veces para realizar el cuerpo del ciclo y procesar solo las primeras 1000 filas de datos del archivo.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Open a connection to the file
+with open('world_dev_ind.csv') as file:
+    # Skip the column names
+    file.readline()
+
+    # Initialize an empty dictionary: counts_dict
+    counts_dict = {}
+
+    # Process only the first 1000 rows
+    for j in range(1000):
+
+        # Split the current line into a list: line
+        line = file.readline().split(',')
+
+        # Get the value for the first column: first_col
+        first_col = line[0]
+
+        # If the column value is in the dict, increment its value
+        if first_col in counts_dict.keys():
+            counts_dict[first_col] += 1
+
+        # Else, add to the dict and set value to 1
+        else:
+            counts_dict[first_col] = 1
+
+# Print the resulting dictionary
+print(counts_dict)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Escribir un generador para cargar datos en fragmentos (2)
+
+En el ejercicio anterior, procesó un archivo línea por línea para un número determinado de líneas. Sin embargo, ¿qué sucede si desea hacer esto para todo el archivo?
+
+En este caso, sería útil utilizar generadores . Los generadores permiten a los usuarios evaluar los datos con pereza . Este concepto de evaluación perezosa es útil cuando se tiene que hacer frente a grandes bases de datos, ya que le permite generar valores de una manera eficiente por ceder sólo fragmentos de datos a la vez en lugar de todo el asunto a la vez.
+
+En este ejercicio, definirá una función generadora read_large_file()que produce un objeto generador que produce una sola línea de un archivo cada vez que next()se llama a él. El archivo csv 'world_dev_ind.csv'está en su directorio actual para su uso.
+
+Tenga en cuenta que cuando abre una conexión a un archivo, el objeto de archivo resultante ya es un generador. Entonces, en la naturaleza, no tendrá que crear explícitamente objetos generadores en casos como este. Sin embargo, por razones pedagógicas, le pedimos que practique cómo hacer esto aquí con la read_large_file()función. ¡Ve a por ello!
+
+Instrucciones
+
+En la función read_large_file(), lea una línea file_objectusando el método readline(). Asignar el resultado a data.
+En la función read_large_file(), yieldla línea se lee del archivo data.
+En el administrador de contexto, cree un objeto generador gen_filellamando a su función de generador read_large_file()y pasándola file.
+Imprima las primeras tres líneas producidas por el objeto generador gen_fileusando next().
+Mostrar respuesta (- 70 XP)
+Insinuación
+Para aplicar un método x()de un objeto y, hacer: y.x().
+Asegúrese de producir la línea leída desde el archivo usando yield datadentro del whileciclo.
+Pasa filecomo argumento para read_large_file().
+En la llamada a next(), pase el objeto generador gen_file. Pase esta llamada a las tres print()llamadas para imprimir una línea tras otra.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+# Define read_large_file()
+def read_large_file(file_object):
+    """A generator function to read a large file lazily."""
+
+    # Loop indefinitely until the end of the file
+    while True:
+
+        # Read a line from the file: data
+        data = file_object.readline()
+
+        # Break if this is the end of the file
+        if not data:
+            break
+
+        # Yield the line of data
+        yield data
+        
+# Open a connection to the file
+with open('world_dev_ind.csv') as file:
+
+    # Create a generator object for the file: gen_file
+    gen_file = (read_large_file(file))
+
+    # Print the first three lines of the file
+    print(next(gen_file))
+    print(next(gen_file))
+    print(next(gen_file))
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Escribir un generador para cargar datos en fragmentos (3)
+
+¡Excelente! Acaba de crear una función de generador que puede usar para ayudarlo a procesar archivos grandes.
+
+Ahora usemos su función de generador para procesar el conjunto de datos del Banco Mundial como lo hizo anteriormente. Procesará el archivo línea por línea para crear un diccionario de los conteos de cuántas veces aparece cada país en una columna del conjunto de datos. Sin embargo, para este ejercicio, no procesará solo 1000 filas de datos, ¡procesará todo el conjunto de datos!
+
+La función de generador read_large_file()y el archivo csv 'world_dev_ind.csv'están precargados y listos para su uso. ¡Ve a por ello!
+
+Instrucciones
+
+Vincular el archivo 'world_dev_ind.csv'a fileen el gestor de contexto con open().
+Complete el forciclo para que repita sobre el generador desde la llamada a read_large_file()para procesar todas las filas del archivo.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+# Initialize an empty dictionary: counts_dict
+counts_dict = {}
+
+# Open a connection to the file
+with open('world_dev_ind.csv') as file:
+
+    # Iterate over the generator from read_large_file()
+    for line in read_large_file(file):
+
+        row = line.split(',')
+        print(row)
+        print('-' * 50)
+        first_col = row[0]
+
+        if first_col in counts_dict.keys():
+            counts_dict[first_col] += 1
+        else:
+            counts_dict[first_col] = 1
+
+# Print            
+print(counts_dict)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Escribir un iterador para cargar datos en fragmentos (1)
+
+Otra forma de leer datos demasiado grandes para almacenarlos en la memoria en fragmentos es leer el archivo como DataFrames de cierta longitud, digamos 100. Por ejemplo, con el paquete pandas (importado como pd), puede hacerlo pd.read_csv(filename, chunksize=100). Esto crea un objeto lector iterable , lo que significa que puede usarlo next().
+
+En este ejercicio, leerá un archivo en pequeños fragmentos de DataFrame con read_csv(). Va a utilizar los datos de los indicadores del Banco Mundial 'ind_pop.csv', disponibles en su directorio actual, para ver el indicador de población urbana de numerosos países y años.
+
+Instrucciones
+
+Utilice pd.read_csv()para leer en 'ind_pop.csv'trozos de tamaño 10. Asigne el resultado a df_reader.
+Imprima los dos primeros trozos de df_reader.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Import the pandas package
+import pandas as pd
+
+# Initialize reader object: df_reader
+df_reader = pd.read_csv('ind_pop.csv', chunksize=10)
+
+# Print two chunks
+print(next(df_reader))
+print(next(df_reader))
+--------------------------------------------------------------------------------------------------------------------------------------------
+Escribir un iterador para cargar datos en fragmentos (2)
+
+En el ejercicio anterior, solía read_csv()leer fragmentos de DataFrame de un conjunto de datos grande. En este ejercicio, leerá un archivo con un tamaño de fragmento de DataFrame más grande y luego procesará los datos del primer fragmento.
+
+Para procesar los datos, creará otro DataFrame compuesto solo por las filas de un país específico. Luego, comprimirá dos de las columnas del nuevo DataFrame 'Total Population'y 'Urban population (% of total)'. Finalmente, creará una lista de tuplas a partir del objeto zip, donde cada tupla está compuesta por un valor de cada una de las dos columnas mencionadas.
+
+Vas a utilizar los datos de 'ind_pop_data.csv', disponibles en tu directorio actual. Pandas se ha importado como pd.
+
+Instrucciones
+
+Úselo pd.read_csv()para leer el archivo 'ind_pop_data.csv'en trozos de tamaño 1000. Asignar el resultado a urb_pop_reader.
+Obtenga el primer fragmento de DataFrame del iterable urb_pop_readery asígnelo a df_urb_pop.
+Seleccione solo las filas de df_urb_popque tengan una 'CountryCode'de 'CEB'. Para hacer esto, compare si df_urb_pop['CountryCode']es igual a 'CEB'dentro de los corchetes en df_urb_pop[____].
+Usando zip(), comprima las columnas 'Total Population'y 'Urban population (% of total)'de df_pop_ceb. Asigne el objeto zip resultante a pops.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+# Initialize reader object: urb_pop_reader
+urb_pop_reader = pd.read_csv('ind_pop_data.csv', chunksize=1000)
+
+# Get the first DataFrame chunk: df_urb_pop
+df_urb_pop = next(urb_pop_reader)
+
+# Check out the head of the DataFrame
+print(df_urb_pop.head())
+
+# Check out specific country: df_pop_ceb
+df_pop_ceb = df_urb_pop[df_urb_pop['CountryCode'] == 'CEB']
+# Zip DataFrame columns of interest: pops
+pops = zip(df_pop_ceb['Total Population'], df_pop_ceb['Urban population (% of total)'])
+
+# Turn zip object into list: pops_list
+pops_list = list(pops)
+
+# Print pops_list
+print(pops_list)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Escribir un iterador para cargar datos en fragmentos (3)
+
+Ya se está acostumbrando a leer y procesar datos en trozos. Mejoremos sus habilidades un poco más agregando una columna a un DataFrame.
+
+A partir del código del ejercicio anterior, utilizará una lista de comprensión para crear los valores de una nueva columna 'Total Urban Population'de la lista de tuplas que generó anteriormente. Recuerde del ejercicio anterior que el primer y segundo elemento de cada tupla constan, respectivamente, de valores de las columnas 'Total Population'y 'Urban population (% of total)'. Los valores en esta nueva columna 'Total Urban Population', por lo tanto, son el producto del primer y segundo elemento en cada tupla. Además, debido a que el segundo elemento es un porcentaje, debe dividir el resultado completo entre 100, o alternativamente, multiplicarlo por 0.01.
+
+También trazará los datos de esta nueva columna para crear una visualización de los datos de la población urbana.
+
+Los paquetes pandasy matplotlib.pyplotse han importado como pdy pltrespectivamente para su uso.
+
+Instrucciones
+
+Escriba una lista de comprensión para generar una lista de valores pops_listpara la nueva columna 'Total Urban Population'. La expresión de salida debe ser el producto del primer y segundo elemento de cada tupla en pops_list. Debido a que el segundo elemento es un porcentaje, también debe multiplicar el resultado por 0.01o dividirlo por 100. Además, tenga en cuenta que la columna 'Total Urban Population'solo debería poder tomar valores enteros. Para garantizar esto, asegúrese de convertir la expresión de salida en un número entero con int().
+Cree un diagrama de dispersión donde el eje x son valores de la 'Year'columna y el eje y son valores de la 'Total Urban Population'columna.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Code from previous exercise
+urb_pop_reader = pd.read_csv('ind_pop_data.csv', chunksize=1000)
+df_urb_pop = next(urb_pop_reader)
+df_pop_ceb = df_urb_pop[df_urb_pop['CountryCode'] == 'CEB']
+pops = zip(df_pop_ceb['Total Population'], 
+           df_pop_ceb['Urban population (% of total)'])
+pops_list = list(pops)
+
+# Use list comprehension to create new DataFrame column 'Total Urban Population'
+df_pop_ceb['Total Urban Population'] = [int((i * j)/100) for i, j in pops_list]
+print(df_pop_ceb)
+# Plot urban population data
+df_pop_ceb.plot(kind='scatter', x='Year', y='Total Urban Population', marker='*', color='r')
+plt.show()
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Escribir un iterador para cargar datos en fragmentos (4)
+En los ejercicios anteriores, solo procesó los datos del primer fragmento de DataFrame. Esta vez, agregará los resultados de todos los fragmentos de DataFrame en el conjunto de datos. Esto básicamente significa que ahora procesará todo el conjunto de datos. ¡Esto es genial porque podrá procesar todo el conjunto de datos grande simplemente trabajando en partes más pequeñas!
+
+Vas a utilizar los datos de 'ind_pop_data.csv', disponibles en tu directorio actual. Los paquetes pandasy matplotlib.pyplotse han importado como pdy pltrespectivamente para su uso.
+
+Instrucciones
+
+Inicialice un DataFrame vacío datausando pd.DataFrame().
+En el forciclo, repita urb_pop_readerpara poder procesar todos los fragmentos de DataFrame en el conjunto de datos.
+Usando el método append()del DataFrame data, agregue df_pop_ceba data.
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Initialize reader object: urb_pop_reader
+urb_pop_reader = pd.read_csv('ind_pop_data.csv', chunksize=1000)
+
+# Initialize empty DataFrame: data
+data = pd.DataFrame()
+
+# Iterate over each DataFrame chunk
+for df_urb_pop in urb_pop_reader:
+
+    # Check out specific country: df_pop_ceb
+    df_pop_ceb = df_urb_pop[df_urb_pop['CountryCode'] == 'CEB']
+
+    # Zip DataFrame columns of interest: pops
+    pops = zip(df_pop_ceb['Total Population'],
+                df_pop_ceb['Urban population (% of total)'])
+
+    # Turn zip object into list: pops_list
+    pops_list = list(pops)
+
+    # Use list comprehension to create new DataFrame column 'Total Urban Population'
+    df_pop_ceb['Total Urban Population'] = [int(tup[0] * tup[1] * 0.01) for tup in pops_list]
+    
+    # Append DataFrame chunk to data: data
+    data = data.append(df_pop_ceb)
+
+# Plot urban population data
+data.plot(kind='scatter', x='Year', y='Total Urban Population')
+plt.show()
+--------------------------------------------------------------------------------------------------------------------------------------------
+Escribir un iterador para cargar datos en fragmentos (5)
+
+Esta es la última etapa. Ha aprendido mucho sobre el procesamiento de un gran conjunto de datos en fragmentos. En este último ejercicio, pondrá todo el código para procesar los datos en una única función para que pueda reutilizar el código sin tener que volver a escribir las mismas cosas.
+
+Va a definir la función plot_pop()que toma dos argumentos: el nombre de archivo del archivo que se va a procesar y el código de país de las filas que desea procesar en el conjunto de datos.
+
+Debido a que todo el código anterior que ha escrito en los ejercicios anteriores estará alojado plot_pop(), llamar a la función ya hace lo siguiente:
+
+Carga del archivo fragmento a fragmento,
+Crear la nueva columna de valores de población urbana, y
+Trazar los datos de población urbana.
+Eso es mucho trabajo, pero la función ahora hace que sea conveniente repetir el mismo proceso para cualquier archivo y código de país que desee procesar y visualizar.
+
+Vas a utilizar los datos de 'ind_pop_data.csv', disponibles en tu directorio actual. Los paquetes pandas y matplotlib.pyplot se han importado como pdy pltrespectivamente para su uso.
+
+Una vez que haya terminado, tómese un momento para ver las tramas y reflexionar sobre las nuevas habilidades que ha adquirido. ¡El viaje no termina aquí! Si ha disfrutado trabajando con estos datos, puede continuar explorándolos utilizando la versión preprocesada disponible en Kaggle .
+
+Instrucciones
+
+Defina la función plot_pop()que tiene dos argumentos: el primero es filenamepara que se procese el archivo y el segundo es country_codepara el país que se procesará en el conjunto de datos.
+Llame plot_pop()para procesar los datos del código de país 'CEB'en el archivo 'ind_pop_data.csv'.
+Llame plot_pop()para procesar los datos del código de país 'ARB'en el archivo 'ind_pop_data.csv'.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Define plot_pop()
+def plot_pop(filename, country_code):
+
+    # Initialize reader object: urb_pop_reader
+    urb_pop_reader = pd.read_csv(filename, chunksize=1000)
+
+    # Initialize empty DataFrame: data
+    data = pd.DataFrame()
+    
+    # Iterate over each DataFrame chunk
+    for df_urb_pop in urb_pop_reader:
+        # Check out specific country: df_pop_ceb
+        df_pop_ceb = df_urb_pop[df_urb_pop['CountryCode'] == country_code]
+
+        # Zip DataFrame columns of interest: pops
+        pops = zip(df_pop_ceb['Total Population'],
+                    df_pop_ceb['Urban population (% of total)'])
+
+        # Turn zip object into list: pops_list
+        pops_list = list(pops)
+
+        # Use list comprehension to create new DataFrame column 'Total Urban Population'
+        df_pop_ceb['Total Urban Population'] = [int(tup[0] * tup[1] * 0.01) for tup in pops_list]
+    
+        # Append DataFrame chunk to data: data
+        data = data.append(df_pop_ceb)
+
+    # Plot urban population data
+    data.plot(kind='scatter', x='Year', y='Total Urban Population', title=country_code)
+    plt.show()
+
+# Set the filename: fn
+fn = 'ind_pop_data.csv'
+
+# Call plot_pop for country code 'CEB'
+
+plot_pop(fn, 'CEB')
+# Call plot_pop for country code 'ARB'
+plot_pop(fn, 'ARB')
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
+
