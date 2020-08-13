@@ -244,24 +244,596 @@ sns.palplot(sns.color_palette("Purples", 8))
 plt.show()
 -------------------------------------------------------------------------------------------------------------------------------------------
 
+Personalizaciones de parcelas adicionales
+La matplotlibAPI admite muchas personalizaciones comunes, como etiquetar ejes, agregar títulos y establecer límites. Completemos otro ejercicio de personalización.
+
+Instrucciones
+
+Crea un distplotde la fmr_1columna.
+Modifique la etiqueta del eje x para que diga "Alquiler de mercado justo de 1 habitación".
+Cambie los límites del eje x para que estén entre 100 y 1500.
+Agregue un título descriptivo de "US Rent" a la parcela.
 
 
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+# Create a figure and axes
+fig, ax = plt.subplots()
+
+# Plot the distribution of 1 bedroom rents
+sns.distplot(df['fmr_1'], ax=ax)
+
+# Modify the properties of the plot
+ax.set(xlabel="1 Bedroom Fair Market Rent",
+       xlim=(100, 1500),
+       title="US Rent")
+
+# Display the plot
+plt.show()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Agregar anotaciones:
+
+Cada una de las mejoras que hemos cubierto se puede combinar. En el siguiente ejercicio, podemos anotar nuestra gráfica de distribución para incluir líneas que muestren los precios de alquiler medio y mediano.
+
+Para este ejemplo, la paleta se ha cambiado para brightusar sns.set_palette()
+
+Instrucciones
+
+Crea una figura y ejes.
+Trace la fmr_1distribución de la columna.
+Agregue una línea vertical usando axvlinepara mediany meande los valores que ya están definidos.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Create a figure and axes. Then plot the data
+fig, ax = plt.subplots()
+sns.distplot(df['fmr_1'], ax=ax)
+
+# Customize the labels and limits
+ax.set(xlabel="1 Bedroom Fair Market Rent", xlim=(100,1500), title="US Rent")
+
+# Add vertical lines for the median and mean
+ax.axvline(x=df['fmr_1'].median(), color='m', label='Median', linestyle='--', linewidth=2)
+ax.axvline(x=df['fmr_1'].mean(), color='b', label='Mean', linewidth=2)
+ax.axvline(x=df['fmr_1'].std(), color='pink', label='std', linewidth=2)
+
+# Show the legend and plot the data
+ax.legend()
+plt.show()
+-------------------------------------------------------------------------------------------------------------------------------------------
+					EJEMPLO COMPLETO DE VISUALIZACION DE DATOS SON SEABORN Y MATPLOTLIB
+
+Varias parcelas
+
+Para el ejercicio final, trazaremos una comparación de las rentas del mercado justo para apartamentos de 1 y 2 dormitorios.
+
+Instrucciones
+
+Cree objetos de dos ejes ax0y ax1.
+Trazar fmr_1en ax0y fmr_2en ax1.
+Muestre las parcelas una al lado de la otra.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Create a plot with 1 row and 2 columns that share the y axis label
+fig, (ax0, ax1) = plt.subplots(nrows=1, ncols=2, sharey=True)
+
+# Plot the distribution of 1 bedroom apartments on ax0
+sns.distplot(df['fmr_1'], ax=ax0)
+ax0.set(xlabel="1 Bedroom Fair Market Rent", xlim=(100,1500))
+ax0.axvline(x=df['fmr_1'].mean(), label='media', linestyle='-', linewidth=2, color='pink')
+
+# Plot the distribution of 2 bedroom apartments on ax1
+sns.distplot(df['fmr_2'], ax=ax1)
+ax1.set(xlabel="2 Bedroom Fair Market Rent", xlim=(100,1500))
+
+ax1.axvline(x=df['fmr_2'].mean(), label='media', linestyle='-', linewidth=2, color='b')
+ax1.legend()
+ax0.legend()
+# Display the plot
+plt.show()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+						stripplot () y swarmplot ()
+
+Muchos conjuntos de datos tienen datos categóricos y Seaborn admite varios tipos de gráficos útiles para estos datos. En este ejemplo, continuaremos analizando los datos de Mejoramiento Escolar de 2010 y segmentaremos los datos por los tipos de modelos de mejoramiento escolar utilizados.
+
+Como recordatorio, aquí está la distribución de KDE de los montos de los premios:
+
+Si bien esta trama es útil, hay mucho más que podemos aprender al observar los Award_Amounts individuales y cómo se distribuyen entre las 4 categorías.
+
+Instrucciones
+
+Cree un swarmplot()de los mismos datos, pero también incluya el hueby Region.
+Insinuación
+hue cambia el color de una observación según el valor de la columna del DataFrame.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+# Create and display a swarmplot with hue set to the Region
+sns.swarmplot(data=df,
+              x='Award_Amount',
+              y='Model Selected',
+              hue='Region')
+
+plt.show()
+#lo mismo es para stripplot
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+						boxplots, violinplots y lvplots
+
+Los gráficos categóricos de Seaborn también admiten varias representaciones abstractas de datos. La API para cada uno de estos es el mismo, por lo que es muy conveniente probar cada gráfico y ver si los datos se prestan a uno sobre el otro.
+
+En este ejercicio, utilizaremos las opciones de paleta de colores presentadas en el Capítulo 2 para mostrar cómo los colores se pueden incluir fácilmente en los gráficos.
+
+Instrucciones
+
+Cree y muestre una boxplotde los datos con Award_Amounten el eje xy Model Selecteden el eje y.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+						boxplots, violinplots y lvplots
+
+Los gráficos categóricos de Seaborn también admiten varias representaciones abstractas de datos. La API para cada uno de estos es el mismo, por lo que es muy conveniente probar cada gráfico y ver si los datos se prestan a uno sobre el otro.
+
+En este ejercicio, utilizaremos las opciones de paleta de colores presentadas en el Capítulo 2 para mostrar cómo los colores se pueden incluir fácilmente en los gráficos.
+
+Instrucciones
+
+Cree y muestre un lvplotusando la Pairedpaleta y la Regioncolumna como el hue.
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Create a lvplot with the Paired palette and the Region column as the hue
+sns.lvplot(data=df,
+         x='Award_Amount',
+         y='Model Selected',
+         palette='Paired',
+         hue='Region')
+
+plt.show()
+plt.clf()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+				gráficos de barras, gráficos de puntos y gráficos de conteo
+
+El grupo final de gráficos categóricos son barplots, pointplotsy countplotque crean resúmenes estadísticos de los datos. Los gráficos siguen una API similar a los otros gráficos y permiten una mayor personalización para el problema específico en cuestión.
+
+Instrucciones
+
+Cree un pointplotcon el dfmarco de datos y Model Selecteden el eje xy en el eje y Award_Amount.
+Utilice a capsizeen pointplotpara mostrar el intervalo de confianza.
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Create a pointplot and include the capsize in order to show bars on the confidence interval
+sns.pointplot(data=df,
+         y='Award_Amount',
+         x='Model Selected',
+         capsize=.1)
+
+plt.show()
+plt.clf()
+---------
+# Create a barplot with each Region shown as a different color
+sns.barplot(data=df,
+         y='Award_Amount',
+         x='Model Selected',
+         hue='Region')
+
+plt.show()
+plt.clf()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+						Gráficos de regresión y residuales
+
+La regresión lineal es una herramienta útil para comprender la relación entre variables numéricas. Seaborn tiene herramientas simples pero poderosas para examinar estas relaciones.
+
+Para estos ejercicios, veremos algunos detalles del Departamento de Educación de EE. UU. Sobre la información de matrícula universitaria de 4 años y veremos si hay alguna información interesante sobre qué variables podrían ayudar a predecir los costos de matrícula.
+
+Para estos ejercicios, todos los datos se cargan en la dfvariable.
+
+Instrucciones
+
+Grafique una gráfica de regresión comparando Tuitionlas puntuaciones promedio del SAT ( SAT_AVG_ALL).
+Asegúrese de que los valores se muestren como triángulos verdes.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Display a regression plot for Tuition
+sns.regplot(data=df,
+         y='Tuition',
+         x="SAT_AVG_ALL",
+         marker='^',
+         color='g')
+
+plt.show()
+plt.clf()
+#print(df['SAT_AVG_ALL'].head())
+------------------------------------part2--------------------------------
+# Display the residual plot
+sns.residplot(data=df,
+          y='Tuition',
+          x="SAT_AVG_ALL",
+          color='g')
+
+plt.show()
+plt.clf()
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+					Parámetros de la gráfica de regresión
+
+El gráfico de regresión de Seaborn admite varios parámetros que se pueden usar para configurar los gráficos y generar más información sobre los datos.
+
+Para el próximo ejercicio, podemos ver la relación entre la matrícula y el porcentaje de estudiantes que reciben becas Pell. Una beca Pell se basa en la necesidad económica del estudiante y está subvencionada por el gobierno de los Estados Unidos. En este conjunto de datos, cada Universidad tiene un porcentaje de estudiantes que reciben estas becas. Dado que estos datos son continuos, el uso x_binspuede ser útil para dividir los porcentajes en categorías para resumir y comprender los datos.
+
+Cree otro gráfico que divida la PCTPELLcolumna en 5 contenedores diferentes.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+# Create another plot that estimates the tuition by PCTPELL
+sns.regplot(data=df,
+            y='Tuition',
+            x="PCTPELL",
+            x_bins=5)
+
+plt.show()
+plt.clf()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+								Binning de datos
+		
+Cuando los datos en el eje x son un valor continuo, puede ser útil dividirlos en diferentes contenedores para obtener una mejor visualización de los cambios en los datos.
+
+Para este ejercicio, veremos la relación entre la matrícula y la población de pregrado abreviada como UGen estos datos. Comenzaremos observando un diagrama de dispersión de los datos y examinando el impacto de diferentes tamaños de contenedor en la visualización.
+
+Instrucciones
+
+- Cree un regplotde Tuitiony UGy configure el fit_regparámetro en Falsepara deshabilitar la línea de regresión.
+- Create another plot with the UG data divided into 5 bins.
+- Create a regplot() with the data divided into 8 bins.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Create a scatter plot by disabling the regression line
+sns.regplot(data=df,
+            y='Tuition',
+            x="UG",
+            fit_reg=False)
+
+plt.show()
+plt.clf()
+---------------------------PART2-------------------
+# Create a scatter plot and bin the data into 5 bins
+sns.regplot(data=df,
+            y='Tuition',
+            x="UG",
+            x_bins=5)
+
+plt.show()
+plt.clf()
+---------------------------PART3-------------------
+
+# Create a regplot and bin the data into 8 bins
+sns.regplot(data=df,
+         y='Tuition',
+         x="UG",
+         x_bins=8)
+
+plt.show()
+plt.clf()
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+							Creando mapas de calor
+		
+Un mapa de calor es un diagrama de matriz común que se puede utilizar para resumir gráficamente la relación entre dos variables. Para este ejercicio, comenzaremos observando a los invitados del Show diario de 1999 a 2015 y veremos cómo las ocupaciones de los invitados han cambiado con el tiempo.
+
+Los datos incluyen la fecha de aparición de cada invitado, así como su ocupación. Para el primer ejercicio, necesitamos obtener los datos en el formato correcto para que la heatmapfunción de Seaborn represente correctamente los datos. Todos los datos ya se han leído en la dfvariable.
+
+Instrucciones
+
+Utilice la crosstab()función de pandas para crear una tabla de visitas por Groupy Year.
+Imprima el pd_crosstabDataFrame.
+Trace los datos utilizando Seaborn heatmap().
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+# Create a crosstab table of the data
+pd_crosstab = pd.crosstab(df["Group"], df["YEAR"])
+print(pd_crosstab)
+
+
+# Plot a heatmap of the table
+sns.heatmap(pd_crosstab)
+
+# Rotate tick marks for visibility
+plt.yticks(rotation=0)
+plt.xticks(rotation=90)
+
+plt.show()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+						Personalización de mapas de calor
+Seaborn admite varios tipos de personalizaciones adicionales para mejorar la salida de un mapa de calor. Para este ejercicio, continuaremos usando los datos de Daily Show que están almacenados en la dfvariable pero personalizaremos la salida.
+
+Instrucciones
+
+Cree una tabla de referencias cruzadas de GroupyYEAR
+Crea un mapa de calor de los datos usando la BuGnpaleta
+Desactive cbary aumente linewidtha 0,3
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+# Create the crosstab DataFrame
+pd_crosstab = pd.crosstab(df["Group"], df["YEAR"])
+
+# Plot a heatmap of the table with no color bar and using the BuGn palette
+sns.heatmap(pd_crosstab, cbar=False, cmap="BuGn", linewidths=0.3)
+
+# Rotate tick marks for visibility
+plt.yticks(rotation=0)
+plt.xticks(rotation=90)
+
+#Show the plot
+plt.show()
+plt.clf()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+							Construyendo un FacetGrid
+
+Seaborn's FacetGrides la base para la construcción de redes con reconocimiento de datos. Una cuadrícula con reconocimiento de datos le permite crear una serie de pequeños gráficos que pueden ser útiles para comprender relaciones complejas de datos.
+
+Para estos ejercicios, continuaremos examinando los datos del cuadro de mando universitario del Departamento de Educación de EE. UU. Este rico conjunto de datos tiene muchos elementos de datos interesantes que podemos trazar con Seaborn.
+
+Al construir un FacetGrid, hay dos pasos:
+
+Crea un FacetGridobjeto con columnas, filas o matices.
+Asigne parcelas individuales a la cuadrícula.
+
+Instrucciones
+
+Cree un FacetGridgráfico que muestre un gráfico de puntos de las puntuaciones medias del SAT SAT_AVG_ALL.
+Utilícelo row_orderpara controlar el orden de visualización de los tipos de grados.
+
+
+NOTA=>¡Excelente trabajo! Estos gráficos nos dicen mucho sobre las relaciones entre los puntajes promedio del SAT por tipos de títulos ofrecidos en una universidad.
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+# Create FacetGrid with Degree_Type and specify the order of the rows using row_order
+g2 = sns.FacetGrid(df, 
+             row="Degree_Type",
+             row_order=['Graduate', 'Bachelors', 'Associates', 'Certificate'])
+
+# Map a pointplot of SAT_AVG_ALL onto the grid
+g2.map(sns.pointplot, 'SAT_AVG_ALL')
+
+# Show the plot
+plt.show()
+plt.clf()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+						Usando un diagrama de factores factorplot():
+
+En muchos casos, Seaborn's factorplot()puede ser una forma más sencilla de crear un FacetGrid.gráfico. En lugar de crear una cuadrícula y mapear el gráfico, podemos usar el factorplot() para crear un gráfico con una línea de código.
+
+Para este ejercicio, recrearemos uno de los gráficos del ejercicio anterior usando factorplot() y mostraremos cómo crear un boxploten una cuadrícula consciente de datos.
+
+INSTRUCCIONES:
+
+1) Cree un factorplot()que contenga un diagrama de caja ( box) de Tuitionvalores que varíen Degree_Typeentre filas.
+2) Cree un factorplot()promedio SAT ( SAT_AVG_ALL) con facetas Degree_Typeque muestre una gráfica de puntos ( point).
+Utilice row_orderpara ordenar los grados de mayor a menor nivel.
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+# Create a factor plot that contains boxplots of Tuition values
+sns.factorplot(data=df,
+         x='Tuition',
+         kind='box',
+         row='Degree_Type')
+
+plt.show()
+plt.clf()
+--------------------------------PART2-------------------------------------------
+# Create a facetted pointplot of Average SAT_AVG_ALL scores facetted by Degree Type 
+sns.factorplot(data=df,
+        x='SAT_AVG_ALL',
+        kind='point',
+        row='Degree_Type',
+        row_order=['Graduate', 'Bachelors', 'Associates', 'Certificate'])
+
+plt.show()
+plt.clf()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+								Usando un lmplot
+
+Se lmplotutiliza para trazar diagramas de dispersión con líneas de regresión en objetos FacetGrid. La API es similar factorplotcon la diferencia de que el comportamiento predeterminado de lmplotes trazar líneas de regresión.
+
+Para el primer conjunto de ejercicios, analizaremos la población de pregrado ( UG) y la compararemos con el porcentaje de estudiantes que reciben becas Pell ( PCTPELL).
+
+Para el segundo lmplotejercicio, podemos ver las relaciones entre los puntajes promedio del SAT y la matrícula en los diferentes tipos de títulos y escuelas públicas y sin fines de lucro.
+
+Instrucciones
+
+1) Cree un FacetGrid()con columnas "Degree_Type" y un diagrama de dispersión de "UG" y "PCTPELL".
+2) Cree un lmplot()usando los mismos valores de FacetGrid().
+3) Cree una faceta que lmplot()compare "SAT AVG ALL" con "Matrícula" con columnas que varíen por "Propiedad" y filas por "Degree_Type".
+En el lmplot()complemento a huepara universidades solo para mujeres.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Create a FacetGrid varying by column and columns ordered with the degree_order variable
+g = sns.FacetGrid(df, col="Degree_Type", col_order=degree_ord)
+
+# Map a scatter plot of Undergrad Population compared to PCTPELL
+g.map(plt.scatter, 'UG', 'PCTPELL')
+
+plt.show()
+plt.clf()
+
+-----------------------part2----------------------------------------------
+
+# Re-create the plot above as an lmplot
+sns.lmplot(data=df,
+        x='UG',
+        y='PCTPELL',
+        col="Degree_Type",
+        col_order=degree_ord)
+print(degree_ord)
+plt.show()
+plt.clf()
+
+
+---------------part3------------------------------------------------------
+# Create an lmplot that has a column for Ownership, a row for Degree_Type and hue based on the WOMENONLY column
+sns.lmplot(data=df,
+        x='SAT_AVG_ALL',
+        y='Tuition',
+        col="Ownership",
+        row='Degree_Type',
+        row_order=['Graduate', 'Bachelors'],
+        hue='WOMENONLY',
+        col_order=inst_ord)
+
+plt.show()
+plt.clf()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+							Construyendo un PairGrid
+
+Al explorar un conjunto de datos, una de las primeras tareas es explorar la relación entre pares de variables. Este paso es normalmente un precursor de una investigación adicional.
+
+Seaborn admite este análisis por pares utilizando PairGrid. En este ejercicio, veremos los datos de las primas de seguros de automóviles que analizamos en el capítulo 1. Todos los datos están disponibles en la dfvariable.
+
+Instrucciones
+
+1- Compare "fatal_collisions" con "premiums" utilizando un diagrama de dispersión mapeado en a PairGrid().
+2- Cree otro, PairGridpero trace un histograma en la diagonal y un diagrama de dispersión en la diagonal fuera. 
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Create a PairGrid with a scatter plot for fatal_collisions and premiums
+g = sns.PairGrid(df, vars=["fatal_collisions", "premiums"])
+g2 = g.map(plt.scatter)
+
+plt.show()
+plt.clf()
+---------------------------part2-------------------------------------------------
+# Create the same PairGrid but map a histogram on the diag
+g = sns.PairGrid(df, vars=["fatal_collisions", "premiums"])
+g2 = g.map_diag(plt.hist)
+g3 = g2.map_offdiag(plt.scatter)
+
+plt.show()
+plt.clf()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+						Usando una parcela pairplot()
+
+La pairplot()función es generalmente una forma más conveniente de ver las relaciones por pares. En este ejercicio, crearemos los mismos resultados que PairGrid con menos código. Luego, exploraremos algunas funciones adicionales de pairplot(). También usaremos una paleta diferente y ajustaremos la transparencia de las diagonales usando el alphaparámetro.
+
+Instrucciones
+
+Cree otra gráfica de pares usando la "Región" para codificar los resultados con colores.
+Utilice la RdBupaleta para cambiar los colores del gráfico.
+
+Cree otra gráfica de pares usando la "Región" para codificar los resultados con colores.
+Utilice la RdBupaleta para cambiar los colores del gráfico.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Create a pairwise plot of the variables using a scatter plot
+sns.pairplot(data=df,
+        vars=["fatal_collisions", "premiums"],
+        kind='scatter')
+
+plt.show()
+plt.clf()
+------------------------------parts2----------------------------------
+# Plot the same data but use a different color palette and color code by Region
+sns.pairplot(data=df,
+        vars=["fatal_collisions", "premiums"],
+        kind='scatter',
+        hue='Region',
+        palette='RdBu',
+        diag_kws={'alpha':.5})
+
+plt.show()
+plt.clf()
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+						Parámetros adicionales pairplot()
+
+Este ejercicio analizará un par de ejemplos más de cómo pairplot()se puede personalizar para analizar datos rápidamente y determinar áreas de interés que podrían ser dignas de un análisis adicional.
+
+Un área de personalización que es útil es definir explícitamente x_varsy y_varsque desea examinar. En lugar de examinar todas las relaciones por pares, esta capacidad le permite observar solo las interacciones específicas que pueden ser de interés.
+
+Ya hemos analizado el uso kindpara controlar los tipos de parcelas. También podemos utilizar diag_kindpara controlar los tipos de gráficos que se muestran en las diagonales. En el ejemplo final, incluiremos una regresión y un gráfico kde en el pairplot.
+
+Instrucciones
+
+Cree un diagrama de pares que examine fatal_collisions_speedingy fatal_collisions_alcen el eje xy premiumsy insurance_lossesen el eje y.
+Use la huslpaleta y codifique con colores el diagrama de dispersión Region.
+
+Construye una pairplot()con kdeparcelas a lo largo de las diagonales. Incluya insurance_lossesy premiumscomo variables.
+Utilice una reggráfica para las gráficas no diagonales.
+Utilice la BrBGpaleta para la trama final.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+# Build a pairplot with different x and y variables
+sns.pairplot(data=df,
+        x_vars=["fatal_collisions_speeding", "fatal_collisions_alc"],
+        y_vars=['premiums', 'insurance_losses'],
+        kind='scatter',
+        hue='Region',
+        palette='husl')
+
+plt.show()
+plt.clf()
+-----------------------parts2-----------------------------
+
+# plot relationships between insurance_losses and premiums
+sns.pairplot(data=df,
+             vars=["insurance_losses", "premiums"],
+             kind='reg',
+             palette='BrBG',
+             diag_kind = 'kde',
+             hue='Region')
+
+plt.show()
+plt.clf()
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Conjuntos complejos
+El jointplotes un envoltorio de conveniencia en torno a muchas de las JointGridfunciones. Sin embargo, es posible superponer algunos de los JointGridgráficos sobre el estándar jointplot. En este ejemplo, podemos ver las diferentes distribuciones de ciclistas que se consideran casualfrente a los que sí registered.
+
+Instrucciones
+
+Construya una parcela similar para los registeredusuarios.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+# Replicate the above plot but only for registered riders
+g = (sns.jointplot(x="temp",
+             y="registered",
+             kind='scatter',
+             data=df,
+             marginal_kws=dict(bins=10, rug=True))
+    .plot_joint(sns.kdeplot))
+
+plt.show()
+plt.clf()
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
-
-
--------------------------------------------------------------------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
--------------------------------------------------------------------------------------------------------------------------------------------
