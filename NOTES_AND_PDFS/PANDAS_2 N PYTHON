@@ -1,0 +1,242 @@
+NOTAS=> Inspección de un marco de datos EN LA LIBRERIA PANDAS
+
+
+Cuando obtiene un nuevo DataFrame para trabajar, lo primero que debe hacer es explorarlo y ver qué contiene. Hay varios métodos y atributos útiles para esto.
+
+.head() devuelve las primeras filas (la "cabeza" del DataFrame).
+.info() muestra información sobre cada una de las columnas, como el tipo de datos y el número de valores faltantes.
+.shape devuelve el número de filas y columnas del DataFrame.
+.describe() calcula algunas estadísticas de resumen para cada columna.
+homelessnesses un DataFrame que contiene estimaciones de personas sin hogar en cada estado de EE. UU. en 2018. La individualcolumna es el número de personas sin hogar que no forman parte de una familia con hijos. La family_memberscolumna es el número de personas sin hogar que forman parte de una familia con hijos. La state_popcolumna es la población total del estado.
+
+pandas es importado para ti
+-----------------------------------------------------------------------------
+EJEMPLO:
+
+-----------------------------------------------------------------------------
+
+# Print the head of the homelessness data
+print(homelessness.head())
+
+# Print information about homelessness
+print(homelessness.info())
+
+# Print the shape of homelessness
+print(homelessness.shape)
+
+# Print a description of homelessness
+print(homelessness.describe())
+
+-----------------------------------------------------------------------------
+SALIDA:
+-----------------------------------------------------------------------------
+<script.py> output:
+                   region       state  individuals  family_members  state_pop
+    0  East South Central     Alabama       2570.0           864.0    4887681
+    1             Pacific      Alaska       1434.0           582.0     735139
+    2            Mountain     Arizona       7259.0          2606.0    7158024
+    3  West South Central    Arkansas       2280.0           432.0    3009733
+    4             Pacific  California     109008.0         20964.0   39461588
+------------------------------------------------------------------------------    
+    <class 'pandas.core.frame.DataFrame'>
+    Int64Index: 51 entries, 0 to 50
+    Data columns (total 5 columns):
+    region            51 non-null object
+    state             51 non-null object
+    individuals       51 non-null float64
+    family_members    51 non-null float64
+    state_pop         51 non-null int64
+    dtypes: float64(2), int64(1), object(2)
+    memory usage: 2.4+ KB
+    None
+-------------------------------------------------------------------------------    
+    (51, 5)
+-------------------------------------------------------------------------------    
+    
+           individuals  family_members  state_pop
+    count       51.000          51.000  5.100e+01
+    mean      7225.784        3504.882  6.406e+06
+    std      15991.025        7805.412  7.327e+06
+    min        434.000          75.000  5.776e+05
+    25%       1446.500         592.000  1.777e+06
+    50%       3082.000        1482.000  4.461e+06
+    75%       6781.500        3196.000  7.341e+06
+    max     109008.000       52070.000  3.946e+07
+-------------------------------------------------------------------------------
+
+Partes de un marco de datos pandas=>
+-----------------------------
+Para comprender mejor los objetos DataFrame, es útil saber que constan de tres componentes, almacenados como atributos:
+
+.values: Una matriz de valores NumPy bidimensional.
+.columns: Un índice de columnas: los nombres de las columnas.
+.index: Un índice para las filas: ya sea números de fila o nombres de fila.
+Por lo general, puede pensar en los índices como una lista de cadenas o números, aunque el Indextipo de datos pandas permite opciones más sofisticadas. (Estos serán cubiertos más adelante en el curso).
+
+homelessness está disponible.
+---------------------------------------------------------------------------------
+INSTRUCCIONES:
+----------------------------------------------------------------------------------
+Importar pandasusando el alias pd.
+Imprima una matriz 2D NumPy de los valores en homelessness.
+Imprima los nombres de columna de homelessness.
+Imprima el índice de homelessness.
+-----------------------------------------------------------------------------------------
+EJEMPLO:
+-----------------------------------------------------------------------------------------
+# Import pandas using the alias pd
+import pandas as pd
+
+# Print the values of homelessness
+print(homelessness.values)
+
+# Print the column index of homelessness
+print(homelessness.columns)
+
+# Print the row index of homelessness
+print(homelessness.index) #tenemos 50 filas
+-----------------------------------------------------------------------------------------
+
+Ordenar filas=>
+
+Encontrar bits de datos interesantes en un DataFrame a menudo es más fácil si cambia el orden de las filas. Puede ordenar las filas pasando un nombre de columna a .sort_values().
+
+En los casos en que las filas tienen el mismo valor (esto es común si ordena en una variable categórica), es posible que desee romper los lazos ordenando en otra columna. Puede ordenar en varias columnas de esta manera pasando una lista de nombres de columna.
+
+Ordenar por ...	Sintaxis
+una columna	df.sort_values("breed")
+múltiples columnas	df.sort_values(["breed", "weight_kg"])
+Al combinar .sort_values()con .head(), puede responder preguntas en el formulario, "¿Cuáles son los casos principales donde ...?".
+
+homelessnessestá disponible y pandasse carga como pd.
+----------------------------------------------------------------------------------------------
+Subconjunto de filas_>
+
+Una gran parte de la ciencia de datos se trata de encontrar qué partes de su conjunto de datos son interesantes. Una de las técnicas más simples para esto es encontrar un subconjunto de filas que coincidan con algunos criterios. Esto a veces se conoce como filtrar filas o seleccionar filas .
+
+Hay muchas formas de subconjuntar un DataFrame, quizás la más común es usar operadores relacionales para regresar Trueo Falsepara cada fila, luego pasar eso entre corchetes.
+
+dogs[dogs["height_cm"] > 60]
+dogs[dogs["color"] == "tan"]
+Puede filtrar varias condiciones a la vez utilizando el operador "lógico y" &.
+
+dogs[(dogs["height_cm"] > 60) & (dogs["col_b"] == "tan")]
+-----------------------------------------------------------------------------------------------
+
+Subconjunto de filas por variables categóricas =>
+
+Subconjunto de datos basados ​​en una variable categórica a menudo implica el uso del operador "o" ( |) para seleccionar filas de múltiples categorías. Esto puede volverse tedioso cuando quiere todos los estados en una de tres regiones diferentes, por ejemplo. En su lugar, utilice el .isin()método, que le permitirá abordar este problema escribiendo una condición en lugar de tres diferentes.
+
+colors = ["brown", "black", "tan"]
+condition = dogs["color"].isin(colors)
+dogs[condition]
+homelessnessestá disponible y pandasse carga como pd.
+------------------------------------------------------------------------------------------------
+
+Agregar nuevas columnas=>
+
+No está atrapado solo con los datos que se le dan. En su lugar, puede agregar nuevas columnas a un DataFrame. Esto tiene muchos nombres, como transformación , mutación e ingeniería de características .
+
+Puede crear nuevas columnas desde cero, pero también es común derivarlas de otras columnas, por ejemplo, agregando columnas o cambiando sus unidades.
+
+EJEMPLOS:
+
+# Add total col as sum of individuals and family_members
+homelessness['total'] = homelessness['individuals'] + homelessness['family_members']
+
+
+# Add p_individuals col as proportion of individuals
+homelessness['p_individuals'] = homelessness['individuals'] / homelessness['total']
+# See the result
+print(homelessness)
+---------------------------------------------------------------------------------------------------
+NOTA: cuando es descendiente siganifica que acsenidg es igual a false
+--------------------------------------------------------------------------------------------------
+REPASO DE LAS 4 COSAS QUE PUEDO HACER CON UN DATAFRAME DE PANDAS:
+Combo-ataque!
+Ha visto los cuatro tipos más comunes de manipulación de datos: clasificación de filas, subconjunto de columnas, subconjunto de filas y adición de nuevas columnas. En un análisis de datos de la vida real, puede mezclar y combinar estas cuatro manipulaciones para responder una multitud de preguntas.
+
+En este ejercicio, responderá la pregunta: "¿Qué estado tiene el mayor número de personas sin hogar por cada 10.000 personas en el estado?" Combina tus nuevas pandashabilidades para descubrirlo.
+
+EJERCICIO:
+
+Agregue una columna a homelessness, que indiv_per_10kcontenga el número de personas sin hogar por cada diez mil personas en cada estado.
+Subconjunto de filas donde indiv_per_10kes más alto que 20, asignando a high_homelessness.
+Ordenar high_homelessnesspor descendente indiv_per_10k, asignando a high_homelessness_srt.
+Seleccionar sólo el statey indiv_per_10kcolumnas de high_homelessness_srty guardar como result. Mira el result.
+
+# Create indiv_per_10k col as homeless individuals per 10k state pop
+homelessness["indiv_per_10k"] = 10000 * homelessness["individuals"] / homelessness["state_pop"] 
+
+# Subset rows for indiv_per_10k greater than 20
+high_homelessness = homelessness[homelessness["indiv_per_10k"] > 20]
+
+# Sort high_homelessness by descending indiv_per_10k
+high_homelessness_srt = high_homelessness.sort_values("indiv_per_10k", ascending=False)
+
+# From high_homelessness_srt, select the state and indiv_per_10k cols
+result = high_homelessness_srt[["state", "indiv_per_10k"]]
+
+# See the result
+print(result)
+---------------------------------------------------------------------------------------------------
+Resúmenes eficientes
+
+Si bien los pandas y NumPy tienen toneladas de funciones, a veces es posible que necesite una función diferente para resumir sus datos.
+
+El .agg()método le permite aplicar sus propias funciones personalizadas a un DataFrame, así como aplicar funciones a más de una columna de un DataFrame a la vez, haciendo que sus agregaciones sean súper eficientes.
+
+En la función personalizada para este ejercicio, "IQR" es la abreviatura de rango intercuartil, que es el percentil 75 menos el percentil 25. Es una alternativa a la desviación estándar que es útil si sus datos contienen valores atípicos.
+
+sales está disponible y pandasse carga como pd.
+-------------------------------------------------------------------------------------------------------------------
+EJEMPLO:
+--------------------------------------------------------------------------------------------------------------------
+# Import NumPy and create custom IQR function
+import numpy as np
+def iqr(column):
+    return column.quantile(0.75) - column.quantile(0.25)
+
+# Update to print IQR and median of temperature_c, fuel_price_usd_per_l, & unemployment
+print(sales[["temperature_c", "fuel_price_usd_per_l", "unemployment"]].agg([iqr, np.median]))
+-------------------------------------------------------------------------------------------------------------------------
+
+Estadísticas acumulativas
+
+Las estadísticas acumulativas también pueden ser útiles para rastrear estadísticas resumidas a lo largo del tiempo. En este ejercicio, calculará la suma acumulativa y el máximo acumulado de las ventas semanales de un departamento, lo que le permitirá identificar cuáles fueron las ventas totales hasta ahora y cuáles fueron las ventas semanales más altas hasta ahora.
+
+Se creó un DataFrame llamado sales_1_1para usted, que contiene los datos de ventas para el departamento 1 de la tienda 1. pandasse carga como pd.
+
+Instrucciones
+-------------------------------------------------------------------------------------------------------------------------
+Ordene las filas de sales_1_1por la datecolumna en orden ascendente.
+Obtenga la suma acumulativa de weekly_salesy agréguela como una nueva columna de sales_1_1llamada cum_weekly_sales.
+Obtenga el máximo acumulado de weekly_salesy agréguelo como una columna llamada cum_max_sales.
+Imprimir los date, weekly_sales, cum_weekly_sales, y cum_max_salescolumnas.
+
+--------------------------------------------------------------------------------------------------------------------------
+SOLUCION
+--------------------------------------------------------------------------------------------------------------------------
+# Sort sales_1_1 by date
+sales_1_1 = sales_1_1.sort_values("date")
+
+# Get the cumulative sum of weekly_sales, add as cum_weekly_sales col
+sales_1_1["cum_weekly_sales"] = sales_1_1["weekly_sales"].cumsum()
+
+# Get the cumulative max of weekly_sales, add as cum_max_sales col
+sales_1_1["cum_max_sales"] = sales_1_1["weekly_sales"].cummax()
+
+# See the columns you calculated
+print(sales_1_1[["date", "weekly_sales", "cum_weekly_sales", "cum_max_sales"]])
+
+----------------------------------------------------------------------------------------------------------------------------
+MI SITIO IDEAL PAGINA DE DATACAMP SOBRE TODO DE DATAFRAMES: https://trenton3983.github.io/files/projects/2019-01-24_pandas_dataframes/2019-01-24_pandas_dataframes.html
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------------------------------------------
